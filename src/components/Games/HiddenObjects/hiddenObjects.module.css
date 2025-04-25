@@ -1,0 +1,124 @@
+
+/* hidden objects */
+.hidden-objects {
+    position: relative;
+  }
+  
+  .hidden-objects-img {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+  
+  .hidden-objects-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .hidden-objects-img:hover {
+    cursor: zoom-in;
+  }
+  
+  
+  .custom-cursor {
+    position: fixed;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+  
+  .hidden-objects-content {
+    background-color: #fff;
+    position: absolute;
+    bottom: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  
+  .hidden-objects-pinData {
+    background-color: #fff;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  
+  .hidden-objects-pinData-img {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .hidden-objects-pinData-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .hidden-objects-final-screen {
+    position: relative;
+  }
+  .hidden-objects-final-screen-img {
+    height: 100%;
+    width: 100%;
+  }
+  .hidden-objects-final-screen-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .hidden-objects-final-screen-content {
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 35%);
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  
+  .hidden-objects-final-screen-result {
+    background-color: #fff;
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  
+  .fine-one-pair-finalScreen-bestResult {
+    background-color: #fff;
+    border-radius: 8px;
+  }
+  
+  .fine-one-pair-finalScreen-bestResult ol li {
+    border-bottom: 1px solid gray;
+  }
+  
+  .find-one-pair-game-outerImg-numberedCardBacks {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    top: 10px !important;
+    right: 10px !important;
+    height: 70px !important;
+    width: 70px !important;
+    background: #fff !important;
+  }
+  
+  .hidden-object-marker-pin {
+    border: 2px solid #fff;
+    border-radius: 50%;
+  }

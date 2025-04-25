@@ -1,0 +1,23 @@
+.block-5 {
+  padding: 12px 15px;
+}
+.block-button {
+  box-sizing: border-box;
+  display: inline-block;
+  min-width: 100px;
+  padding: 10px 20px;
+  min-width: auto;
+  border-radius: 6px;
+}
+
+.pulseAnimation .block-button {
+  animation: pulse 1.2s forwards alternate-reverse infinite;
+}
+
+@keyframes pulse {
+  0% {
+    scale: 1;
+  } 100% {
+    scale: 1.1;
+  }
+}

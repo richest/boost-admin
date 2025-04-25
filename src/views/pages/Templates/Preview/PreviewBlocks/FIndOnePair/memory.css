@@ -1,0 +1,133 @@
+.find-one-pair-topBanner {
+    width: 100%;
+    height: 100%;
+  }
+  .find-one-pair-topBanner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .find-one-pair-actions {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .find-one-pair-showMemorize {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .fine-one-pair-playground {
+    position: relative;
+  }
+  
+  .find-one-pair-game-cover {
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 25px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  
+  .find-one-pair-game-outerImg,
+  .find-one-pair-game-InnerImg {
+    height: 267px;
+    width: 100%;
+  }
+  .find-one-pair-game-outerImg img,
+  .find-one-pair-game-InnerImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .pair-card {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    padding-top: 0;
+    perspective: 1000px;
+  }
+  
+  .pair-card div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: transform 0.6s;
+  }
+  
+  .pair-card .find-one-pair-game-InnerImg {
+    transform: rotateY(180deg);
+    background: #eee;
+  }
+  
+  .pair-card .find-one-pair-game-outerImg {
+    transform: rotateY(0deg);
+    background: #333;
+  }
+  
+  .pair-card.flipped .find-one-pair-game-InnerImg {
+    transform: rotateY(0deg);
+  }
+  
+  .pair-card.flipped .find-one-pair-game-outerImg {
+    transform: rotateY(180deg);
+  }
+  
+  .find-one-pair-game-win-images {
+    height: 150px;
+    width: 150px;
+  }
+  
+  .find-one-pair-game-win-images img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .fine-one-pair-finalScreen {
+    position: relative;
+  }
+  
+  .fine-one-pair-finalScreen-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .fine-one-pair-finalScreen-text {
+    background-color: #fff;
+    padding: 25px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+  .fine-one-pair-finalScreen-result {
+    background-color: #fff;
+    position: static;
+    bottom: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
