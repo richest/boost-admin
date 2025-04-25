@@ -1,0 +1,13 @@
+.block-4{
+    padding: 12px 15px;
+}
+
+.contentvideo {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 15px;
+    box-shadow: 5px 0px 0px 3px #fff;
+}

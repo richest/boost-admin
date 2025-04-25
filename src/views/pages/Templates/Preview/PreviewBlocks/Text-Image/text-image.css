@@ -1,0 +1,42 @@
+.block-8 {
+  align-items: center;
+  display: flex;
+  padding: 16px 0;
+}
+.TextAndImage_contentText__YN2O8 {
+  border: 1px dashed #979797;
+}
+.TextAndImage_Button__osWetw {
+  margin-top: 28px;
+  text-align: left;
+}
+.Button_button__QOWDSA {
+  box-sizing: border-box;
+  display: inline-block;
+  min-width: 100px;
+  padding: 7px 28px;
+  position: relative;
+}
+.Button_button__QOWDSA p.ql-align-center {
+  word-break: break-all;
+}
+.Button_button__QOWDSA .ql-editor {
+  padding: 0 !important;
+}
+.textImage-content_jsbf3 {
+  box-sizing: border-box;
+  padding: 0 16px;
+  width: calc(50% - 15px);
+}
+.text-right-left {
+  flex-direction: row-reverse;
+}
+.image-text_ewe21 {
+  border-radius: 8px;
+  flex-shrink: 0;
+  margin: 0 25px 0 16px;
+  width: calc(50% - 36px);
+}
+.textImage-content_jsbf3 {
+  color: #000;
+}

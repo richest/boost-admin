@@ -1,0 +1,77 @@
+.position-icon{
+    cursor: pointer;
+}
+
+.pre-load-navbar{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.pre-load-navbar .position-icon{
+    margin-right: 10px ;
+}
+.pre-load{
+    position: fixed !important;
+    background-color: #000;
+    color:#fff;
+    margin: 0 !important;
+    z-index: 99999;
+    padding: 10px;
+    border-radius: 5px;
+    overflow: scroll;
+    /* border: 1px solid; */
+}
+.bottom{
+    bottom: 0;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 40%;
+    max-height: 10%;
+    left: 0;
+    right: 0;
+}
+.left{
+    left:5px;
+    top:5px;
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 98%;
+    max-height: 98%;
+}
+.right{
+    right:5px;
+    top:5px;
+    min-width: 400px;
+    max-width: 500px;
+    min-height: 98%;
+    max-height: 98%;
+}
+.top{
+    top: 0;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 40%;
+    max-height: 10%;
+    left: 0;
+    right: 0;
+}
+.full{
+    top:5px;
+    left:5px;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+.swipe-down{
+    bottom:5px;
+    left:5px;
+    min-width: 45px;
+    max-width: 45px;
+    min-height: 45px;
+    max-height: 45px;
+    overflow: hidden !important
+}
+.console-text{
+    color:#fff;
+}

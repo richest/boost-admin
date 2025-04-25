@@ -1,0 +1,16 @@
+.block-3 {
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+}
+.image-wrapper {
+    display: inline-block;
+    position: relative;
+  }
+  .content.input.padding-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
