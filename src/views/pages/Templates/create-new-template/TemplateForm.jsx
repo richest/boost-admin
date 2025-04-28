@@ -142,7 +142,6 @@ const TemplateForm = () => {
     isInnerBlockId: null,
   });
   console.log(formData, "formData");
-
   const textBlockData = textBlock;
 
   const [selectedBlockSettings, setSelectedBlockSettings] = useState({
@@ -151,7 +150,6 @@ const TemplateForm = () => {
   });
   console.log(selectedImage, "isEditMedia");
   console.log(selectedBlockSettings, "selectedBlockSettings");
-
   const inputRef = useRef();
   console.log(selectedImage, "j");
   const toggleDrawer = (newOpen) => () => {

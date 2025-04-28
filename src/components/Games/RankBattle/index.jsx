@@ -83,7 +83,7 @@ function RankBattle({
           </span>
         </div>
         <div className="disabled-panel">
-          <div className="p-2 d-flex align-items-center gap-2">
+          <div className="p-2 d-flex gap-2">
             {cards?.map((item, i) => (
               <div
                 key={i}
@@ -98,8 +98,8 @@ function RankBattle({
                   //   }`,
                 }}
               >
-                <div className="rank-battle-inner-container">
-                  <img src={item?.imageUrl} alt={item.text} style={{aspectRatio: data?.struct?.playground?.cardProportions, objectFit: 'contain'}} />
+                <div className="rank-battle-inner-container h-100">
+                  <img src={item?.imageUrl} alt={item.text} style={{aspectRatio: data?.struct?.playground?.cardProportions, objectFit: 'cover'}} />
                 </div>
                 {showTag && (
                   <div

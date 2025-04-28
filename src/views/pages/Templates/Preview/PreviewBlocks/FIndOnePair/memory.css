@@ -115,18 +115,14 @@
   
   .fine-one-pair-finalScreen-text {
     background-color: #fff;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
     padding: 25px;
     text-align: center;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  }
+}
   .fine-one-pair-finalScreen-result {
     background-color: #fff;
-    position: absolute;
+    position: static;
     bottom: 25%;
     left: 50%;
     transform: translate(-50%, -50%);

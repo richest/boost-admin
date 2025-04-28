@@ -639,35 +639,39 @@ function PreviewHiddenObjects({
                 }}
                 role="dialog"
               >
-                <div className="modal-dialog modal-sm">
-                  <div className="modal-content p-4">
-                    <div className="modal-body text-center">
-                      <div>
+                <div className="modal-dialog modal-sm modal-dialog-centered">
+                  <div className="modal-content">
+                    <div className="modal-body text-center p-0">
+                      <div className="hidden-objects-popup">
                         {pinPointData?.i !== "" && (
                           <div className="hidden-objects-pinData-img">
-                            <img src={pinPointData?.i} alt="imgggg" />
+                            <img src={pinPointData?.i} className="w-100" alt="imgggg" />
                           </div>
                         )}
+                        <div className="p-4">
                         {pinPointData?.h !== "" && <h4>{pinPointData?.h}</h4>}
                         {pinPointData?.d !== "" && <p>{pinPointData?.d}</p>}
-                        {pinPointData?.btext !== "" && (
+                          <div className="d-flex align-items-center gap-3 justify-content-center">
+                          {pinPointData?.btext !== "" && (
+                            <button
+                              onClick={handleClickPinBtn}
+                              style={{
+                                backgroundColor: `${blocks?.struct?.pcl}`,
+                                color: `${blocks?.struct?.btcolor}`,
+                              }}
+                              className="btn btn-outline-dark"
+                            >
+                              {pinPointData?.btext}
+                            </button>
+                          )}
                           <button
-                            onClick={handleClickPinBtn}
-                            style={{
-                              backgroundColor: `${blocks?.struct?.pcl}`,
-                              color: `${blocks?.struct?.btcolor}`,
-                            }}
-                            className="btn btn-outline-dark"
+                            onClick={() => setShowPinData(false)}
+                            className="btn btn-outline-primary"
                           >
-                            {pinPointData?.btext}
+                            Close
                           </button>
-                        )}
-                        <button
-                          onClick={() => setShowPinData(false)}
-                          className="btn btn-outline-primary"
-                        >
-                          Close
-                        </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -714,7 +714,7 @@ function HoroscopeSettings({
             </div>
             <div className="">
               <label
-                className=" d-flex justify-content-between form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
+                className="form-label font-sm fw-medium d-flex align-items-center justify-content-between gap-2 cursor-pointer"
                 role="button"
               >
                 Link

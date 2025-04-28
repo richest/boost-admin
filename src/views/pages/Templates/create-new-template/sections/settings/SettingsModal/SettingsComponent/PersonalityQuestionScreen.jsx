@@ -671,8 +671,8 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
                             <label class="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
                               Answer {index + 1} <span style={{ color: "red" }}>*</span>
                             </label>
-                            <div>
-                              <p>Link to result: 1</p>
+                            <div className="d-flex align-items-center gap-3 mb-4">
+                              <p className="mb-0">Link to result: 1</p>
                               {/* <input
                                 class="form-check-input"
                                 type="checkbox"
@@ -782,9 +782,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
             ))}
         </div>
 
-        <div className="w-100 scrollable-div p-4">
-
-        </div>
+        
       </div>
     </>
   );

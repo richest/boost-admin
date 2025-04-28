@@ -3,8 +3,9 @@ import { useSelector } from "react-redux";
 
 function RankBattlePreview({ data, rankCard, rankMain }) {
 
-  console.log(rankCard, "rankCardrankCard")
-  const cards = rankCard;
+  console.log(data, "rankCardrasssnkCard")
+  const cards = rankCard || data?.struct?.cards;
+  console.log(cards, "cardscards")
   const colorTheme = data?.struct?.colorTheme;
 
   const [leading, setLeading] = useState({
@@ -57,7 +58,7 @@ function RankBattlePreview({ data, rankCard, rankMain }) {
           </div>
         </div>
       </div> */}
-      <div className="p-2 d-flex align-items-center gap-2">
+      <div className="p-2 d-flex gap-2">
         {cards?.map((item, i) => (
           <div key={i}
             className="rank-battle-container"
@@ -71,8 +72,8 @@ function RankBattlePreview({ data, rankCard, rankMain }) {
               //   }`,
             }}
           >
-            <div className="rank-battle-inner-container">
-              <img src={item?.imageUrl} alt={item.text} style={{ aspectRatio: rankMain?.cardProportions, objectFit: 'contain' }} />
+            <div className="rank-battle-inner-container h-100">
+              <img src={item?.imageUrl} alt={item.text} style={{ aspectRatio: rankMain?.cardProportions, objectFit: 'cover' }} />
             </div>
             {showTag && (
               <div

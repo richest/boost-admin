@@ -98,7 +98,7 @@ function MemoryModal({
     if (isNaN(rows) || isNaN(cols)) return;
 
     const totalCards = rows * cols;  // Total number of cards based on layout
-    const requiredPairs = totalCards;  // Each pair will use 2 cards, so it's equal to total cards
+    const requiredPairs = totalCards / 2;  // Each pair will use 2 cards, so it's equal to total cards
 
     // Build or trim updated pair list
     let updatedTileList = [...(formData?.struct?.pairs?.pairList || [])];
@@ -161,7 +161,6 @@ function MemoryModal({
       ...prev,
       isShowCover: newValue
     }))
-
     //   ...templateDetails,
     //   project_structure: {
     //     ...templateDetails.project_structure,
@@ -190,18 +189,18 @@ function MemoryModal({
     console.log(text, "09485");
 
     if (typeof text !== 'string') {
-      return false;  
+      return false;
     }
 
     const trimmedText = text.trim().replace(/\s+/g, ' ');
 
     const wordCount = trimmedText.split(' ').length;
 
-    console.log(trimmedText, "trimmed text"); 
+    console.log(trimmedText, "trimmed text");
     console.log(wordCount, "word count");
 
-  
-    return wordCount <= 20 && wordCount > 0;  
+
+    return wordCount <= 20 && wordCount > 0;
   };
   const validateForm = () => {
     const newErrors = {

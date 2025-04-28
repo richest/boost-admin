@@ -278,21 +278,18 @@ function EditProductForm({ productTypeList }) {
                   ""
                 )}
                 <label
-                  htmlFor={`${
-                    selectedImage || loader ? null : "uploadFileInput"
-                  }`}
+                  htmlFor={`${selectedImage || loader ? null : "uploadFileInput"
+                    }`}
                 >
                   <Avatar
                     sx={{
                       width: "auto",
                       height: "10em",
-                      border: `${
-                        selectedImage
+                      border: `${selectedImage
                           ? null
-                          : `2.5px dashed ${
-                              errors.blogProfileImage ? "#ff4842" : "#3273ba"
-                            }`
-                      }`,
+                          : `2.5px dashed ${errors.blogProfileImage ? "#ff4842" : "#3273ba"
+                          }`
+                        }`,
                       color: `${errors.blogProfileImage ? "#ff4842" : "#fff"}`,
                       cursor: `${selectedImage ? null : "pointer"}`,
                       backgroundColor: `${selectedImage ? null : "#d5e8f0"}`,
@@ -313,11 +310,10 @@ function EditProductForm({ productTypeList }) {
                       <AddPhotoAlternateIcon
                         sx={{
                           fontSize: "3em",
-                          color: `${
-                            errors.blogProfileImage
+                          color: `${errors.blogProfileImage
                               ? "#ff4842"
                               : DEFAULT_CSS.PRIMARY_COLOR
-                          }`,
+                            }`,
                         }}
                       />
                       <Typography
@@ -373,10 +369,10 @@ function EditProductForm({ productTypeList }) {
                   </Box>
                   <Box>
                     <AntSwitch
-              
-Editor
 
-        disabled={loader}
+                      Editor
+
+                      disabled={loader}
                       onChange={(event) => handleBlogStatus(event)}
                       checked={blogStatus}
                     />

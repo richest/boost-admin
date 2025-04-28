@@ -69,7 +69,7 @@ function FindOnePair({
     .split(",")
     .map((item) => item.trim());
   const sliceCount = pairsData?.playground?.cardLayout?.value === "4x3" ? 6 : 4;
-  const pairList = pairsData?.pairs?.pairList?.slice(0, sliceCount);
+   const pairList = pairsData?.pairs?.pairList?.slice(0, sliceCount);
 
   const [shuffledList, setShuffledList] = useState([]);
   const [flipped, setFlipped] = useState([]);
@@ -326,59 +326,60 @@ function FindOnePair({
                         />
                       )}
                     </div>
-                    <div className="fine-one-pair-finalScreen-text">
-                      <h5>
-                        {gameOver
-                          ? timesUpData?.header
-                          : pairsData?.finalScreen?.header}
-                      </h5>
-                      <p>
-                        {gameOver
-                          ? timesUpData?.description
-                          : pairsData?.finalScreen?.description}
-                      </p>
-                      {!gameOver && topBannerText?.isActionButton && (
-                        <a
-                          href={topBannerText?.actionButtonLink}
-                          style={{
-                            backgroundColor: `${topBannerText?.colorTheme}`,
-                          }}
-                          onClick={handleRestart}
-                          className="btn btn-outline-dark"
-                        >
-                          {topBannerText?.actionButtonText}
-                        </a>
+                    <div className="finalScreenBlock">
+                      {gameWon && topBannerText?.enableTimer && (
+                        <div className="fine-one-pair-finalScreen-result">
+                          {topBannerText?.enableStars &&
+                            starsTimeArray.map((item, i) =>
+                              item > timeTaken ? (
+                                <FaStar key={i} />
+                              ) : (
+                                <CiStar key={i} />
+                              )
+                            )}
+                          <p className="m-0">
+                            Your result:{" "}
+                            {timeType?.value === "countdown"
+                              ? formattedTimeLeft
+                              : formattedTimeTaken}
+                            s
+                          </p>
+                        </div>
                       )}
-
-                      {!topBannerText?.isHideRestartButton && (
-                        <button
-                          onClick={handleRestart}
-                          className="btn btn-outline-dark"
-                        >
-                          Restart
-                        </button>
-                      )}
-                    </div>
-
-                    {gameWon && topBannerText?.enableTimer && (
-                      <div className="fine-one-pair-finalScreen-result">
-                        {topBannerText?.enableStars &&
-                          starsTimeArray.map((item, i) =>
-                            item > timeTaken ? (
-                              <FaStar key={i} />
-                            ) : (
-                              <CiStar key={i} />
-                            )
-                          )}
-                        <p className="m-0">
-                          Your result:{" "}
-                          {timeType?.value === "countdown"
-                            ? formattedTimeLeft
-                            : formattedTimeTaken}
-                          s
+                      <div className="fine-one-pair-finalScreen-text">
+                        <h5>
+                          {gameOver
+                            ? timesUpData?.header
+                            : pairsData?.finalScreen?.header}
+                        </h5>
+                        <p>
+                          {gameOver
+                            ? timesUpData?.description
+                            : pairsData?.finalScreen?.description}
                         </p>
+                        {!gameOver && topBannerText?.isActionButton && (
+                          <a
+                            href={topBannerText?.actionButtonLink}
+                            style={{
+                              backgroundColor: `${topBannerText?.colorTheme}`,
+                            }}
+                            onClick={handleRestart}
+                            className="btn btn-outline-dark"
+                          >
+                            {topBannerText?.actionButtonText}
+                          </a>
+                        )}
+
+                        {!topBannerText?.isHideRestartButton && (
+                          <button
+                            onClick={handleRestart}
+                            className="btn btn-outline-dark"
+                          >
+                            Restart
+                          </button>
+                        )}
                       </div>
-                    )}
+                    </div>
 
                     {topBannerText?.isShowLeadForm && <p>LeadForm</p>}
                   </div>

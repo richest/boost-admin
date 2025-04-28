@@ -66,7 +66,7 @@ export default function TemplateCard({
   if (isLoading && isLoading !== undefined) {
     return <SkeltonCardLoader />;
   }
-
+  console.log(data?.preview_image, "ododduiowud")
   return (
     <NavLink
       style={{ textDecoration: "none" }}
@@ -163,7 +163,7 @@ export default function TemplateCard({
         >
           <img
             src={
-              icon ||
+              data?.preview_image ||
               "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
             }
             alt="icon"

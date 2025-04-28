@@ -39,6 +39,7 @@ const Templates = () => {
   const [rowsPerPage, setRowsPerPage] = useState(
     userFilterOption.number_of_rows
   );
+  const [images, setImages] = useState({})
   const [pageNo, setPageNo] = useState(userFilterOption.page_no);
   const [srNo, setSrNo] = useState(userFilterOption.srNo);
   const [totalUsersCount, setProductCount] = useState(0);
@@ -166,6 +167,8 @@ const Templates = () => {
       } = response.data;
       if (success && status === RESPONSE_CODE[200]) {
         setTemplateList(templateDetails.rows);
+        setImages(templateDetails)
+        console.log(templateDetails, "templateDetails")
         setLoading(false);
         setConnectionError(false);
         setProductCount(totalCounts);
@@ -260,6 +263,7 @@ const Templates = () => {
           {templateList.map((product) => (
             <Grid key={product.id} item xs={12} sm={6} md={2}>
               <TemplateCard
+                TemplateImages={images}
                 data={product}
                 path={ROUTE_SLUGS.HEADER_FOOTER}
                 color="primary"

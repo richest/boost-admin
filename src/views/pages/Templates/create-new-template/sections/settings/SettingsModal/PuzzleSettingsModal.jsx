@@ -425,7 +425,7 @@ function PuzzleModal({
                           }
                         />
                         <span className="d-flex align-items-center gap-2">
-                          Show coverA
+                          Show cover
                         </span>
                       </label>
                       {formData?.struct?.playground?.isShowCover && (

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EMAILICON from "../../../../assets/images/integration-email-img.png";
 import GOOGLE from "../../../../assets/images/integration-google-img.png";
 import MAILCHIM from "../../../../assets/images/integration-mailchimp-img.png";
@@ -9,22 +9,31 @@ import LEADFORMPREVIEW from "../../../../assets/images/email-int.png";
 import MAILCHIM1 from "../../../../assets/images/mailchim1.png";
 import MAILCHIM2 from "../../../../assets/images/mailchim2.png";
 import MAILCHIM3 from "../../../../assets/images/mailchim3.png";
-
+import { Card, CardContent, CardMedia, Button, Box, IconButton, Grid, CircularProgress } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import UploadIcon from "@mui/icons-material/CloudUpload";
 import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
-import { postRequest } from "app/httpClient/axiosClient";
+import SaveIcon from "@mui/icons-material/Save";
+import { postRequest, putRequest } from "app/httpClient/axiosClient";
+import { IMAGE_UPLOAD, MEDIA_LIBRARY, TEMPLATES } from "app/config/endpoints";
+import { getTemplateDetailsAction } from "../TemplateRedux/actions/drawerAction";
 
 function Integrations() {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
-  console.log(templateDetails?.project_structure?.pages, "checkdesign");
+  console.log(templateDetails, "dddddddd");
   const [showData, setShowData] = useState("");
   const [description, setDescription] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch()
   console.log(showModal, "cehckmodalpopoooy");
   const handleShowData = (type) => {
     setShowData(type);
     setShowModal(true);
   };
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const popupRef = useRef(null);
   const fileInputRef = useRef(null);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -33,61 +42,88 @@ function Integrations() {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = async (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Example: Uploading to Cloudinary or your own API
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "your_upload_preset"); // for Cloudinary
-
-    try {
-      const res = await postRequest(MEDIA_LIBRARY.CREATE_MEDIA, formData);
-      setUploadedImage(res.data.secure_url); // Save uploaded image URL
-    } catch (err) {
-      console.error("Upload failed", err);
-    }
+    setSelectedFile(file); // store the file
+    setPreviewUrl(URL.createObjectURL(file)); // for preview
   };
+  const quillStyles = {
+    height: "285px",
+    marginBottom: "16px",
+  };
+  useEffect(() => {
+    dispatch(getTemplateDetailsAction(templateDetails?.unique_id));
+  }, []);
 
   const handleDelete = () => {
-    setUploadedImage(null); // Just clear it from UI
-    // Optional: call API to delete image from server
+    console.log("click");
+    setUploadedImage(null);
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
+  const [loading, setloading] = useState(false)
+  const handleSave = async () => {
+
+
+    const formData = new FormData();
+    formData.append("preview_image", selectedFile);
+    formData.append("description", description);
+
+    try {
+      setloading(true);
+      const res = await putRequest(`${TEMPLATES.UPLOADIMAGE}/${templateDetails?.unique_id}`, formData);
+      // console.log(res, "resres");
+      // setUploadedImage(res.data.secure_url); // Save uploaded image URL
+    } catch (err) {
+      console.error("Upload failed", err);
+    } finally {
+      setloading(false);
+    }
+  };
+  console.log(templateDetails, "dwopqh")
+  useEffect(() => {
+    setPreviewUrl(templateDetails?.preview_image)
+    setDescription(templateDetails?.description)
+  }, [templateDetails])
   return (
     <div className="dash-center overflow-auto">
       <div className="tab-box" id="tab-2">
         <div className="editor-dash d-block integration">
-
           <div className="container">
             <h3 className="fw-medium text-center mb-md-5 mb-4">
-              Add integrations or <span className="primary-text">skip</span>{" "}
-              this step
+              Edit or view{" "}
+              template details
             </h3>
-            <div className="row justify-content-center g-4">
+            <Grid container spacing={4} justifyContent="center">
+              {/* Upload Image Card */}
+              <Grid item xs={12} md={6} lg={4}>
+                <Card variant="outlined" sx={{ textAlign: "center", p: 2 }}>
+                  <CardContent>
+                    {/* If there's an uploaded image, show it */}
+                    {(uploadedImage || previewUrl) ? (
+                      <CardMedia
+                        component="img"
+                        image={uploadedImage ? uploadedImage : previewUrl ? previewUrl : `https://res.cloudinary.com/dwl5gzbuz/image/upload/v1739271156/Group_3_jl6d69.png`}
+                        alt="Image"
+                        sx={{ maxHeight: 250, objectFit: "contain", mb: 2 }}
+                      />
+                    ) : (
+                      // If neither uploadedImage nor previewUrl exist, show default image
+                      <CardMedia
+                        component="img"
+                        image={`https://res.cloudinary.com/dwl5gzbuz/image/upload/v1739271156/Group_3_jl6d69.png`}
+                        alt="Default"
+                        sx={{ maxHeight: 250, objectFit: "contain", mb: 2 }}
+                      />
+                    )}
 
-              {/* Top large image display */}
-              <div className="col-12 mb-4">
-                <img
-                  src="https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-                  alt="question-image"
-                  className="img-fluid large-top-image"
-                />
+                    {console.log(previewUrl, "previewUrl")}
+                    {console.log(uploadedImage, "uploadedImage")}
 
-              </div>
-
-              {/* First card */}
-              <div className="col-lg-4 col-md-6">
-                <div className="text-center inte-card font-sm" role="button">
-                  {uploadedImage && (
-                    <img
-                      src={uploadedImage}
-                      alt="Uploaded"
-                      className="img-fluid large-top-image mb-3"
-                    />
-                  )}
-
-                  <div className="upload-container">
+                    {/* Input for uploading a new image */}
                     <input
                       type="file"
                       ref={fileInputRef}
@@ -95,38 +131,63 @@ function Integrations() {
                       accept="image/*"
                       onChange={handleFileChange}
                     />
-                    <div className="d-flex align-items-start justify-content-center">
-                      <button
-                        className="button button-primary border-0 me-2 font-sm"
+
+                    {/* Upload and delete buttons */}
+                    <Box display="flex" justifyContent="center" gap={2} mt={2}>
+                      <Button
+                        variant="contained"
+                        startIcon={<UploadIcon />}
                         onClick={handleUploadClick}
+                        size="small"
                       >
                         Upload
-                      </button>
-                      <button
-                        className="button button-secondary px-3 border-0 font-sm"
+                      </Button>
+
+                      {/* <IconButton
+                        color="error"
                         onClick={handleDelete}
-                        disabled={!uploadedImage}
+                        disabled={!previewUrl && !uploadedImage}
+                        size="small"
                       >
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                        <DeleteIcon />
+                      </IconButton> */}
+                    </Box>
+                  </CardContent>
+                </Card>
 
-              {/* Second card with editor */}
-              <div className="col-lg-4 col-md-6">
-                <div className="text-center inte-card font-sm">
-                  <ReactQuill
-                    value={description}
-                    onChange={setDescription}
-                    placeholder="Enter description here..."
-                    theme="snow"
-                  />
-                </div>
-              </div>
+              </Grid>
 
-            </div>
+
+              <Grid item xs={12} md={6} lg={8}>
+                <Card variant="outlined" sx={{ p: 2 }}>
+                  <CardContent>
+                    <Box sx={quillStyles}>
+                      <ReactQuill
+                        value={description}
+                        onChange={setDescription}
+                        placeholder="Enter description here..."
+                        theme="snow"
+                        style={{ height: "200px" }}
+                      />
+                    </Box>
+
+                  </CardContent>
+                </Card>
+                <Box textAlign="right" mt={4}>
+                  <Button
+                    // variant="contained"
+                    // color="success"
+                    startIcon={loading ? <CircularProgress size={20} /> : <SaveIcon />}
+                    // startIcon={<SaveIcon />}
+                    onClick={handleSave}
+                    className="button button-primary"
+                    disabled={!description && !selectedFile}
+                  >
+                    {loading ? 'Saving...' : 'Save'}
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
 
           </div>
         </div>

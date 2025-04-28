@@ -139,11 +139,14 @@ table.list-table tr th:last-child {
   appearance: none;
   width: 5em;
   height: 2em;
-  background: -webkit-gradient(linear,
+  background: -webkit-gradient(
+      linear,
       left top,
       right top,
       color-stop(50%, #efefef),
-      color-stop(50%, #2a2a2a)) no-repeat;
+      color-stop(50%, #2a2a2a)
+    )
+    no-repeat;
   background: -o-linear-gradient(left, #efefef 50%, #2a2a2a 50%) no-repeat;
   background: linear-gradient(to right, #efefef 50%, #2a2a2a 50%) no-repeat;
   background-size: 205%;
@@ -164,11 +167,14 @@ table.list-table tr th:last-child {
   position: absolute;
   top: 4px;
   left: 0.438em;
-  background: -webkit-gradient(linear,
+  background: -webkit-gradient(
+      linear,
       left top,
       right top,
       color-stop(50%, #efefef),
-      color-stop(50%, #2a2a2a)) no-repeat;
+      color-stop(50%, #2a2a2a)
+    )
+    no-repeat;
   background: -o-linear-gradient(left, #efefef 50%, #2a2a2a 50%) no-repeat;
   background: linear-gradient(to right, #efefef 50%, #2a2a2a 50%) no-repeat;
   background-size: 205%;
@@ -583,11 +589,9 @@ table.list-table tr th:last-child {
 .block-builder .ql-container.ql-snow {
   border: none !important;
 }
-
 .ql-container {
   font-size: 24px !important;
 }
-
 .block-builder .ql-editor {
   overflow-y: hidden !important;
   padding: 12px 16px !important;
@@ -675,7 +679,7 @@ table.list-table tr th:last-child {
 }
 
 .editor-dash .dash-center {
-  padding: 20px 50px;
+  padding: 50px;
   overflow: auto;
 }
 
@@ -698,7 +702,7 @@ table.list-table tr th:last-child {
   gap: 20px;
 }
 
-.page-block>i {
+.page-block > i {
   font-size: 40px;
   color: #dedede;
   margin-inline: auto;
@@ -780,7 +784,7 @@ table.list-table tr th:last-child {
   background-color: var(--white-color);
 }
 
-.inte-card>img {
+.inte-card > img {
   height: 80px;
   max-width: 210px;
   object-fit: contain;
@@ -809,7 +813,7 @@ table.list-table tr th:last-child {
   transition: all 0.3s ease;
 }
 
-.integration-popup+.overlay {
+.integration-popup + .overlay {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   height: calc(100% - 70px);
@@ -825,7 +829,7 @@ table.list-table tr th:last-child {
   transform: translateX(0);
 }
 
-.integration-popup.active+.overlay {
+.integration-popup.active + .overlay {
   opacity: 1;
   visibility: visible;
 }
@@ -865,7 +869,6 @@ table.list-table tr th:last-child {
 
 /* editor header ends */
 @media (max-width: 1199px) {
-
   /* header */
   .nav-container {
     max-width: unset;
@@ -888,16 +891,16 @@ table.list-table tr th:last-child {
     grid-template-columns: 1fr auto;
   }
 
-  .business-cta>div:nth-child(1) {
+  .business-cta > div:nth-child(1) {
     order: 1;
   }
 
-  .business-cta>div:nth-child(2) {
+  .business-cta > div:nth-child(2) {
     order: 3;
     grid-column: 1/3;
   }
 
-  .business-cta>a:nth-child(3) {
+  .business-cta > a:nth-child(3) {
     order: 2;
   }
 
@@ -964,12 +967,12 @@ table.list-table tr th:last-child {
     width: 100%;
   }
 
-  .profile-block>.d-flex>.d-flex {
+  .profile-block > .d-flex > .d-flex {
     color: var(--black-color);
     width: 100%;
   }
 
-  .profile-block>.d-flex>i {
+  .profile-block > .d-flex > i {
     color: var(--black-color);
     rotate: 180deg;
   }
@@ -1027,7 +1030,7 @@ table.list-table tr th:last-child {
     display: flex;
   }
 
-  .menu-item li>a {
+  .menu-item li > a {
     align-items: center;
     justify-content: space-between;
     color: var(--black-color);
@@ -1091,7 +1094,7 @@ table.list-table tr th:last-child {
     padding: 30px 50px;
   }
 
-  .gallery-section h1~div {
+  .gallery-section h1 ~ div {
     font-size: 14px;
   }
 
@@ -1192,7 +1195,7 @@ table.list-table tr th:last-child {
     padding: 20px 20px 0;
   }
 
-  .business-cta>div:nth-child(2) {
+  .business-cta > div:nth-child(2) {
     grid-column: unset;
   }
 
@@ -1457,7 +1460,7 @@ table.list-table tr th:last-child {
   scrollbar-width: none;
 }
 
-.modal-grid>div:nth-child(2) {
+.modal-grid > div:nth-child(2) {
   height: calc(100vh - 200px);
   overflow: auto;
 }
@@ -1825,11 +1828,10 @@ table.list-table tr th:last-child {
   object-fit: cover;
 }
 
-.trivia-quiz+.trivia-content {
+.trivia-quiz + .trivia-content {
   margin: -112px auto 0;
 }
-
-.trivia-quiz.no-image+.trivia-content {
+.trivia-quiz.no-image + .trivia-content {
   margin: 20px 0;
 }
 
@@ -2236,11 +2238,11 @@ table.list-table tr th:last-child {
   border-radius: 50%;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: #2196f3;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   transform: translateX(20px);
 }
 
@@ -2303,7 +2305,7 @@ input:checked+.slider:before {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   color: #fff;
   display: flex;
-  height: 35px;
+  min-height: 35px;
   justify-content: center;
   width: 100%;
 }
@@ -2351,7 +2353,6 @@ input:checked+.slider:before {
   padding-block: 15px;
   transition: all .3s ease;
 }
-
 .questionSidebarList.highlight {
   padding-left: 8px;
 }
@@ -2505,13 +2506,13 @@ label.btn.selectypebutton {
   object-fit: cover;
 }
 
-.quest-cover img+label {
+.quest-cover img + label {
   position: absolute;
   bottom: 5px;
   right: 8px;
 }
 
-.quest-cover img+div.icons_pairs {
+.quest-cover img + div.icons_pairs {
   position: absolute;
   bottom: 5px;
   right: 5px;
@@ -2632,7 +2633,7 @@ label.btn.selectypebutton {
   background-color: #fff;
 }
 
-.then-now-block__delimiter>svg {
+.then-now-block__delimiter > svg {
   position: absolute;
   left: -22px;
   -webkit-animation: pulse 2s infinite;
@@ -2682,7 +2683,7 @@ label.btn.selectypebutton {
   padding: 0;
 }
 
-.rankPreview>div>div {
+.rankPreview > div > div {
   flex-direction: column;
 }
 
@@ -3145,7 +3146,7 @@ label.btn.selectypebutton {
   border-radius: 4px;
 }
 
-.list_button>div:nth-child(2) {
+.list_button > div:nth-child(2) {
   margin: 0;
 }
 
@@ -3225,7 +3226,12 @@ label.btn.selectypebutton {
   width: 100% !important;
 }
 
-.form-right .formPreview .side-zone .tiles-container .puzzle-slot .puzzle-piece {
+.form-right
+  .formPreview
+  .side-zone
+  .tiles-container
+  .puzzle-slot
+  .puzzle-piece {
   height: 100% !important;
   width: 100% !important;
   aspect-ratio: 1/1;
@@ -3254,6 +3260,7 @@ textarea {
   padding: 0 40px;
   position: relative;
   text-align: left;
+  margin: 0;
 }
 
 .Footer_footerItem__yaFNE {
@@ -3367,7 +3374,8 @@ textarea {
   padding: 12px;
 }
 
-.MailChimpIntegrations_MailchimpIntegrations__vUrTG .MailChimpIntegrations_group__PxJ26 {
+.MailChimpIntegrations_MailchimpIntegrations__vUrTG
+  .MailChimpIntegrations_group__PxJ26 {
   align-items: center;
   display: flex;
   gap: 20px;
@@ -3386,11 +3394,9 @@ textarea {
 .restart-button__wrapper a:hover {
   color: inherit;
 }
-
 .btn:hover {
   color: inherit !important;
 }
-
 .resize-none {
   resize: none !important;
 }
@@ -3398,7 +3404,6 @@ textarea {
 .questioncontent {
   transition: all .3s ease;
 }
-
 .questioncontent.highlight {
   padding-left: 20px;
   padding-top: 10px;

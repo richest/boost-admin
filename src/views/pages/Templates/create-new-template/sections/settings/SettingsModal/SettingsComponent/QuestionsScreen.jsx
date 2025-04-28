@@ -443,16 +443,16 @@ function QuestionsScreen({
     const updated = localQuestions.map((question) =>
       question.id === questionId
         ? {
-            ...question,
-            answers: question.answers.map((ans) =>
-              ans.id === answerId ? { ...ans, text: value } : ans
-            ),
-          }
+          ...question,
+          answers: question.answers.map((ans) =>
+            ans.id === answerId ? { ...ans, text: value } : ans
+          ),
+        }
         : question
     );
     setLocalQuestions(updated);
   };
-  
+
   const handleChangeDescriptionAnswer = (e, id, answerId) => {
     const updatedData = {
       ...updatedtemplate,
@@ -806,7 +806,7 @@ function QuestionsScreen({
                           {...register(`questions.${index}.text`, {
                             required: "Question text is required",
                           })}
-                          value={question.text || ""} // ✅ this pulls the real value
+                          defaultValue={question.text} // ✅ this pulls the real value
                           onChange={(e) => {
                             handleQuestionTextChange(
                               e.target.value,

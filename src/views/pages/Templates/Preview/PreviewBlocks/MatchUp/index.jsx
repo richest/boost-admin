@@ -108,25 +108,26 @@ function PreviewMatchUp({ data }) {
   const onSubmit = (data) => {
     if (block?.struct?.passwordList.length > 0) {
       if (block?.struct?.passwordList?.some((item) => item === data.code)) {
-        setShowStartBtn(true);
+        // setShowStartBtn(true);
+        setStartGame(true)
         reset();
       } else {
         setCodeErrorShow(true);
       }
     } else {
-      setShowStartBtn(true);
+      // setShowStartBtn(true);
       reset();
     }
   };
 
   const handleRestartForm = () => {
-    setShowStartBtn(false);
+    // setShowStartBtn(false);
     setCodeErrorShow(false);
   };
 
   const handleStartGame = () => {
     setStartGame(true);
-    setShowStartBtn(false);
+    // setShowStartBtn(false);
   };
 
   const handleClickName = (id) => {
@@ -208,7 +209,7 @@ function PreviewMatchUp({ data }) {
     setTimeTaken(0);
     setTimeLeft(block?.struct?.countdownTime);
     setActionCount(0);
-    setShowStartBtn(false);
+    // setShowStartBtn(false);
     setStartGame(false);
     setCodeErrorShow(false);
     setGameOver(false);
@@ -220,7 +221,7 @@ function PreviewMatchUp({ data }) {
       block?.struct?.passwordList?.length === 0 &&
       !block?.struct?.isEnableRating
     ) {
-      setShowStartBtn(true);
+      // setShowStartBtn(true);
     }
   };
 
@@ -276,17 +277,20 @@ function PreviewMatchUp({ data }) {
       block?.struct?.passwordList?.length === 0 &&
       !block?.struct?.isEnableRating
     ) {
-      setShowStartBtn(true);
-      setStartGame(false);
+      console.log("REACHEDDDD111")
+      // setShowStartBtn(true);
+      setStartGame(true);
     }
     if (
+
       block?.struct?.passwordList?.length !== 0 &&
       !block?.struct?.enableTimer
     ) {
-      setShowStartBtn(false);
+      console.log("REACHEDDDD222222")
+      // setShowStartBtn(false);
       setStartGame(true);
     }
-  }, []);
+  }, [data, block]);
 
   useEffect(() => {
     const allCardsPlaced = shuffledSecond.every((item) => item.pairId !== null);
@@ -307,9 +311,9 @@ function PreviewMatchUp({ data }) {
       setGameWon(false);
       setWrongMatch(false);
     }
-  }, [shuffledSecond]);
+  }, [shuffledSecond, data]);
 
-  const onSubmitForm = (e) => {};
+  const onSubmitForm = (e) => { };
   console.log(
     block?.struct?.passwordList?.length,
     block?.struct?.isEnableRating,
@@ -461,14 +465,13 @@ function PreviewMatchUp({ data }) {
                             {item.pairId ? (
                               <div
                                 role="button"
-                                className={`${
-                                  shuffledFirst.map(
-                                    (item) =>
-                                      item.firstImage.cardType === "image"
-                                  )
-                                    ? "matchup-image"
-                                    : "matchup-name"
-                                }
+                                className={`${shuffledFirst.map(
+                                  (item) =>
+                                    item.firstImage.cardType === "image"
+                                )
+                                  ? "matchup-image"
+                                  : "matchup-name"
+                                  }
                             ${wrongMatch && !gameWon ? "shake-animation" : ""}
                          `}
                                 style={{
@@ -486,72 +489,71 @@ function PreviewMatchUp({ data }) {
                                   (item) =>
                                     item?.firstImage?.cardType === "image"
                                 ) && (
-                                  <img
-                                    src={
-                                      shuffledFirst.find(
-                                        (pair) => pair.id === item.pairId
-                                      )?.firstImage?.src
-                                    }
-                                    alt={
-                                      shuffledFirst.find(
-                                        (pair) => pair.id === item.pairId
-                                      )?.firstImage?.text
-                                    }
-                                  />
-                                )}
+                                    <img
+                                      src={
+                                        shuffledFirst.find(
+                                          (pair) => pair.id === item.pairId
+                                        )?.firstImage?.src
+                                      }
+                                      alt={
+                                        shuffledFirst.find(
+                                          (pair) => pair.id === item.pairId
+                                        )?.firstImage?.text
+                                      }
+                                    />
+                                  )}
                                 {shuffledFirst.some(
                                   (item) =>
                                     item?.firstImage?.cardType === "text"
                                 ) && (
-                                  <h5
-                                    className="m-0"
-                                    style={{
-                                      color: `${shuffledFirst[0]?.firstImage?.color}`,
-                                    }}
-                                  >
-                                    {
-                                      shuffledFirst.find(
-                                        (pair) => pair.id === item.pairId
-                                      )?.firstImage?.text
-                                    }
-                                  </h5>
-                                )}
+                                    <h5
+                                      className="m-0"
+                                      style={{
+                                        color: `${shuffledFirst[0]?.firstImage?.color}`,
+                                      }}
+                                    >
+                                      {
+                                        shuffledFirst.find(
+                                          (pair) => pair.id === item.pairId
+                                        )?.firstImage?.text
+                                      }
+                                    </h5>
+                                  )}
                                 {shuffledFirst.some(
                                   (item) =>
                                     item?.firstImage?.cardType === "audio"
                                 ) && (
-                                  <div
-                                    className="matchup-image-audio"
-                                    style={{
-                                      backgroundColor: `${block?.struct?.colorTheme}`,
-                                    }}
-                                  >
-                                    <audio
-                                      ref={(el) =>
-                                        (audioRefs.current[item.id] = el)
-                                      }
-                                      src={item?.firstImage?.src}
-                                    />
-                                    <div className="d-flex justify-content-end align-items-center">
-                                      <button
-                                        onClick={() => togglePlayPause(item.id)}
-                                      >
-                                        {playingId === item.id ? (
-                                          <i className="fa-solid fa-circle-pause" />
-                                        ) : (
-                                          <i class="fa-solid fa-circle-play"></i>
-                                        )}
-                                      </button>
+                                    <div
+                                      className="matchup-image-audio"
+                                      style={{
+                                        backgroundColor: `${block?.struct?.colorTheme}`,
+                                      }}
+                                    >
+                                      <audio
+                                        ref={(el) =>
+                                          (audioRefs.current[item.id] = el)
+                                        }
+                                        src={item?.firstImage?.src}
+                                      />
+                                      <div className="d-flex justify-content-end align-items-center">
+                                        <button
+                                          onClick={() => togglePlayPause(item.id)}
+                                        >
+                                          {playingId === item.id ? (
+                                            <i className="fa-solid fa-circle-pause" />
+                                          ) : (
+                                            <i class="fa-solid fa-circle-play"></i>
+                                          )}
+                                        </button>
+                                      </div>
                                     </div>
-                                  </div>
-                                )}
+                                  )}
                               </div>
                             ) : (
                               <div
                                 role="button"
-                                className={`matchup-blank ${
-                                  selectedNameId !== null ? "active" : ""
-                                }`}
+                                className={`matchup-blank ${selectedNameId !== null ? "active" : ""
+                                  }`}
                                 onClick={() => handleClickBox(item.id)}
                                 onDrop={(e) => handleDrop(e, item.id, "image")}
                                 onDragOver={handleDragOver}
@@ -560,20 +562,17 @@ function PreviewMatchUp({ data }) {
                           </div>
                           <div
                             style={{
-                              backgroundColor: `${
-                                item?.firstImage?.cardType === "text"
-                                  ? item?.firstImage?.bgColor
-                                  : ""
-                              }`,
-                              color: `${
-                                item?.firstImage?.cardType === "text"
-                                  ? item?.firstImage?.color
-                                  : ""
-                              }`,
+                              backgroundColor: `${item?.firstImage?.cardType === "text"
+                                ? item?.firstImage?.bgColor
+                                : ""
+                                }`,
+                              color: `${item?.firstImage?.cardType === "text"
+                                ? item?.firstImage?.color
+                                : ""
+                                }`,
                             }}
-                            className={`matchup-image ${
-                              wrongMatch && !gameWon ? "shake-animation" : ""
-                            }`}
+                            className={`matchup-image ${wrongMatch && !gameWon ? "shake-animation" : ""
+                              }`}
                           >
                             {item?.firstImage?.cardType === "text" && (
                               <h5>{item?.firstImage?.text}</h5>
@@ -632,60 +631,63 @@ function PreviewMatchUp({ data }) {
                         <img src={finalScreen?.imageSrc} alt="imagesss" />
                       )}
                     </div>
-                    <div className="fine-one-pair-finalScreen-text">
-                      <h5>
-                        {gameOver
-                          ? block?.struct?.timeIsUpScreen?.header
-                          : finalScreen?.header}
-                      </h5>
-                      <p>
-                        {gameOver
-                          ? block?.struct?.timeIsUpScreen?.description
-                          : finalScreen?.description}
-                      </p>
 
-                      {!gameOver && block?.struct?.isActionButton && (
-                        <a
-                          href={block?.struct?.actionButtonLink}
-                          style={{
-                            backgroundColor: `${block?.struct?.colorTheme}`,
-                          }}
-                          onClick={handleRestart}
-                          className="btn btn-outline-dark"
-                        >
-                          {block?.struct?.struct?.actionButtonText}
-                        </a>
+                    <div className="finalScreenBlock">
+                      {!gameOver && block?.struct?.enableTimer && (
+                        <div className="fine-one-pair-finalScreen-result">
+                          {block?.struct?.enableStars &&
+                            starsTimeArray.map((item, i) =>
+                              item > timeTaken ? (
+                                <FaStar key={i} />
+                              ) : (
+                                <CiStar key={i} />
+                              )
+                            )}
+                          <p className="m-0">
+                            Your result:{" "}
+                            {block?.struct?.timerType?.value === "countdown"
+                              ? formattedTimeLeft
+                              : formattedTimeTaken}
+                            s
+                          </p>
+                        </div>
                       )}
+                      <div className="fine-one-pair-finalScreen-text">
+                        <h5>
+                          {gameOver
+                            ? block?.struct?.timeIsUpScreen?.header
+                            : finalScreen?.header}
+                        </h5>
+                        <p>
+                          {gameOver
+                            ? block?.struct?.timeIsUpScreen?.description
+                            : finalScreen?.description}
+                        </p>
 
-                      {!block?.struct?.isHideRestartButton && (
-                        <button
-                          onClick={handleRestart}
-                          className="btn btn-outline-dark"
-                        >
-                          Restart
-                        </button>
-                      )}
+                        {!gameOver && block?.struct?.isActionButton && (
+                          <a
+                            href={block?.struct?.actionButtonLink}
+                            style={{
+                              backgroundColor: `${block?.struct?.colorTheme}`,
+                            }}
+                            onClick={handleRestart}
+                            className="btn btn-outline-dark"
+                          >
+                            {block?.struct?.struct?.actionButtonText}
+                          </a>
+                        )}
+
+                        {!block?.struct?.isHideRestartButton && (
+                          <button
+                            onClick={handleRestart}
+                            className="btn btn-outline-dark"
+                          >
+                            Restart
+                          </button>
+                        )}
+                      </div>
                     </div>
 
-                    {!gameOver && block?.struct?.enableTimer && (
-                      <div className="fine-one-pair-finalScreen-result">
-                        {block?.struct?.enableStars &&
-                          starsTimeArray.map((item, i) =>
-                            item > timeTaken ? (
-                              <FaStar key={i} />
-                            ) : (
-                              <CiStar key={i} />
-                            )
-                          )}
-                        <p className="m-0">
-                          Your result:{" "}
-                          {block?.struct?.timerType?.value === "countdown"
-                            ? formattedTimeLeft
-                            : formattedTimeTaken}
-                          s
-                        </p>
-                      </div>
-                    )}
                   </div>
                   {block?.struct?.isShowLeadForm && (
                     <LeadForm data={data} onSubmit={onSubmitForm} />
@@ -697,7 +699,11 @@ function PreviewMatchUp({ data }) {
             {(block?.struct?.passwordList?.length > 0 ||
               block?.struct?.isEnableRating) &&
               !codeErrorShow &&
-              !showStartBtn &&
+              !showStartBtn
+
+
+
+              &&
               !startGame && (
                 <div
                   className="modal fade show d-block"
@@ -797,7 +803,7 @@ function PreviewMatchUp({ data }) {
                 </div>
               )}
 
-            {/* {showStartBtn && (
+            {showStartBtn && (
               <div
                 className="modal fade show d-block"
                 tabIndex="-1"
@@ -824,7 +830,7 @@ function PreviewMatchUp({ data }) {
                   </div>
                 </div>
               </div>
-            )} */}
+            )}
 
             {codeErrorShow && (
               <div

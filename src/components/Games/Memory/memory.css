@@ -115,10 +115,6 @@
 
 .fine-one-pair-finalScreen-text {
   background-color: #fff;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
   padding: 25px;
   text-align: center;
   border-radius: 8px;
@@ -126,10 +122,10 @@
 }
 .fine-one-pair-finalScreen-result {
   background-color: #fff;
-  position: absolute;
-  bottom: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: static;
+  /* bottom: 25%; */
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); */
   padding: 15px;
   text-align: center;
   border-radius: 8px;

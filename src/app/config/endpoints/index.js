@@ -51,10 +51,12 @@ export const PRODUCTS = {
 
 export const TEMPLATES = {
   CREATE: `${BASEURL}/templates/create`,
-  LIST: `${BASEURL}/templates/all-templates`,
+  LIST: `${BASEURL}/templates/all-admin-templates`,
   GET_TEMPLATE: `${BASEURL}/templates/get`,
   UPDATE: `${BASEURL}/templates/update`,
   DELETE: `${BASEURL}/templates/delete`,
+  UPLOADIMAGE: `${BASEURL}/templates/update-details`,
+
 };
 
 export const TEMPLATES_CATEGORY = {
@@ -207,6 +209,6 @@ export const GUIDE_ACTIVITIES = {
   DELETE: `${BASEURL}${PREFIX}/delete-activity`,
 };
 export const IMAGE_UPLOAD = {
-  UPLOADIMAGE: `${BASEURL}${PREFIX}/fetch-waiting-list-travellers`,
+  UPLOADIMAGE: `${BASEURL}${PREFIX}/update-details`,
 };
 

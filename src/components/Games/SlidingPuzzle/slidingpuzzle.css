@@ -685,10 +685,6 @@ button.common__button > div.icon {
 }
 .fine-one-pair-finalScreen-text {
   background-color: #fff;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
   padding: 25px;
   text-align: center;
   border-radius: 8px;

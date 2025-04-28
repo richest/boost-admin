@@ -298,6 +298,27 @@ function PreviewFindOnePair({
                         />
                       )}
                     </div>
+                    
+                      <div className="finalScreenBlock">
+                      {gameWon && topBannerText?.enableTimer && (
+                      <div className="fine-one-pair-finalScreen-result">
+                        {topBannerText?.enableStars &&
+                          starsTimeArray.map((item, i) =>
+                            item > timeTaken ? (
+                              <FaStar key={i} />
+                            ) : (
+                              <CiStar key={i} />
+                            )
+                          )}
+                        <p className="m-0">
+                          Your result:{" "}
+                          {timeType?.value === "countdown"
+                            ? formattedTimeLeft
+                            : formattedTimeTaken}
+                          s
+                        </p>
+                      </div>
+                    )}
                     <div className="fine-one-pair-finalScreen-text">
                       <h5>
                         {gameOver
@@ -331,26 +352,8 @@ function PreviewFindOnePair({
                         </button>
                       )}
                     </div>
-
-                    {gameWon && topBannerText?.enableTimer && (
-                      <div className="fine-one-pair-finalScreen-result">
-                        {topBannerText?.enableStars &&
-                          starsTimeArray.map((item, i) =>
-                            item > timeTaken ? (
-                              <FaStar key={i} />
-                            ) : (
-                              <CiStar key={i} />
-                            )
-                          )}
-                        <p className="m-0">
-                          Your result:{" "}
-                          {timeType?.value === "countdown"
-                            ? formattedTimeLeft
-                            : formattedTimeTaken}
-                          s
-                        </p>
                       </div>
-                    )}
+                    
 
                     {topBannerText?.isShowLeadForm && <p>LeadForm</p>}
                   </div>

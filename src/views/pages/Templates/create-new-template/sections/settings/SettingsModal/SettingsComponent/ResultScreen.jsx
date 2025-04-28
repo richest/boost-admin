@@ -1267,7 +1267,7 @@ function ResultScreen({
             </div>
             <div class="mb-3">
               <label class="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer">
-                Imagewqwqw
+                Image
               </label>
               <div className="d-flex align items-center gap-2">
                 {finalResult.imageSrc && (

@@ -805,7 +805,7 @@ function PreviewSlidingPuzzle({
             {!isWinNumber && timeIsUp && (
               <div
                 className="final-screen__content no-image with-time"
-                style={{ paddingBottom: "75%" }}
+                style={{ paddingBottom: "50px" }}
               >
                 <div
                   className="final-screen__content-result"

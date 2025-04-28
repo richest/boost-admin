@@ -647,60 +647,63 @@ function MatchUp({
                         <img src={finalScreen?.imageSrc} alt="imagesss" />
                       )}
                     </div>
-                    <div className="fine-one-pair-finalScreen-text">
-                      <h5>
-                        {gameOver
-                          ? block?.struct?.timeIsUpScreen?.header
-                          : finalScreen?.header}
-                      </h5>
-                      <p>
-                        {gameOver
-                          ? block?.struct?.timeIsUpScreen?.description
-                          : finalScreen?.description}
-                      </p>
 
-                      {!gameOver && block?.struct?.isActionButton && (
-                        <a
-                          href={block?.struct?.actionButtonLink}
-                          style={{
-                            backgroundColor: `${block?.struct?.colorTheme}`,
-                          }}
-                          onClick={handleRestart}
-                          className="btn btn-outline-dark"
-                        >
-                          {block?.struct?.struct?.actionButtonText}
-                        </a>
+                    <div className="finalScreenBlock">
+                      {!gameOver && block?.struct?.enableTimer && (
+                        <div className="fine-one-pair-finalScreen-result">
+                          {block?.struct?.enableStars &&
+                            starsTimeArray.map((item, i) =>
+                              item > timeTaken ? (
+                                <FaStar key={i} />
+                              ) : (
+                                <CiStar key={i} />
+                              )
+                            )}
+                          <p className="m-0">
+                            Your result:{" "}
+                            {block?.struct?.timerType?.value === "countdown"
+                              ? formattedTimeLeft
+                              : formattedTimeTaken}
+                            s
+                          </p>
+                        </div>
                       )}
+                      <div className="fine-one-pair-finalScreen-text">
+                        <h5>
+                          {gameOver
+                            ? block?.struct?.timeIsUpScreen?.header
+                            : finalScreen?.header}
+                        </h5>
+                        <p>
+                          {gameOver
+                            ? block?.struct?.timeIsUpScreen?.description
+                            : finalScreen?.description}
+                        </p>
 
-                      {!block?.struct?.isHideRestartButton && (
-                        <button
-                          onClick={handleRestart}
-                          className="btn btn-outline-dark"
-                        >
-                          Restart
-                        </button>
-                      )}
+                        {!gameOver && block?.struct?.isActionButton && (
+                          <a
+                            href={block?.struct?.actionButtonLink}
+                            style={{
+                              backgroundColor: `${block?.struct?.colorTheme}`,
+                            }}
+                            onClick={handleRestart}
+                            className="btn btn-outline-dark"
+                          >
+                            {block?.struct?.struct?.actionButtonText}
+                          </a>
+                        )}
+
+                        {!block?.struct?.isHideRestartButton && (
+                          <button
+                            onClick={handleRestart}
+                            className="btn btn-outline-dark"
+                          >
+                            Restart
+                          </button>
+                        )}
+                      </div>
                     </div>
 
-                    {!gameOver && block?.struct?.enableTimer && (
-                      <div className="fine-one-pair-finalScreen-result">
-                        {block?.struct?.enableStars &&
-                          starsTimeArray.map((item, i) =>
-                            item > timeTaken ? (
-                              <FaStar key={i} />
-                            ) : (
-                              <CiStar key={i} />
-                            )
-                          )}
-                        <p className="m-0">
-                          Your result:{" "}
-                          {block?.struct?.timerType?.value === "countdown"
-                            ? formattedTimeLeft
-                            : formattedTimeTaken}
-                          s
-                        </p>
-                      </div>
-                    )}
                   </div>
                   {block?.struct?.isShowLeadForm && <p>LeadForm</p>}
                 </>
