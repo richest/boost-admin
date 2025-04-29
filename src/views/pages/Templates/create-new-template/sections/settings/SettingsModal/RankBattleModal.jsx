@@ -218,6 +218,14 @@ function RankBattleModal({
     // };
     // dispatch(updateTemplateAction(updatedData));
   };
+  const handleNext = async () => {
+    console.log("CALLLIIINNNNINI", selecteScreen)
+
+
+    setSelectScreen("quests")
+
+    console.log("Proceed to next step");
+  };
   const handleSaveRankBattle = () => {
     // Step 1: Validate the form before saving (ensure all required fields are filled)
     if (!validateRankForm()) {
@@ -393,16 +401,17 @@ function RankBattleModal({
         />
       )}
     </div>
+      {console.log(selecteScreen, "9i9i9i99i9")}
       <ul className="Footer_footer__bMDNk">
-        {/* {selecteScreen !== "results" && (
-<li className="Footer_footerItem__yaFNE">
-  <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
-</li>
-)} */}
+        {selecteScreen !== "quests" && (
+          <li className="Footer_footerItem__yaFNE">
+            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+          </li>
+        )}
         <li className="Footer_footerItem__yaFNE">
           <button
             onClick={() => {
-              // Update state
+
               handleSaveRankBattle(); // Call the save function
             }}
             className="button button-primary px-3 text-decoration-none"

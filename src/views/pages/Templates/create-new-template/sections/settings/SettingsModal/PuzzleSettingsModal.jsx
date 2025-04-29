@@ -18,12 +18,14 @@ function PuzzleModal({
   setSelectScreen,
   formData,
   handleChangeLogo,
-  setIsOpenFormModal
+  setIsOpenFormModal,
+  setcloserror
 }) {
   const [leading, setLeading] = useState({
     left: false,
     right: false,
   });
+  console.log(selecteScreen, "selecteScreen")
   const [puzzle, setPuzzleData] = useState({})
   const [errors, setErrors] = useState({
     header: false,
@@ -235,6 +237,7 @@ function PuzzleModal({
   //   };
   //   dispatch(updateTemplateAction(updatedData));
   // };
+
   const validateForm = () => {
     const newErrors = {
       header: !puzzle.coverHeader?.trim(),
@@ -266,9 +269,34 @@ function PuzzleModal({
     // Check if the word count is at least 3
     return wordCount <= 30;
   };
+  const handleNext = async () => {
+
+
+    if (!validateForm()) {
+      setcloserror(true)
+      setErrorScreen(true);
+      return;
+
+
+    } else {
+
+      setErrorScreen(false);
+      setTriggerNext(false);
+      // if (selecteScreen == "start-screen") {
+      //   setSelectScreen("questions");
+      // } else if (selecteScreen == "questions") {
+      //   console.log("jsajasdjhjdh");
+      //   setSelectScreen("results");
+      // }
+    }
+
+    console.log("Proceed to next step");
+  };
   const handleSavepuzzle = () => {
     console.log("object")
     if (!validateForm()) {
+      setcloserror(true)
+      setErrorScreen(true)
       return;
     } else {
 
@@ -319,7 +347,17 @@ function PuzzleModal({
             <div
               className={`options-settings ${selecteScreen === "start-screen" ? "activeTab" : ""}`}
               role="button"
-              onClick={() => setSelectScreen("start-screen")}
+              onClick={() => {
+                if (!validateForm()) {
+                  setcloserror(true)
+                  setErrorScreen(true);
+                  return;
+                } else {
+                  setSelectScreen("start-screen")
+                }
+
+
+              }}
             >
               <i class="fa-solid fa-desktop"></i>
               <p>Layout</p>
@@ -327,7 +365,17 @@ function PuzzleModal({
             <div
               className={`options-settings ${selecteScreen === "final-screen" ? "activeTab" : ""}`}
               role="button"
-              onClick={() => setSelectScreen("final-screen")}
+              onClick={() => {
+                if (!validateForm()) {
+                  setErrorScreen(true);
+                  return;
+                } else {
+                  setSelectScreen("final-screen")
+                }
+              }
+
+
+              }
             >
               <i class="fa-solid fa-circle-question"></i>
               <p>Final screen</p>
@@ -517,10 +565,12 @@ function PuzzleModal({
         )}
       </div>
       <ul className="Footer_footer__bMDNk">
-
-        <li className="Footer_footerItem__yaFNE">
-          <button className="button button-primary outline px-3" onClick={"handleNext"}>Next</button>
-        </li>
+        {selecteScreen !== "final-screen" && (
+          <li className="Footer_footerItem__yaFNE">
+            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+          </li>
+        )
+        }
 
         <li className="Footer_footerItem__yaFNE">
           <button
@@ -531,7 +581,42 @@ function PuzzleModal({
           </button>
         </li>
       </ul>
-
+      {(errorScreen || triggerNext) && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Oh! Need more information
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  Please fill all required fields on this tab for the quiz to
+                  work correctly.
+                </p>
+              </div>
+            </div>
+            <div className="StopPanel_buttons__cZz5n">
+              <button
+                onClick={() => {
+                  setErrorScreen(false);
+                  // setTriggerNext(false);
+                }}
+                className="button button-primary px-3 text-decoration-none"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

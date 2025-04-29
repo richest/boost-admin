@@ -34,7 +34,7 @@ export function* selectedDrawer({ payload }) {
 
 export function* getTemplateDetails({ payload }) {
   yield put({ type: actions.INIT_LOADER, payload: { loader: true } });
-
+console.log(payload,"chefkdn")
   try {
     const response = yield call(() =>
       getRequest(`${TEMPLATES.GET_TEMPLATE}/${payload}`)

@@ -90,6 +90,7 @@ function MemoryModal({
   //   }));
 
   // };
+  console.log(errorScreen, "errorScreenu")
   const handleSelectChange = (e) => {
     if (!e?.value || !e.value.includes("x")) return;
 
@@ -218,6 +219,29 @@ function MemoryModal({
 
     return !newErrors.finalResultHeader && !newErrors?.buttonTextWordCount
   };
+  console.log(selecteScreen, "qsqsq")
+  const handleNext = async () => {
+
+
+    if (!validateForm()) {
+      setErrorScreen(true);
+      return;
+
+
+    } else {
+      
+      setErrorScreen(false);
+      setTriggerNext(false);
+      if (selecteScreen == "start-screen") {
+        setSelectScreen("pairs");
+      } else if (selecteScreen == "pairs") {
+        console.log("jsajasdjhjdh");
+        setSelectScreen("results");
+      }
+    }
+
+    console.log("Proceed to next step");
+  };
   const handleChangeheadertext = (e) => {
     const newvalue = e
     setMemoryData((prev) => ({
@@ -289,6 +313,7 @@ function MemoryModal({
   console.log(finalResult, "memoryData")
   const handleSaveMemory = () => {
     if (!validateForm()) {
+      setErrorScreen(true)
       return;
     } else {
       console.log(pairs, "cjhsdjcbkjsdjksdsds")
@@ -336,7 +361,17 @@ function MemoryModal({
             <div
               className={`options-settings ${selecteScreen === "start-screen" ? "activeTab" : ""}`}
               role="button"
-              onClick={() => setSelectScreen("start-screen")}
+              onClick={() => {
+                if (!validateForm()) {
+                  setErrorScreen(true);
+                  return;
+                } else {
+                  setSelectScreen("start-screen")
+                }
+              }
+
+
+              }
             >
               <i class="fa-solid fa-desktop"></i>
               <p>Playground</p>
@@ -344,7 +379,16 @@ function MemoryModal({
             <div
               className={`options-settings ${selecteScreen === "pairs" ? "activeTab" : ""}`}
               role="button"
-              onClick={() => setSelectScreen("pairs")}
+              onClick={() => {
+                if (!validateForm()) {
+                  setErrorScreen(true);
+                  return;
+                } else {
+                  setSelectScreen("pairs")
+                }
+
+              }
+              }
             >
               <i class="fa-solid fa-desktop"></i>
               <p>Pairs</p>
@@ -352,7 +396,19 @@ function MemoryModal({
             <div
               className={`options-settings ${selecteScreen === "final-screen" ? "activeTab" : ""}`}
               role="button"
-              onClick={() => setSelectScreen("final-screen")}
+              onClick={() => {
+                if (!validateForm()) {
+                  setErrorScreen(true);
+                  return;
+                } else {
+                  setSelectScreen("final-screen")
+                }
+              }
+              }
+
+
+
+
             >
               <i class="fa-solid fa-circle-question"></i>
               <p>Final screen</p>
@@ -574,7 +630,11 @@ function MemoryModal({
         )}
       </div>
       <ul className="Footer_footer__bMDNk">
-
+        {selecteScreen !== "final-screen" && (
+          <li className="Footer_footerItem__yaFNE">
+            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+          </li>
+        )}
         <li className="Footer_footerItem__yaFNE">
           <button
             onClick={handleSaveMemory}
@@ -584,6 +644,42 @@ function MemoryModal({
           </button>
         </li>
       </ul>
+      {(errorScreen || triggerNext) && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Oh! Need more information
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  Please fill all required fields on this tab for the quiz to
+                  work correctly.
+                </p>
+              </div>
+            </div>
+            <div className="StopPanel_buttons__cZz5n">
+              <button
+                onClick={() => {
+                  setErrorScreen(false);
+                  // setTriggerNext(false);
+                }}
+                className="button button-primary px-3 text-decoration-none"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
 
   );

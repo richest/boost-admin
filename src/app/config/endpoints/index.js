@@ -51,12 +51,13 @@ export const PRODUCTS = {
 
 export const TEMPLATES = {
   CREATE: `${BASEURL}/templates/create`,
-  LIST: `${BASEURL}/templates/all-admin-templates`,
+  LIST: `${BASEURL}/templates/all-templates`,
   GET_TEMPLATE: `${BASEURL}/templates/get`,
   UPDATE: `${BASEURL}/templates/update`,
   DELETE: `${BASEURL}/templates/delete`,
-  UPLOADIMAGE: `${BASEURL}/templates/update-details`,
-
+  GET_TEMPLATE_LIST: `${BASEURL}/products/all-products`,
+  GET_PRODUCT: `${BASEURL}/templates/all-products-templates-admin`,
+  PUBLISH_TEMPLATE: `${BASEURL}/templates/publish`,
 };
 
 export const TEMPLATES_CATEGORY = {
@@ -159,9 +160,9 @@ export const MEDIA_LIBRARY = {
 export const CREATED_BLOCKS = {
   GET_ALL_COVERS: `${BASEURL}/blocks/all-blocks`,
   VIEW_BLOCk: `${BASEURL}/blocks/get`,
-  EDIT_BLOCk :`${BASEURL}/blocks/update`,
-  PUBLISH_BLOCK :`${BASEURL}/blocks/publish`,
-  CREATE_BLOCK :`${BASEURL}/blocks/create`
+  EDIT_BLOCk: `${BASEURL}/blocks/update`,
+  PUBLISH_BLOCK: `${BASEURL}/blocks/publish`,
+  CREATE_BLOCK: `${BASEURL}/blocks/create`
 };
 
 export const BOOKING_HISTORY = {

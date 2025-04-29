@@ -97,6 +97,14 @@ export const AuthorizedRoutes = [
         ),
       },
       {
+        path: AUTH_ROUTE_SLUGS.TEMPLATES.PRODUCT_LIST,
+        parameter: "/:name",
+        component: lazy(
+          () => import("../views/pages/Templates/product-list")
+        ),
+      },
+
+      {
         path: AUTH_ROUTE_SLUGS.TEMPLATES.PREVIEW,
         parameter: "/:name",
         component: lazy(

@@ -386,10 +386,34 @@ function TreasureHuntModal({
   // const handleSaveTreasureHunt = () => {
   //   console.log("object")
   // }
-  console.log(formData, "sjkdopj")
+  console.log(selecteScreen, "sjkdopj")
+  const handleNext = async () => {
+
+
+    if (!validateForm()) {
+      setErrorScreen(true);
+      return;
+
+
+    } else {
+
+      setErrorScreen(false);
+      setTriggerNext(false);
+      if (selecteScreen == "start-screen") {
+        setSelectScreen("quests");
+      } else if (selecteScreen == "quests") {
+        console.log("jsajasdjhjdh");
+        setSelectScreen("treasureMap");
+      }
+    }
+
+    console.log("Proceed to next step");
+  };
   const handleSaveTreasureHunt = () => {
+    
     console.log("Saving treasure hunt...");
     if (!validateForm()) {
+      setErrorScreen(true);
       return;
     } else {
       console.log("in eklseeee")
@@ -458,7 +482,17 @@ function TreasureHuntModal({
             <div
               className={`options-settings ${selecteScreen === "start-screen" ? "activeTab" : ""}`}
               role="button"
-              onClick={() => setSelectScreen("start-screen")}
+              onClick={() => {
+                if (!validateForm()) {
+                  setErrorScreen(true);
+                  return;
+                } else {
+                  setSelectScreen("start-screen")
+                }
+              }
+
+
+              }
             >
               <i class="fa-solid fa-desktop"></i>
               <p>PLayground</p>
@@ -466,7 +500,17 @@ function TreasureHuntModal({
             <div
               className={`options-settings ${selecteScreen === "quests" ? "activeTab" : ""}`}
               role="button"
-              onClick={() => setSelectScreen("quests")}
+              onClick={() => {
+                if (!validateForm()) {
+                  setErrorScreen(true);
+                  return;
+                } else {
+                  setSelectScreen("quests")
+                }
+              }
+
+
+              }
             >
               <i class="fa-solid fa-circle-question"></i>
               <p>Quests</p>
@@ -474,7 +518,17 @@ function TreasureHuntModal({
             <div
               className={`options-settings ${selecteScreen === "treasureMap" ? "activeTab" : ""}`}
               role="button"
-              onClick={() => setSelectScreen("treasureMap")}
+              onClick={() => {
+                if (!validateForm()) {
+                  setErrorScreen(true);
+                  return;
+                } else {
+                  setSelectScreen("treasureMap")
+                }
+              }
+
+
+              }
             >
               <i class="fa-solid fa-square-poll-horizontal"></i>
               <p>Treasure map</p>
@@ -689,12 +743,13 @@ function TreasureHuntModal({
         )}
 
       </div>
+      {console.log(selecteScreen, "44444444")}
       <ul className="Footer_footer__bMDNk">
-        {/* {selecteScreen !== "results" && (
-         <li className="Footer_footerItem__yaFNE">
-           <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
-         </li>
-       )} */}
+        {selecteScreen !== "treasureMap" && (
+          <li className="Footer_footerItem__yaFNE">
+            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+          </li>
+        )}
         <li className="Footer_footerItem__yaFNE">
           <button
             onClick={() => {
@@ -706,7 +761,46 @@ function TreasureHuntModal({
             Save
           </button>
         </li>
-      </ul></>
+      </ul>
+
+
+      {(errorScreen || triggerNext) && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Oh! Need more information
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  Please fill all required fields on this tab for the quiz to
+                  work correctly.
+                </p>
+              </div>
+            </div>
+            <div className="StopPanel_buttons__cZz5n">
+              <button
+                onClick={() => {
+                  setErrorScreen(false);
+                  setTriggerNext(false);
+                }}
+                className="button button-primary px-3 text-decoration-none"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

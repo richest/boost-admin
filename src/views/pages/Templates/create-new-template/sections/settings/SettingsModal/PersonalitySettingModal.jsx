@@ -300,7 +300,28 @@ function PersonalitySettingModal({
 
     return !hasQuestionError && !hasFinalError && !personalityQuizErrors.header && !personalityQuizErrors.buttonText;
   };
+  const handleNext = async () => {
 
+
+    if (!validateForm()) {
+      setErrorScreen(true);
+      return;
+
+
+    } else {
+
+      setErrorScreen(false);
+      setTriggerNext(false);
+      if (selecteScreen == "start-screen") {
+        setSelectScreen("questions");
+      } else if (selecteScreen == "questions") {
+        console.log("jsajasdjhjdh");
+        setSelectScreen("results");
+      }
+    }
+
+    console.log("Proceed to next step");
+  };
 
   // const validateForm = () => {
   //   const resultErrors = finalResult.map((res) => {
@@ -358,6 +379,7 @@ function PersonalitySettingModal({
     console.log("Saving PersonalityQuiz...");
 
     if (!validateForm()) {
+      setErrorScreen(true);
       return;
     }
 
@@ -405,7 +427,15 @@ function PersonalitySettingModal({
           <div
             className={`options-settings ${selecteScreen === "start-screen" ? "activeTab" : ""}`}
             role="button"
-            onClick={() => setSelectScreen("start-screen")}
+            onClick={() => {
+              if (!validateForm()) {
+                setErrorScreen(true);
+                return;
+              } else {
+                setErrorScreen(false)
+                setSelectScreen("start-screen")
+              }
+            }}
           >
             <i class="fa-solid fa-desktop"></i>
             <p>Start Screen</p>
@@ -413,7 +443,16 @@ function PersonalitySettingModal({
           <div
             className={`options-settings ${selecteScreen === "questions" ? "activeTab" : ""}`}
             role="button"
-            onClick={() => setSelectScreen("questions")}
+            // onClick={() => setSelectScreen("questions")}
+            onClick={() => {
+              if (!validateForm()) {
+                setErrorScreen(true);
+                return;
+              } else {
+                setErrorScreen(false)
+                setSelectScreen("questions")
+              }
+            }}
           >
             <i class="fa-solid fa-circle-question"></i>
             <p>Questions</p>
@@ -421,7 +460,16 @@ function PersonalitySettingModal({
           <div
             className={`options-settings ${selecteScreen === "results" ? "activeTab" : ""}`}
             role="button"
-            onClick={() => setSelectScreen("results")}
+            // onClick={() => setSelectScreen("results")}
+            onClick={() => {
+              if (!validateForm()) {
+                setErrorScreen(true);
+                return;
+              } else {
+                setErrorScreen(false)
+                setSelectScreen("results")
+              }
+            }}
           >
             <i class="fa-solid fa-square-poll-horizontal"></i>
             <p>Results</p>
@@ -614,11 +662,11 @@ function PersonalitySettingModal({
         />
       )}
     </div> <ul className="Footer_footer__bMDNk">
-        {/* {selecteScreen !== "results" && (
-         <li className="Footer_footerItem__yaFNE">
-           <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
-         </li>
-       )} */}
+        {selecteScreen !== "results" && (
+          <li className="Footer_footerItem__yaFNE">
+            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+          </li>
+        )}
         <li className="Footer_footerItem__yaFNE">
           <button
             onClick={() => {
@@ -630,7 +678,43 @@ function PersonalitySettingModal({
             Save
           </button>
         </li>
-      </ul></>
+      </ul>
+      {(errorScreen || triggerNext) && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Oh! Need more information
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  Please fill all required fields on this tab for the quiz to
+                  work correctly.
+                </p>
+              </div>
+            </div>
+            <div className="StopPanel_buttons__cZz5n">
+              <button
+                onClick={() => {
+                  setErrorScreen(false);
+                  setTriggerNext(false);
+                }}
+                className="button button-primary px-3 text-decoration-none"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}</>
   );
 }
 

@@ -13,12 +13,13 @@ import {
 
 // ----------------------------------------------------------------------
 
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Iconify from "components/iconify";
 import SkeltonCardLoader from "components/admin-ui/loader/SkeltonCardLoader";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { ROUTE_SLUGS } from "app/constants";
+import { formatToSlug } from "utils/helpers/function";
 
 const StyledIcon = styled("div")(({ theme }) => ({
   margin: "auto",
@@ -58,137 +59,126 @@ export default function TemplateCard({
   anchorEl,
   ...other
 }) {
+  console.log(data, "datadata")
+  const navigate = useNavigate()
+  const SlugToNavigate = formatToSlug(data?.name)
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
 
   const open = Boolean(anchorEl[id]);
+  const handleNavigate = (e) => {
+    e.preventDefault()
 
+    navigate(`/dashboard/templates/product-list/${SlugToNavigate}`)
+
+  }
   if (isLoading && isLoading !== undefined) {
     return <SkeltonCardLoader />;
   }
-  console.log(data?.preview_image, "ododduiowud")
   return (
-    <NavLink
-      style={{ textDecoration: "none" }}
-      to={"#"}
-      className={"web-content-card"}
+
+    <Card
+
+      sx={{
+        py: 5,
+        boxShadow: 1,
+        textAlign: "center",
+        background:
+          customization.navType === "dark"
+            ? "#103C65"
+            : theme.palette.primary.light,
+        ...sx,
+      }}
+      onClick={handleNavigate}
+      {...other}
     >
-      <Card
-        sx={{
-          py: 5,
-          boxShadow: 1,
-          textAlign: "center",
-          background:
-            customization.navType === "dark"
-              ? "#103C65"
-              : theme.palette.primary.light,
-          ...sx,
+
+
+      <Popover
+        open={open}
+        anchorEl={anchorEl[id]}
+        onClose={() => handlePopoverClose(id)}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "center",
         }}
-        {...other}
+        transformOrigin={{
+          vertical: "center",
+          horizontal: "center",
+        }}
       >
-        <IconButton onClick={(event) => handlePopoverOpen(event, id)} sx={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-        }}>
-          <Iconify icon="eva:more-vertical-outline" width={24} height={24} />
-        </IconButton>
+        <div className="product_menu_item" style={{ padding: theme.spacing(2) }}>
+          <Link
+            to={`/dashboard/templates/product-list/${SlugToNavigate}`}
+            variant="contained"
+            color="primary"
+          >
+            <Tooltip title="Edit" arrow placement="right">
+              <Iconify
+                icon="eva:edit-outline"
+                sx={{ color: "rgba(0, 0, 0, 0.54)" }}
+              />
+            </Tooltip>
 
-        <Popover
-          open={open}
-          anchorEl={anchorEl[id]}
-          onClose={() => handlePopoverClose(id)}
-          anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-        >
-          <div className="product_menu_item" style={{ padding: theme.spacing(2) }}>
-            <Link
-              to={`/dashboard/templates/create/${uniqueId?.replace(/[\s/]+/g, "-").toLowerCase()}`}
-              variant="contained"
-              color="primary"
-            >
-              <Tooltip title="Edit" arrow placement="right">
-                <Iconify
-                  icon="eva:edit-outline"
-                  sx={{ color: "rgba(0, 0, 0, 0.54)" }}
-                />
-              </Tooltip>
-              {/* <Iconify icon="eva:edit-outline" />
-              Edit */}
-            </Link>
-            {/* <Link
-              variant="contained"
-              color="secondary"
-              fullWidth
-              sx={{ mt: 1 }}
-            >
-              <Tooltip title="View templates" arrow placement="right">
-                <Iconify icon="eva:eye-outline"
-                  sx={{ color: "rgba(0, 0, 0, 0.54)" }} />
-              </Tooltip>
+          </Link>
 
-            </Link> */}
-            <Link
-              onClick={handleDelete}
-              variant="contained"
-              color="success"
-              sx={{ mt: 1 }}
-            >
-              <Tooltip title="Delete" arrow placement="right">
-                <Iconify
-                  icon="eva:trash-2-outline"
-                  sx={{ color: "rgb(189 51 51)" }}
-                />
-              </Tooltip>
-            </Link>
-          </div>
-        </Popover>
-        {/* Styled Icon with popover trigger */}
-        <StyledIcon
-          // Open popover on click
-          sx={{
-            color: (theme) => theme.palette[color].light,
-            backgroundImage: (theme) =>
-              `linear-gradient(135deg, ${alpha(theme.palette[color].light, 0)} 0%, ${alpha(
-                theme.palette[color].light,
-                0.24
-              )} 100%)`,
-          }}
-        >
-          <img
-            src={
-              data?.preview_image ||
-              "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-            }
-            alt="icon"
-            style={{
-              borderRadius: 50,
-              objectFit: 'cover'
-            }}
-            className="icon_products"
-          />
-        </StyledIcon>
+          <Link
+            onClick={handleDelete}
+            variant="contained"
+            color="success"
+            sx={{ mt: 1 }}
+          >
+            <Tooltip title="Delete" arrow placement="right">
+              <Iconify
+                icon="eva:trash-2-outline"
+                sx={{ color: "rgb(189 51 51)" }}
+              />
+            </Tooltip>
+          </Link>
+        </div>
+      </Popover>
+      {/* Styled Icon with popover trigger */}
+      <StyledIcon
 
-        {/* Popover component */}
 
-        <Typography
-          variant="h4"
-          sx={{
-            color:
-              customization.navType === "dark"
-                ? theme.palette.primary.light
-                : "#0e1522",
+        // Open popover on click
+        sx={{
+          color: (theme) => theme.palette[color].light,
+          backgroundImage: (theme) =>
+            `linear-gradient(135deg, ${alpha(theme.palette[color].light, 0)} 0%, ${alpha(
+              theme.palette[color].light,
+              0.24
+            )} 100%)`,
+        }}
+      >
+        <img
+          src={
+            icon ||
+            "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+          }
+          alt="icon"
+          style={{
+            borderRadius: 50,
+            objectFit: 'cover'
           }}
-        >
-          {title}
-        </Typography>
-      </Card>
-    </NavLink>
+          className="icon_products"
+        />
+      </StyledIcon>
+
+      {/* Popover component */}
+
+      <Typography
+        variant="h4"
+        sx={{
+          color:
+            customization.navType === "dark"
+              ? theme.palette.primary.light
+              : "#0e1522",
+        }}
+      >
+        {title}
+      </Typography>
+    </Card>
+
   );
 }

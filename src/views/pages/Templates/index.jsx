@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Pagination, Stack } from "@mui/material";
 import {
   DEFAULT_APP_TITLE,
   DEFAULT_VALUE,
@@ -39,7 +39,6 @@ const Templates = () => {
   const [rowsPerPage, setRowsPerPage] = useState(
     userFilterOption.number_of_rows
   );
-  const [images, setImages] = useState({})
   const [pageNo, setPageNo] = useState(userFilterOption.page_no);
   const [srNo, setSrNo] = useState(userFilterOption.srNo);
   const [totalUsersCount, setProductCount] = useState(0);
@@ -70,6 +69,10 @@ const Templates = () => {
   // const handlePopoverClose = () => {
   //   setAnchorEl(null);
   // };
+  const handleChangePage = (event, newPage) => {
+    console.log("newPage", newPage);
+    setPageNo(newPage);
+  };
 
   const handlePopoverOpen = (event, id) => {
     setAnchorEl((prev) => ({
@@ -78,6 +81,9 @@ const Templates = () => {
     }));
     setHoveredUserId(id);
   };
+
+
+
   const handlePopoverClose = (id) => {
     setAnchorEl((prev) => ({
       ...prev,
@@ -143,11 +149,11 @@ const Templates = () => {
   };
 
   const productListCallBack = () => {
-    const _pageNo = 1;
+    const _pageNo = pageNo;
     // const _pageNo = pageNo + 1;
     const roleId = !userTypeSelection ? "" : userTypeSelection;
     getProducts(
-      `${TEMPLATES.LIST}?${COMMON_PAGINATION.PAGE_NO.KEY}=${_pageNo}&${COMMON_PAGINATION.ROWS_PER_PAGE.KEY}=${rowsPerPage}`,
+      `${TEMPLATES.GET_TEMPLATE_LIST}?${COMMON_PAGINATION.PAGE_NO.KEY}=${_pageNo}&${COMMON_PAGINATION.ROWS_PER_PAGE.KEY}=${rowsPerPage}`,
       pageNo,
       roleId
     );
@@ -162,13 +168,11 @@ const Templates = () => {
       const response = await getRequest(url);
       const { status } = response;
       const {
-        data: { templateDetails, totalCounts },
+        data: { productsDetails, totalCounts },
         success,
       } = response.data;
       if (success && status === RESPONSE_CODE[200]) {
-        setTemplateList(templateDetails.rows);
-        setImages(templateDetails)
-        console.log(templateDetails, "templateDetails")
+        setTemplateList(productsDetails.rows);
         setLoading(false);
         setConnectionError(false);
         setProductCount(totalCounts);
@@ -263,7 +267,6 @@ const Templates = () => {
           {templateList.map((product) => (
             <Grid key={product.id} item xs={12} sm={6} md={2}>
               <TemplateCard
-                TemplateImages={images}
                 data={product}
                 path={ROUTE_SLUGS.HEADER_FOOTER}
                 color="primary"
@@ -280,6 +283,19 @@ const Templates = () => {
             </Grid>
           ))}
         </Grid>
+        {templateList?.length > 0 && (
+          <Stack spacing={3} sx={{ mt: 2 }}>
+            <Pagination
+              style={{ display: "flex", justifyContent: "center" }}
+              count={Math.ceil(totalUsersCount / rowsPerPage)}
+              page={pageNo}
+              onChange={handleChangePage}
+              color="primary"
+              variant="outlined"
+              shape="rounded"
+            />
+          </Stack>
+        )}
       </PageContainer>
 
       {actionDialog && (

@@ -40,7 +40,8 @@ function GameSettingsModal({
   const [selectedType, setSelectedType] = useState("");
   const [selecteScreen, setSelectScreen] = useState("start-screen");
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
-
+  const [closeerror, setcloserror] = useState(false)
+  console.log(closeerror, "closeerror")
   const style = {
     position: "absolute",
     top: "50%",
@@ -90,7 +91,11 @@ function GameSettingsModal({
       aria-labelledby="spring-modal-title"
       aria-describedby="spring-modal-description"
       open={IsOpenFormModal}
-      onClose={() => setIsOpenFormModal(false)}
+      onClose={() => {
+        if (!closeerror) {
+          setIsOpenFormModal(false); // only close if there's no error
+        }
+      }}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
     >
@@ -198,6 +203,7 @@ function GameSettingsModal({
 
             {formData?.block === "puzzle" && (
               <PuzzleModal
+                setcloserror={setcloserror}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}

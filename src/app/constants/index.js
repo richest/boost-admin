@@ -189,6 +189,7 @@ export const ROUTE_SLUGS = {
   USERS: "/dashboard/users",
   USER_CREATE: "/dashboard/users/create",
   PRODUCTS_CREATE: "/dashboard/products/create",
+  PRODUCT_LIST: "/dashboard/templates/product-list",
   TEMPLATE_CREATE: "/dashboard/templates/create",
   SELECT_PRODUCT: "/dashboard/templates/select-product",
   BLOGS: "/dashboard/blogs",
@@ -256,6 +257,7 @@ export const AUTH_ROUTE_SLUGS = {
     PREVIEW: "templates/preview",
     VIEW: "templates/get-template",
     CHOOSE_PRODUCT: "templates/select-product",
+    PRODUCT_LIST:"templates/product-list",
   },
   PLANS: {
     ROOT: "plans",
@@ -327,7 +329,7 @@ export const AUTH_ROUTE_SLUGS = {
     WAITING_TRAVELLER: "web-content/waiting-traveller",
 
   },
-  
+
 };
 
 export const DEFAULT_APP_TITLE = {

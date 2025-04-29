@@ -801,7 +801,7 @@ function ResultScreen({
                         </h5>
 
                         <div className="questionTitle d-flex align-items-center gap-2">
-                          <button className="button sm button-secondary px-3 border-0 font-sm">
+                          <button type="button" className="button sm button-secondary px-3 border-0 font-sm">
                             <i className="fa-solid fa-clone"></i>
                           </button>
                           {formData?.struct?.results?.length > 1 && (

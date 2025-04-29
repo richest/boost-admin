@@ -173,3 +173,9 @@ export function formatDateTime(createdDate) {
         minute: 'numeric',
     });
 }
+ export function formatToSlug(text="") {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-'); // replace spaces with hyphens
+  }

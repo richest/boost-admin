@@ -490,6 +490,8 @@ function CookiesModal({
   const [errors, setErrors] = useState({});
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [horo, sethoro] = useState([])
+  const [errorScreen, setErrorScreen] = useState(false);
+  const [triggerNext, setTriggerNext] = useState(false);
   const [finalResult, setfinalResult] = useState({})
   const handlechangeSliderDecription = (e, id) => {
     const updatedHoro = horo.map((card) =>
@@ -910,6 +912,7 @@ function CookiesModal({
     console.log("Saving horoscope...");
 
     if (!validateForm()) {
+      setErrorScreen(true)
       return;
     }
 
@@ -1230,8 +1233,8 @@ function CookiesModal({
 
           </div>
         </div>
-      </div>   
-      
+      </div>
+
       <ul className="Footer_footer__bMDNk">
 
         <li className="Footer_footerItem__yaFNE">
@@ -1243,9 +1246,44 @@ function CookiesModal({
           </button>
         </li>
       </ul>
-      
-      
-      </>
+
+      {(errorScreen || triggerNext) && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Oh! Need more information
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  Please fill all required fields on this tab for the quiz to
+                  work correctly.
+                </p>
+              </div>
+            </div>
+            <div className="StopPanel_buttons__cZz5n">
+              <button
+                onClick={() => {
+                  setErrorScreen(false);
+                  setTriggerNext(false);
+                }}
+                className="button button-primary px-3 text-decoration-none"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
