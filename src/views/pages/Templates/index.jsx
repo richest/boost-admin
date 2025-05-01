@@ -168,7 +168,6 @@ const Templates = () => {
       if (success && status === RESPONSE_CODE[200]) {
         setTemplateList(templateDetails.rows);
         setImages(templateDetails)
-        console.log(templateDetails, "templateDetails")
         setLoading(false);
         setConnectionError(false);
         setProductCount(totalCounts);
@@ -214,6 +213,8 @@ const Templates = () => {
   useEffect(() => {
     productListCallBack();
   }, [pageNo, rowsPerPage, userTypeSelection, searchTextDebounce]);
+
+  console.log("templateList", templateList);
 
   return (
     <>

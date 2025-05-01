@@ -16,9 +16,9 @@ import { Link, NavLink } from "react-router-dom";
 import Iconify from "components/iconify";
 import SkeltonCardLoader from "components/admin-ui/loader/SkeltonCardLoader";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditTemplateCatagory from "views/pages/webContent/Popup/EditTemplateCategory";
-import { TEMPLATES_CATEGORY } from "app/config/endpoints";
+import { TEMPLATES, TEMPLATES_CATEGORY } from "app/config/endpoints";
 import { REQUEST_ACTION } from "redux/authenticate/actions";
 import { ApiErrorMessage } from "utils/helpers/function/apiErrorResonse";
 import { DEFAULT_VALUE, RESPONSE_CODE, ROUTE_SLUGS } from "app/constants";
@@ -62,6 +62,12 @@ export default function WebContentTemplateCard({
   anchorEl,
   categoryListCallBack,
   setDeleteModal,
+  templateList,
+  handleToggle,
+  checked,
+  updateContent,
+  setShowTemplateList,
+  showTemplateList,
   ...other
 }) {
   const theme = useTheme();
@@ -167,8 +173,9 @@ export default function WebContentTemplateCard({
                 </Tooltip>
               </Link>
               <Link
-                onClick={() => {setDeleteModal(true)
-                  handlePopoverClose()
+                onClick={() => {
+                  setDeleteModal(true);
+                  handlePopoverClose();
                 }}
                 variant="contained"
                 color="success"
@@ -222,6 +229,13 @@ export default function WebContentTemplateCard({
         setOpenEditModal={setOpenEditModal}
         categoryData={categoryData}
         categoryListCallBack={categoryListCallBack}
+        hoveredUserId={hoveredUserId}
+        templateList={templateList}
+        checked={checked}
+        handleToggle={handleToggle}
+        updateContent={updateContent}
+        setShowTemplateList={setShowTemplateList}
+        showTemplateList={showTemplateList}
       />
     </>
   );
