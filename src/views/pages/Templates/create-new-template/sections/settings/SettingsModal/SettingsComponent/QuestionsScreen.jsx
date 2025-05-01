@@ -669,7 +669,6 @@ function QuestionsScreen({
           setValue(`questions.${index}.text`, question.text);
           trigger(`questions.${index}.text`); // ✅ Validate after setting value
         }
-
         question?.answers?.forEach((answer, ansIndex) => {
           if (answer.text) {
             setValue(

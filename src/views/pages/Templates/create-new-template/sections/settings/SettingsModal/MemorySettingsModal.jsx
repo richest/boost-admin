@@ -12,8 +12,10 @@ function MemoryModal({
   setSelectScreen,
   formData,
   handleChangeLogo,
+  selectedImage,
   setIsOpenFormModal
 }) {
+  console.log(selectedImage, "9889898989")
   console.log(formData, "checkfiormdqartasdvja")
   const questsLength = [
     {
@@ -38,6 +40,7 @@ function MemoryModal({
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const [memoryData, setMemoryData] = useState({})
   const [pairs, setPairs] = useState({})
+  const [StartImage, setstartImage] = useState({ imageSrc: formData?.struct?.playground?.cardBackImage })
   const [errors, setErrors] = useState({
     header: false,
     buttonText: false,
@@ -90,6 +93,7 @@ function MemoryModal({
   //   }));
 
   // };
+  console.log(StartImage, "StartImage")
   console.log(errorScreen, "errorScreenu")
   const handleSelectChange = (e) => {
     if (!e?.value || !e.value.includes("x")) return;
@@ -154,7 +158,7 @@ function MemoryModal({
     // update global template data
 
   };
-
+  console.log(StartImage, "StartImage")
   const handleIsShowCover = (e) => {
     const newValue = e
     console.log(newValue, "wddwd")
@@ -229,7 +233,7 @@ function MemoryModal({
 
 
     } else {
-      
+
       setErrorScreen(false);
       setTriggerNext(false);
       if (selecteScreen == "start-screen") {
@@ -310,6 +314,18 @@ function MemoryModal({
     setfinalResult(formData?.struct?.finalScreen)
   }, [formData])
 
+  useEffect(() => {
+    if (selectedImage) {
+      // setOpen(true);
+      // setIsEditMedia(true);
+      console.log(selectedImage, "selectedImage090");
+      // When selectedImage changes, update the state to reflect the new image
+      setstartImage((prev) => ({
+        ...prev,
+        imageSrc: selectedImage, // Set the selected image
+      }));
+    }
+  }, [selectedImage]);
   console.log(finalResult, "memoryData")
   const handleSaveMemory = () => {
     if (!validateForm()) {
@@ -427,9 +443,7 @@ function MemoryModal({
                       <div className="row g-3 mb-3">
                         <div className="col-md-6">
                           <div className="">
-                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                              Layout
-                            </label>
+
                             <Select
                               className="theme-select"
                               classNamePrefix="react-select"
@@ -473,10 +487,10 @@ function MemoryModal({
                             <div className="d-flex align-items-start">
                               <div className="mb-3">
                                 <div className="d-flex gap-2">
-                                  {formData?.struct?.playground.cardBackImage && (
+                                  {StartImage?.imageSrc && (
                                     <img
                                       src={
-                                        formData?.struct?.playground.cardBackImage
+                                        StartImage?.imageSrc
                                       }
                                       alt="illustrationImage"
                                       className="image_illustrate"
@@ -498,7 +512,7 @@ function MemoryModal({
                                       )
                                     }
                                   >
-                                    {formData?.struct?.playground.image
+                                    {StartImage?.imageSrc
                                       ? "Change"
                                       : "Upload"}
                                   </button>
@@ -599,7 +613,7 @@ function MemoryModal({
             <div className="form-right scrollable-div">
               <h5>Approximate preview</h5>
               <div className={`formPreview cover_modal rankPreview`}>
-                <PreviewMemory data={formData} approxvalue={false} memoryData={memoryData} />
+                <PreviewMemory data={formData} approxvalue={false} memoryData={memoryData}startImage = {StartImage?.imageSrc} />
               </div>
             </div>
           </>

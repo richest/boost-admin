@@ -67,12 +67,20 @@ export default function ProductCard({
   if (isLoading && isLoading !== undefined) {
     return <SkeltonCardLoader />;
   }
-
+  const handleNavigate = () => {
+    console.log(hoveredUserId,"hoveredUserId")
+    
+    navigate(`${ROUTE_SLUGS.PRODUCTS_LIST}/${id}`)
+    console.log("dwdwdwd")
+  }
   return (
-    <NavLink
-      style={{ textDecoration: "none" }}
-      to={"#"}
-      className={"web-content-card"}
+    <div
+      className="web-content-card"
+      style={{ textDecoration: "none", cursor: "pointer" }}
+      onClick={(e) => {
+        e.preventDefault();
+        handleNavigate(); 
+      }}
     >
       <Card
         sx={{
@@ -87,13 +95,18 @@ export default function ProductCard({
         }}
         {...other}
       >
+        {/* Popover Trigger */}
         <IconButton
           className="card_menu_icon"
-          onClick={(event) => handlePopoverOpen(event, id)}
+          onClick={(e) => {
+            e.stopPropagation(); 
+            handlePopoverOpen(e, id);
+          }}
         >
           <Iconify icon="eva:more-vertical-outline" width={24} height={24} />
         </IconButton>
-
+  
+        {/* Popover */}
         <Popover
           open={open}
           anchorEl={anchorEl}
@@ -110,8 +123,7 @@ export default function ProductCard({
           <div className="product_menu_item">
             <Link
               to={`${ROUTE_SLUGS.PRODUCTS_LIST}/${hoveredUserId}`}
-              variant="contained"
-              color="primary"
+              onClick={(e) => e.stopPropagation()} 
             >
               <Tooltip title="Edit" arrow placement="right">
                 <Iconify
@@ -120,26 +132,13 @@ export default function ProductCard({
                 />
               </Tooltip>
             </Link>
-            {/* <Link
-              variant="contained"
-              color="secondary"
-              fullWidth
-              style={{padding: "5px 0"}}
-            >
-              <Tooltip title="View" arrow placement="right">
-                <Iconify
-                  icon="eva:eye-outline"
-                  sx={{ color: "rgb(52 153 193)" }}
-                />
-              </Tooltip>
-            </Link> */}
+  
             <Link
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 handleDelete();
                 handlePopoverClose();
               }}
-              variant="contained"
-              color="success"
             >
               <Tooltip title="Delete" arrow placement="right">
                 <Iconify
@@ -150,10 +149,10 @@ export default function ProductCard({
             </Link>
           </div>
         </Popover>
-        {/* Styled Icon with popover trigger */}
+  
+        {/* Icon */}
         <StyledIcon
           className="product_card_icon"
-          // Open popover on click
           sx={{
             color: (theme) => theme.palette[color].light,
             backgroundImage: (theme) =>
@@ -169,9 +168,8 @@ export default function ProductCard({
             <Iconify icon="eva:more-vertical-outline" width={24} height={70} />
           )}
         </StyledIcon>
-
-        {/* Popover component */}
-
+  
+        {/* Title */}
         <Typography
           variant="h4"
           sx={{
@@ -184,6 +182,137 @@ export default function ProductCard({
           {title}
         </Typography>
       </Card>
-    </NavLink>
+    </div>
   );
+  
+  // return (
+  //   <NavLink
+  //   type=""
+  
+  //     style={{ textDecoration: "none" }}
+  //     to={"#"}
+  //     className={"web-content-card"}
+  //   >
+  //     <Card
+  //       sx={{
+          
+  //         py: 5,
+         
+  //         boxShadow: 1,
+  //         textAlign: "center",
+  //         background:
+  //           customization.navType === "dark"
+  //             ? "#103C65"
+  //             : theme.palette.primary.light,
+  //         ...sx,
+  //       }}
+  //       onClick={(e) => {
+  //         e.preventDefault(); // prevent NavLink from navigating if you're using navigate()
+  //         handleNavigate();   // imperatively navigate
+  //       }}
+  //       {...other}
+  //     >
+  //       <IconButton
+  //         className="card_menu_icon"
+  //         onClick={(e) => {
+  //           e.stopPropagation(); // 🔴 stop triggering handleNavigate
+  //           handlePopoverOpen(e, id);
+  //         }}
+  //       >
+  //         <Iconify icon="eva:more-vertical-outline" width={24} height={24} />
+  //       </IconButton>
+
+  //       <Popover
+  //         open={open}
+  //         anchorEl={anchorEl}
+  //         onClose={handlePopoverClose}
+  //         anchorOrigin={{
+  //           vertical: "center",
+  //           horizontal: "center",
+  //         }}
+  //         transformOrigin={{
+  //           vertical: "center",
+  //           horizontal: "center",
+  //         }}
+  //       >
+  //         <div className="product_menu_item">
+  //           <Link
+  //             to={`${ROUTE_SLUGS.PRODUCTS_LIST}/${hoveredUserId}`}
+  //             onClick={(e) => e.stopPropagation()} 
+  //             variant="contained"
+  //             color="primary"
+  //           >
+  //             <Tooltip title="Edit" arrow placement="right">
+  //               <Iconify
+  //                 icon="eva:edit-outline"
+  //                 sx={{ color: "rgba(0, 0, 0, 0.54)" }}
+  //               />
+  //             </Tooltip>
+  //           </Link>
+  //           {/* <Link
+  //             variant="contained"
+  //             color="secondary"
+  //             fullWidth
+  //             style={{padding: "5px 0"}}
+  //           >
+  //             <Tooltip title="View" arrow placement="right">
+  //               <Iconify
+  //                 icon="eva:eye-outline"
+  //                 sx={{ color: "rgb(52 153 193)" }}
+  //               />
+  //             </Tooltip>
+  //           </Link> */}
+  //           <Link
+  //             onClick={() => {
+  //               handleDelete();
+  //               handlePopoverClose();
+  //             }}
+  //             variant="contained"
+  //             color="success"
+  //           >
+  //             <Tooltip title="Delete" arrow placement="right">
+  //               <Iconify
+  //                 icon="eva:trash-2-outline"
+  //                 sx={{ color: "rgb(189 51 51)" }}
+  //               />
+  //             </Tooltip>
+  //           </Link>
+  //         </div>
+  //       </Popover>
+  //       {/* Styled Icon with popover trigger */}
+  //       <StyledIcon
+  //         className="product_card_icon"
+  //         // Open popover on click
+  //         sx={{
+  //           color: (theme) => theme.palette[color].light,
+  //           backgroundImage: (theme) =>
+  //             `linear-gradient(135deg, ${alpha(theme.palette[color].light, 0)} 0%, ${alpha(
+  //               theme.palette[color].light,
+  //               0.24
+  //             )} 100%)`,
+  //         }}
+  //       >
+  //         {icon ? (
+  //           <img src={icon} alt="icon" className="icon_products" />
+  //         ) : (
+  //           <Iconify icon="eva:more-vertical-outline" width={24} height={70} />
+  //         )}
+  //       </StyledIcon>
+
+  //       {/* Popover component */}
+
+  //       <Typography
+  //         variant="h4"
+  //         sx={{
+  //           color:
+  //             customization.navType === "dark"
+  //               ? theme.palette.primary.light
+  //               : "#0e1522",
+  //         }}
+  //       >
+  //         {title}
+  //       </Typography>
+  //     </Card>
+  //   </NavLink>
+  // );
 }

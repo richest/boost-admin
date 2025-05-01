@@ -90,6 +90,14 @@ const dashboard = {
     //   breadcrumbs: false,
     // },
     {
+      id: "payments",
+      title: "PAYMENTS",
+      type: "item",
+      url: AUTH_ROUTE_SLUGS.PAYMENTS.ROOT,
+      icon: icons.IconBlockquote,
+      breadcrumbs: false,
+    },
+    {
       id: "templates",
       title: "Templates",
       type: "item",

@@ -26,6 +26,7 @@ import SlidingPuzzleModal from "./SlidingPuzzleSettingsModal";
 import PersonalitySettingModal from "./PersonalitySettingModal";
 
 function GameSettingsModal({
+ 
   IsOpenFormModal,
   setIsOpenFormModal,
   formData,
@@ -33,7 +34,10 @@ function GameSettingsModal({
   handleChangeLogo,
   isEditMediaTypeDetails,
   updateParentState,
-  onRegisterSlideImageCallback
+  onRegisterSlideImageCallback,
+  selectedImage,
+  setOpen,
+  setIsEditMedia
 
 }) {
   const [checkedFields, setCheckedFields] = useState([]);
@@ -41,7 +45,7 @@ function GameSettingsModal({
   const [selecteScreen, setSelectScreen] = useState("start-screen");
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const [closeerror, setcloserror] = useState(false)
-  console.log(closeerror, "closeerror")
+  console.log(selectedImage, "closeerror")
   const style = {
     position: "absolute",
     top: "50%",
@@ -114,6 +118,7 @@ function GameSettingsModal({
           <div className="modal-form-body">
             {formData?.block === "quiz" && (
               <QuizSettingsModal
+              selectedImage={selectedImage}
                 isEditMediaTypeDetails={isEditMediaTypeDetails}
                 updateParentState={updateParentState}
                 selecteScreen={selecteScreen}
@@ -125,6 +130,9 @@ function GameSettingsModal({
             )}
             {formData?.block === "personality-quiz" && (
               <PersonalitySettingModal
+              setOpen={setOpen}
+              setIsEditMedia={setIsEditMedia}
+                selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
@@ -134,6 +142,7 @@ function GameSettingsModal({
             )}
             {formData?.block === "treasure-hunt" && (
               <TreasureHuntModal
+              selectedImage={selectedImage}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
                 formData={formData}
@@ -144,6 +153,7 @@ function GameSettingsModal({
 
             {formData?.block === "rank-battle" && (
               <RankBattleModal
+              selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
@@ -154,6 +164,7 @@ function GameSettingsModal({
 
             {formData?.block === "slide-show" && (
               <SlideSHowModal
+              selectedImage={selectedImage}
                 onRegisterSlideImageCallback={onRegisterSlideImageCallback}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
@@ -165,6 +176,7 @@ function GameSettingsModal({
 
             {formData?.block === "horoscope" && (
               <HoroScopeModal
+              selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
@@ -175,6 +187,7 @@ function GameSettingsModal({
 
             {formData?.block === "cookies" && (
               <CookiesModal
+              selectedImage={selectedImage}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
                 formData={formData}
@@ -184,6 +197,7 @@ function GameSettingsModal({
             )}
             {formData?.block === "form" && (
               <LeadFormModal
+              selectedImage={selectedImage}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
                 formData={formData}
@@ -193,6 +207,7 @@ function GameSettingsModal({
             )}
             {formData?.block === "spin-wheel" && (
               <WheeleModal
+              selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
@@ -203,6 +218,7 @@ function GameSettingsModal({
 
             {formData?.block === "puzzle" && (
               <PuzzleModal
+              selectedImage={selectedImage}
                 setcloserror={setcloserror}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
@@ -213,6 +229,7 @@ function GameSettingsModal({
             )}
             {formData?.block === "sliding-puzzle" && (
               <SlidingPuzzleModal
+              selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
@@ -222,6 +239,7 @@ function GameSettingsModal({
             )}
             {formData?.block === "memory" && (
               <MemoryModal
+              selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
@@ -231,6 +249,7 @@ function GameSettingsModal({
             )}
             {formData?.block === "find-pair" && (
               <MemoryModal
+              selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
@@ -244,6 +263,7 @@ function GameSettingsModal({
                 //   setSlideShowImageCallback(() => fn);
                 //   setIsSlideShowReady(true);
                 // }}
+                selectedImage={selectedImage}
                 onRegisterSlideImageCallback={onRegisterSlideImageCallback}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}

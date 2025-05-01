@@ -90,6 +90,11 @@ export const AuthorizedRoutes = [
         exact: true,
       },
       {
+        path: AUTH_ROUTE_SLUGS.PAYMENTS.ROOT,
+        component: lazy(() => import("../views/pages/transactions")),
+        exact: true,
+      },
+      {
         path: AUTH_ROUTE_SLUGS.TEMPLATES.CREATE_NEW,
         parameter: "/:name",
         component: lazy(

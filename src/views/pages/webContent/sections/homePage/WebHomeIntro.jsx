@@ -268,6 +268,7 @@ const WebHomeIntro = () => {
                   name="title"
                   variant="outlined"
                   fullWidth
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
               <Grid mb={4}>
@@ -280,6 +281,7 @@ const WebHomeIntro = () => {
                   name="subtitle"
                   variant="outlined"
                   fullWidth
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
 
@@ -293,6 +295,7 @@ const WebHomeIntro = () => {
                   name="mechanics"
                   variant="outlined"
                   fullWidth
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
               <Grid mb={3}>
@@ -307,6 +310,7 @@ const WebHomeIntro = () => {
                   name="contentCreators"
                   variant="outlined"
                   fullWidth
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
               <Grid mb={3}>
@@ -321,6 +325,7 @@ const WebHomeIntro = () => {
                   name="countriesCount"
                   variant="outlined"
                   fullWidth
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
 
@@ -350,6 +355,7 @@ const WebHomeIntro = () => {
                       name="sectionOneTitle"
                       variant="outlined"
                       fullWidth
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid mb={4}>
@@ -366,6 +372,7 @@ const WebHomeIntro = () => {
                       name="sectionOneSubtitle"
                       variant="outlined"
                       fullWidth
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid mb={4}>
@@ -445,6 +452,7 @@ const WebHomeIntro = () => {
                   </Box>
                   <Grid mb={4}>
                     <TextField
+                    InputLabelProps={{ shrink: true }}
                       {...register("sectionTwoTitle")}
                       label="Title*"
                       disabled={loader}
@@ -461,6 +469,7 @@ const WebHomeIntro = () => {
                   </Grid>
                   <Grid mb={4}>
                     <TextField
+                    InputLabelProps={{ shrink: true }}
                       {...register("sectionTwoSubTitle")}
                       label="Subtitle*"
                       disabled={loader}

@@ -720,7 +720,7 @@ const TemplateForm = () => {
     });
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = (image) => {
     const page = templateDetails?.project_structure?.pages.find(
       (page) => page.name === selectedPage
     );
@@ -742,7 +742,7 @@ const TemplateForm = () => {
       };
       dispatch(updateTemplateAction(_data));
       setOpen(false);
-      setSelectedImage("");
+      // setSelectedImage("");
     }
 
     if (
@@ -772,7 +772,7 @@ const TemplateForm = () => {
 
       dispatch(updateTemplateAction(_data));
       setOpen(false);
-      setSelectedImage("");
+      // setSelectedImage("");
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "project") {
@@ -790,7 +790,7 @@ const TemplateForm = () => {
       };
       dispatch(updateTemplateAction(_data));
       setOpen(false);
-      setSelectedImage("");
+      // setSelectedImage("");
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "logo") {
@@ -811,7 +811,7 @@ const TemplateForm = () => {
       };
       dispatch(updateTemplateAction(_data));
       setOpenAudioModal(false);
-      setSelectedImage("");
+      // setSelectedImage("");
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "audio") {
@@ -1034,30 +1034,33 @@ const TemplateForm = () => {
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "quiz-cover") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === formData?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    cover: {
-                      ...block.struct.cover,
-                      image: selectedImage,
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(updatedData));
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === formData?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               cover: {
+      //                 ...block.struct.cover,
+      //                 image: selectedImage,
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
+      // dispatch(updateTemplateAction(updatedData));
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
 
@@ -1131,6 +1134,9 @@ const TemplateForm = () => {
       };
 
       dispatch(updateTemplateAction(updatedData));
+      // setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      // setIsEditMedia(false)
       setOpen(false);
     }
 
@@ -1697,7 +1703,10 @@ const TemplateForm = () => {
         },
       };
       dispatch(updateTemplateAction(updatedData));
-      setOpen(false);
+      // setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      // setIsEditMedia(false);  // close modal context
+      // setOpen(false);
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "sliding-puzzle-image") {
@@ -1729,34 +1738,36 @@ const TemplateForm = () => {
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "playing-card-back") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    playground: {
-                      ...block.struct.playground,
-                      cardBackImage: selectedImage,
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(updatedData));
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               playground: {
+      //                 ...block.struct.playground,
+      //                 cardBackImage: selectedImage,
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
+      // dispatch(updateTemplateAction(updatedData));
+      setSelectedImage(image); // ⬅️ this is your temporary local state
 
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
-
+    console.log(selectedImage, "sqqqsq0808")
     if (isEditMedia && isEditMediaDetails?.type === "first-image") {
       const updatedData = {
         ...templateDetails,
@@ -1922,7 +1933,7 @@ const TemplateForm = () => {
           setSelectedBlockSettings({});
           setSelectedBlockId(null);
           setOpen(false);
-          setSelectedImage("");
+          // setSelectedImage("");
         }
 
         break;
@@ -2319,7 +2330,7 @@ const TemplateForm = () => {
         (e) => e.name === selectedPage
       );
       console.log(filterPageData, selectedPage, "checkifdetailsexistornot");
-      setPageData(templateDetails.project_structure.pages[0]);
+      setPageData(filterPageData);
       setSelectedBlockProperties(selectedBlockSettings);
     }
   }, [templateDetails, isAddedFromBlock]);
@@ -2702,6 +2713,7 @@ const TemplateForm = () => {
           handleChangeLogo={handleChangeMedia}
         />
         <GameSettingsModal
+          selectedImage={selectedImage}
           isEditMediaTypeDetails={isEditMediaDetails}
           updateParentState={updateParentState}
           IsOpenFormModal={IsOpenSettingsModal}
@@ -2710,6 +2722,8 @@ const TemplateForm = () => {
           formData={formData}
           selectedPage={selectedPage}
           handleChangeLogo={handleChangeMedia}
+          setOpen={setOpen}
+          setIsEditMedia={setIsEditMedia}
         />
 
         <InternalPageModal

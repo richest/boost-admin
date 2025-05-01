@@ -28,7 +28,7 @@ const Templates = () => {
   const { user: userFilterOption } = useSelector(
     (state) => state.filterOptions
   );
-
+  console.log(userFilterOption, "userFilterOption")
 
   const dispatch = useDispatch();
   const [open, setOpen] = useState(null);
@@ -37,9 +37,9 @@ const Templates = () => {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
   const [rowsPerPage, setRowsPerPage] = useState(
-    userFilterOption.number_of_rows
+10
   );
-  const [pageNo, setPageNo] = useState(userFilterOption.page_no);
+  const [pageNo, setPageNo] = useState(1);
   const [srNo, setSrNo] = useState(userFilterOption.srNo);
   const [totalUsersCount, setProductCount] = useState(0);
   const [templateList, setTemplateList] = useState([]);

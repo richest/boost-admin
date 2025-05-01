@@ -8,7 +8,7 @@ import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import LeadForm from "../Form";
 
-function PreviewMemory({ data, approxvalue, memoryData }) {
+function PreviewMemory({ data, approxvalue, memoryData, startImage }) {
   const bestResults = [
     {
       name: "John Brown",
@@ -386,7 +386,7 @@ function PreviewMemory({ data, approxvalue, memoryData }) {
                               className="find-one-pair-game-outerImg"
                             >
                               <img
-                                src={playground?.cardBackImage}
+                                src={startImage}
                                 alt="card back"
                               />
                               {approxvalue !== false && (
@@ -604,6 +604,7 @@ function PreviewMemory({ data, approxvalue, memoryData }) {
                                     />
                                   )}
                                 </>
+                                // startImage
                               ) : (
                                 <img src={finalScreen?.imageSrc} alt="imagesss" />
                               )}

@@ -12,7 +12,7 @@ function TimeUpPageModal({
   setIsOpenFormModal,
   formData,
   selectedPage,
-  setOpen,
+  setOpen,  
   setIsEditMedia,
   setIsEditMediaTypeDetails,
   selectedImage,

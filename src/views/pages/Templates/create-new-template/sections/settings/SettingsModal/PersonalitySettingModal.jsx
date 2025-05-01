@@ -10,9 +10,13 @@ function PersonalitySettingModal({
   setSelectScreen,
   formData,
   handleChangeLogo,
-  setIsOpenFormModal
+  setIsOpenFormModal,
+  selectedImage,
+  setOpen,
+  setIsEditMedia,
 }) {
   const dispatch = useDispatch();
+  console.log(formData?.struct?.timeIsUpScreen?.imageSrc, "swdwdwdw")
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const [errors, setErrors] = useState({
     header: false,
@@ -21,6 +25,11 @@ function PersonalitySettingModal({
     headerWordCount: false,
     buttonTextWordCount: false
   });
+  console.log(selectedImage, "formData?.cover?.imageSrc")
+  const [settingsData, setSettingsaData] = useState({
+    imageSrc: formData?.struct?.cover?.image || "", // Set initial state
+  });
+  console.log(settingsData?.imageSrc, "settingsData")
   const [personalityquiz, setPersonalityQuiz] = useState({}); // if it's a single object (cover)
   const [personalityquizquestion, setPersonalityQuizQuestion] = useState([]); // should be array of questions
   const [finalResult, setfinalResult] = useState([]); // should be array of results
@@ -395,7 +404,11 @@ function PersonalitySettingModal({
                 ...block,
                 struct: {
                   ...block.struct,
-                  cover: personalityquiz,
+                  cover: {
+                    ...personalityquiz,
+                    image: selectedImage || settingsData?.imageSrc, 
+                  },
+                  
                   questions: personalityquizquestion,
                   results: finalResult,
                 },
@@ -420,6 +433,32 @@ function PersonalitySettingModal({
     setfinalResult(formData?.struct?.results
     )
   }, [formData])
+  // useEffect(() => {
+  //   if (selectedImage) {
+  //     setPersonalityQuiz((prev) => ({
+  //       ...prev,
+  //       image: selectedImage,
+  //     }));
+  //   } else {
+  //     setPersonalityQuiz(formData?.struct?.cover || {});
+  //   }
+
+  //   setPersonalityQuizQuestion(formData?.struct?.questions || []);
+  //   setfinalResult(formData?.struct?.results || []);
+  // }, [formData, selectedImage]);
+
+  useEffect(() => {
+    if (selectedImage) {
+      // setOpen(true);
+      // setIsEditMedia(true);
+      console.log(selectedImage, "selectedImage090");
+      // When selectedImage changes, update the state to reflect the new image
+      setSettingsaData((prev) => ({
+        ...prev,
+        imageSrc: selectedImage, // Set the selected image
+      }));
+    }
+  }, [selectedImage]);
   return (
     <> <div className="form-option-wrap">
       <div className="form-start">
@@ -537,7 +576,7 @@ function PersonalitySettingModal({
                         </label>
                         <div className="coverchangeImage">
                           <img
-                            src={personalityquiz?.image}
+                            src={settingsData?.imageSrc}
                             alt="cover"
                           />
                           <button
@@ -592,9 +631,9 @@ function PersonalitySettingModal({
             <div
               className={`formPreview cover_modal ${personalityquiz.isShowCover ? "showCover" : "hideCover"}`}
             >
-              {formData?.struct?.cover.image && (
+              {settingsData?.imageSrc && (
                 <img
-                  src={formData?.struct?.cover?.image}
+                  src={settingsData?.imageSrc}
                   alt="logo"
                   className="coverImage"
                 />
@@ -634,6 +673,7 @@ function PersonalitySettingModal({
 
       {selecteScreen === "questions" && (
         <PersonalityQuestionScreen
+        
           errors={errors}
           setPersonalityQuizQuestion={setPersonalityQuizQuestion}
           personalityquizquestion={personalityquizquestion}

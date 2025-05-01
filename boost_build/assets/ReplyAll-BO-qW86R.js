@@ -1,1 +1,0 @@
-import{E as r,j as t}from"./index-Bb4T6yJS.js";import{r as a}from"./createSvgIcon-Cvxe-UMk.js";var e={},l=r;Object.defineProperty(e,"__esModule",{value:!0});var o=e.default=void 0,u=l(a()),i=t;o=e.default=(0,u.default)((0,i.jsx)("path",{d:"M7 8V5l-7 7 7 7v-3l-4-4zm6 1V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11"}),"ReplyAll");export{o as d};

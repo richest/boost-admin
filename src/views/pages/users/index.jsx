@@ -55,12 +55,21 @@ const Users = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(null);
   const [openUndo, setOpenUndo] = useState(null);
-  const [order, setOrder] = useState("asc");
+  // ACS, DESC
+  const [order, setOrder] = useState("ACS");
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
   const [rowsPerPage, setRowsPerPage] = useState(
     userFilterOption.number_of_rows
   );
+  // const [order, setOrder] = useState('asc');
+  // const [orderBy, setOrderBy] = useState('userName');
+
+  // const handleRequestSort = (event, property) => {
+  //   const isAsc = orderBy === property && order === 'asc';
+  //   setOrder(isAsc ? 'desc' : 'asc');
+  //   setOrderBy(property);
+  // };
   const [pageNo, setPageNo] = useState(userFilterOption.page_no);
   const [srNo, setSrNo] = useState(userFilterOption.srNo);
   const [totalUsersCount, setTotalUsersCount] = useState(0);
@@ -110,11 +119,11 @@ const Users = () => {
   };
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && order === "ASC";
+    setOrder(isAsc ? "DESC" : "ASC"); // Toggle order
     setOrderBy(property);
   };
-
+  
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = USERLIST.map((n) => n.name);
@@ -222,12 +231,12 @@ const Users = () => {
     const _pageNo = pageNo + 1;
     const roleId = !userTypeSelection ? "" : userTypeSelection;
     getUsers(
-      `${USERS.LIST}?${USERS_PRM.PAGE_NO.KEY}=${_pageNo}&${USERS_PRM.ROWS_PER_PAGE.KEY}=${rowsPerPage}&${USERS_PRM.SEARCH_TEXT.KEY}=${searchText}`,
+      `${USERS.LIST}?${USERS_PRM.PAGE_NO.KEY}=${_pageNo}&${USERS_PRM.ROWS_PER_PAGE.KEY}=${rowsPerPage}&${USERS_PRM.SEARCH_TEXT.KEY}=${searchText}&${`sort`}=${orderBy}:${order}`,
       pageNo,
       roleId
     );
   };
-
+  console.log(order, orderBy, "sdaojsaojsa")
   async function getUsers(url, pageNo, roleId) {
     setLoading(true);
     dispatch({ type: REQUEST_ACTION.INIT_LOADER, payload: { loader: true } });
@@ -284,7 +293,7 @@ const Users = () => {
 
   useEffect(() => {
     userListCallBack();
-  }, [pageNo, rowsPerPage, userTypeSelection, searchTextDebounce]);
+  }, [pageNo, rowsPerPage, userTypeSelection, searchTextDebounce, orderBy, order]);
 
   return (
     <>

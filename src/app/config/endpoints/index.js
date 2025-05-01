@@ -130,6 +130,17 @@ export const MESSAGES = {
   REPLY: `${BASEURL}${PREFIX}/reply-chat`,
   VOICE_MESSAGE: `${BASEURL}${PREFIX}/send-voice-message`,
 };
+export const PAYMENTS = {
+  PAYMENT: `${BASEURL}${PREFIX}/all-payments`,
+
+};
+
+
+
+
+
+
+
 export const USERS_CHAT = {
   LIST: `${BASEURL}${PREFIX}/users-chat-list`,
   CHAT: `${BASEURL}${PREFIX}/user-chat-list-messages`,
@@ -155,6 +166,7 @@ export const MEDIA_LIBRARY = {
   MEDIA_LIST: `${BASEURL}/user-library/all-media`,
   MEDIA_LIST_AUDIO_CATEGORY: `${BASEURL}/content/get-web-content?key=AUDIO_LIBRARY`,
   PIXBY_LIST: `${BASEURL}/user-library/get-pixby-images`,
+  UPWORK_LIST: `${BASEURL}/user-library/get-upwork-images`
 };
 
 export const CREATED_BLOCKS = {
@@ -210,6 +222,6 @@ export const GUIDE_ACTIVITIES = {
   DELETE: `${BASEURL}${PREFIX}/delete-activity`,
 };
 export const IMAGE_UPLOAD = {
-  UPLOADIMAGE: `${BASEURL}${PREFIX}/update-details`,
+  UPLOADIMAGE: `${BASEURL}/templates/update-details`,
 };
 

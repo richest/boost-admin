@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
@@ -6,7 +6,11 @@ import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/action
 function PersonalityQuestionScreen({ formData, errors, questions, handleChangeImage, personalityquizquestion, setPersonalityQuizQuestion }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(questions, "questionsquestionsquestions");
-
+  // const [settingsData, setSettingsaData] = useState([
+  //   imageSrc: formData?.struct?.questions.map((e)=>e?.image // Set initial state
+  // ]};
+  const [settingsData, setSettingsaData] = useState([formData?.struct?.questions.map((e) => e?.image)])
+  console.log(settingsData, "sqsqsqsqsqsqs")
   const dispatch = useDispatch();
   const handleAddNewQuestion = () => {
     const question = {
@@ -39,88 +43,18 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
       imageDisclaimer: "",
     };
     setPersonalityQuizQuestion((prevQuestions) => [...prevQuestions, question])
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: [...block.struct.questions, question],
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+     
   };
 
   const handleDeleteQuestion = (questionId) => {
     setPersonalityQuizQuestion((prev) =>
       prev.filter((question) => question.id !== questionId)
     );
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: block.struct.questions?.filter(
-    //                 (e) => e.id !== questionId
-    //               ),
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+   
   };
 
   const handleQuestionTextChange = (e, id) => {
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: block.struct.questions?.map((question) =>
-    //                 question.id === id
-    //                   ? {
-    //                     ...question,
-    //                     text: e,
-    //                   }
-    //                   : question
-    //               ),
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
 
-    // dispatch(updateTemplateAction(updatedData));
     setPersonalityQuizQuestion((prev) =>
       prev.map((q) =>
         q.id === id
@@ -146,36 +80,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
           : q
       )
     );
-    // const updatedData = {
 
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: block.struct.questions?.map((question) =>
-    //                 question.id === id
-    //                   ? {
-    //                     ...question,
-    //                     isText: e === "text" ? true : false,
-    //                   }
-    //                   : question
-    //               ),
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-
-    // dispatch(updateTemplateAction(updatedData));
   };
 
   const handleImageDisclaimer = (e, id) => {
@@ -189,74 +94,13 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
           : q
       )
     );
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: block.struct.questions?.map((question) =>
-    //                 question.id === id
-    //                   ? {
-    //                     ...question,
-    //                     imageDescription: e,
-    //                   }
-    //                   : question
-    //               ),
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
 
-    // dispatch(updateTemplateAction(updatedData));
   };
 
   const handleCheckCorrectAnswer = (e, id, answerId) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === formData?.id
-              ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  questions: block.struct.questions?.map((question) =>
-                    question.id === id
-                      ? {
-                        ...question,
-                        answers: question.answers.map((answer) =>
-                          answer.id === answerId
-                            ? {
-                              ...answer,
-                              isCorrect: e,
-                            }
-                            : answer
-                        ),
-                      }
-                      : question
-                  ),
-                },
-              }
-              : block
-          ),
-        })),
-      },
-    };
 
-    dispatch(updateTemplateAction(updatedData));
+
+    
   };
 
   const handleDeleteAnswer = (id, answerId) => {
@@ -271,37 +115,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
       )
     );
 
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: block.struct.questions?.map((question) =>
-    //                 question.id === id
-    //                   ? {
-    //                     ...question,
-    //                     answers: question.answers.filter(
-    //                       (e) => e.id !== answerId
-    //                     ),
-    //                   }
-    //                   : question
-    //               ),
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
 
-    // dispatch(updateTemplateAction(updatedData));
   };
   const handleChangeTextAnswer = (e, id, answerId) => {
     setPersonalityQuizQuestion((prev) =>
@@ -321,43 +135,9 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
           : question
       )
     );
-    //  
+   
 
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: block.struct.questions?.map((question) =>
-    //                 question.id === id
-    //                   ? {
-    //                     ...question,
-    //                     answers: question.answers.map((answer) =>
-    //                       answer.id === answerId
-    //                         ? {
-    //                           ...answer,
-    //                           text: e,
-    //                         }
-    //                         : answer
-    //                     ),
-    //                   }
-    //                   : question
-    //               ),
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-
-    // dispatch(updateTemplateAction(updatedData));
+  
   };
 
   const handleChangeDescriptionAnswer = (e, id, answerId) => {
@@ -419,7 +199,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
           : question
       )
     );
-    // const updatedData = {
+   
     //   ...templateDetails,
     //   project_structure: {
     //     ...templateDetails.project_structure,
@@ -449,33 +229,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleDeleteQuestionImage = (id) => {
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: block.struct.questions?.map((question) =>
-    //                 question.id === id
-    //                   ? {
-    //                     ...question,
-    //                     image: "",
-    //                   }
-    //                   : question
-    //               ),
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
+  
     setPersonalityQuizQuestion((prev) =>
       prev.map((question) =>
         question.id === id
@@ -491,14 +245,14 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
   const handleCloneQuestion = (questionId) => {
     // Find the question you want to clone
     const questionToClone = personalityquizquestion.find((question) => question.id === questionId);
-  
+
     // Clone the question by creating a new object (you can spread the existing question to retain its data)
     const clonedQuestion = { ...questionToClone, id: generateShortId() }; // Ensure the cloned question has a unique id
-  
+
     // Add the cloned question to the state
     setPersonalityQuizQuestion((prevQuestions) => [...prevQuestions, clonedQuestion]);
   };
-  
+
   console.log("personalityquizquestion", personalityquizquestion);
 
   return (
@@ -591,7 +345,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
                       </p>
                     )}
                   </div>
-
+                  {/* question-image */}
                   <div class="mb-3 d-flex align-items-start gap-3">
                     <div className="">
                       <label class="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
@@ -782,7 +536,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
             ))}
         </div>
 
-        
+
       </div>
     </>
   );

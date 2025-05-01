@@ -1,6 +1,6 @@
 export const USER_TABLE_HEAD = [
   { id: "sr", label: "#", align: "left", textTransform: "uppercase" },
-  { id: "name", label: "Name", align: "left", textTransform: "uppercase" },
+  { id: "firstName", label: "Name", align: "left", textTransform: "uppercase" },
   { id: "email", label: "Email", align: "left", textTransform: "uppercase" },
   // { id: "role", label: "Role", align: "left", textTransform: "uppercase" },
   {
@@ -118,6 +118,41 @@ export const SUPPORT_TABLE_HEAD = [
   },
   { id: "" },
 ];
+export const TRANSACTIONS_TABLE_HEAD = [
+  { id: "id", label: "Id" },
+  { id: "user_id", label: "" },
+  { id: "userEmail", label: " User Email" },
+  { id: "payment_id", label: "Payment Method" },
+
+  { id: "plan_name", label: "Plan Name" },
+  { id: "payment_status", label: "Payment Status" },
+  { id: "created_at", label: "Created At" },
+  { id: "created_at", label: "" },
+  // { id: "status", label: "Status" },
+  // ,
+
+  // description,
+
+  // id,
+
+  // payment_method,
+
+
+  // payment_status,
+
+  // plan_id,
+
+  // price,
+
+  // status,
+
+  // transaction_id,
+
+  // updated_at,
+
+  // user_id,
+];
+
 
 export const MESSAGES_TABLE_HEAD = [
   { id: "name", label: "", align: "left" },

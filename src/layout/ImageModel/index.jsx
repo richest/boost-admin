@@ -122,14 +122,13 @@ function ImageModal({
   const unSplashData = async () => {
     setIsLoading(true);
     try {
-      const response = await getRequest(
-        `${import.meta.env.VITE_APP_UNSPLASH_URL}?per_page=${page}&query=${searchText || "random"}&client_id=${import.meta.env.VITE_APP_UNSPLASH_API_ACCESS_KEY}`
-      );
+      const response = await getRequest(MEDIA_LIBRARY.UPWORK_LIST);
       const { status, data } = response;
+      console.log(data?.images)
       if (status === 200) {
-        setUnsplashImages(data);
+        setUnsplashImages(data?.data?.images);
       }
-    } catch (error) { }
+    } catch (error) {}
     setIsLoading(false);
   };
 
@@ -378,7 +377,7 @@ function ImageModal({
                       handleImageUpload(selectedImage);
                     } else {
                       console.log("23444444444444444444444444444444")
-                      handleAddItem();
+                      handleAddItem(selectedImage);
                     }
                   }}
                 >

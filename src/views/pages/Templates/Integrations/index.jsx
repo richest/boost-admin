@@ -74,7 +74,7 @@ function Integrations() {
 
     try {
       setloading(true);
-      const res = await putRequest(`${TEMPLATES.UPLOADIMAGE}/${templateDetails?.unique_id}`, formData);
+      const res = await putRequest(`${IMAGE_UPLOAD.UPLOADIMAGE}/${templateDetails?.unique_id}`, formData);
       // console.log(res, "resres");
       // setUploadedImage(res.data.secure_url); // Save uploaded image URL
     } catch (err) {
