@@ -219,6 +219,8 @@ const Templates = () => {
     productListCallBack();
   }, [pageNo, rowsPerPage, userTypeSelection, searchTextDebounce]);
 
+  console.log("templateList", templateList);
+
   return (
     <>
       <AppHelmet title={DEFAULT_APP_TITLE.TEMPLATES} />

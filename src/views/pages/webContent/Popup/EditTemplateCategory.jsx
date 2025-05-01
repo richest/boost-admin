@@ -9,23 +9,29 @@ import {
   Stack,
   Avatar,
   Tooltip,
+  Button,
+  ListItem,
+  Checkbox,
+  ListItemButton,
+  ListItemText,
+  List,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { VALIDATION_MESSAGE } from "app/constants/regexRules";
 import { useDispatch, useSelector } from "react-redux";
-import { DEFAULT_CSS, RESPONSE_CODE } from "app/constants";
+import { DEFAULT_CSS, DEFAULT_VALUE, RESPONSE_CODE } from "app/constants";
 import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { LoadingButton } from "@mui/lab";
 import Iconify from "components/iconify";
 import { REQUEST_ACTION } from "redux/authenticate/actions";
-import { putRequest } from "app/httpClient/axiosClient";
+import { getRequest, putRequest } from "app/httpClient/axiosClient";
 import { ApiErrorMessage } from "utils/helpers/function/apiErrorResonse";
-import { TEMPLATES_CATEGORY } from "app/config/endpoints";
+import { TEMPLATES_CATEGORY, WEB_CONTENT } from "app/config/endpoints";
 import toast from "react-hot-toast";
-
+import { RESPONSE_MESSAGES } from "app/constants/localizedStrings";
 const validationSchema = yup.object().shape({
   name: yup
     .string()
@@ -60,6 +66,12 @@ const EditTemplateCatagory = ({
   setOpenEditModal,
   categoryData,
   categoryListCallBack,
+  templateList,
+  handleToggle,
+  checked,
+  updateContent,
+  setShowTemplateList,
+  showTemplateList
 }) => {
   const customization = useSelector((state) => state.customization);
   const buttonRef = React.useRef(null);
@@ -324,6 +336,23 @@ const EditTemplateCatagory = ({
                   alignItems="center"
                   mt={2}
                 >
+                  <Button
+                    size="medium"
+                    type="button"
+                    loadingPosition="end"
+                    variant="contained"
+                    onClick={() => setShowTemplateList(true)}
+                  >
+                    Assign template
+                  </Button>
+                </Stack>
+
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  mt={2}
+                >
                   <LoadingButton
                     loading={loader ? true : false}
                     size="medium"
@@ -337,6 +366,86 @@ const EditTemplateCatagory = ({
               </form>
             </Grid>
           </Grid>
+        </Box>
+      </Popover>
+
+      <Popover
+        open={showTemplateList}
+        anchorEl={buttonRef.current}
+        onClose={() => {
+          setShowTemplateList(false);
+        }}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "center",
+          horizontal: "center",
+        }}
+      >
+        <Box
+          sx={{
+            padding: 2,
+            width: 300,
+            background: customization.navType === "dark" ? "#103C65" : "#fff",
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="h4" gutterBottom pb={3} pr={4}>
+              Assign templates to this category
+            </Typography>
+            <Iconify
+              sx={{ cursor: "pointer" }}
+              onClick={() => setShowTemplateList(false)}
+              icon="maki:cross"
+              width={20}
+              height={20}
+            />
+          </Box>
+
+          <Box>
+            <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
+              {templateList?.map((item) => {
+                const labelId = `checkbox-list-secondary-label-${item.id}`;
+                return (
+                  <ListItem
+                    key={item.id}
+                    secondaryAction={
+                      <Checkbox
+                        edge="end"
+                        onChange={handleToggle(item.id)}
+                        checked={checked.includes(item.id)}
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    }
+                    disablePadding
+                  >
+                    <ListItemButton>
+                      <ListItemText id={labelId} primary={item?.name} />
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })}
+            </List>
+            <Stack
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              mt={2}
+            >
+              <LoadingButton
+                loading={loader ? true : false}
+                size="medium"
+                type="button"
+                loadingPosition="end"
+                variant="contained"
+                onClick={updateContent}
+              >
+                {loader ? "PLEASE WAIT..." : "ASSIGN"}
+              </LoadingButton>
+            </Stack>
+          </Box>
         </Box>
       </Popover>
     </>
