@@ -93,9 +93,9 @@ const Products = () => {
           type: REQUEST_ACTION.SUCCESS,
           payload: { message: message },
         });
-        toast.success("Product deleted successfull.");
+        toast.success("Product deleted successful.");
         getProducts(
-          `${PRODUCTS.LIST}?${USERS_PRM.PAGE_NO.KEY}=${1}&${USERS_PRM.ROWS_PER_PAGE.KEY}=${10}`
+          `${PRODUCTS.LIST}?${USERS_PRM.PAGE_NO.KEY}=${pageNo}&${USERS_PRM.ROWS_PER_PAGE.KEY}=${10}`
         );
       } else {
         dispatch({

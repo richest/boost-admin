@@ -37,7 +37,7 @@ const Templates = () => {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
   const [rowsPerPage, setRowsPerPage] = useState(
-10
+    10
   );
   const [pageNo, setPageNo] = useState(1);
   const [srNo, setSrNo] = useState(userFilterOption.srNo);
@@ -267,7 +267,7 @@ const Templates = () => {
             <p className="text-center">No Template Found</p>
           )}
           {templateList.map((product) => (
-            <Grid key={product.id} item xs={12} sm={6} md={2}>
+            <Grid style={{ cursor: "pointer" }} key={product.id} item xs={12} sm={6} md={2}>
               <TemplateCard
                 data={product}
                 path={ROUTE_SLUGS.HEADER_FOOTER}

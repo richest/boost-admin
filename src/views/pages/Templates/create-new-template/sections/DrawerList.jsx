@@ -46,6 +46,8 @@ import textImageIcon from '../../../../../assets/images/icons/textimage.svg';
 
 export default function ListDrawer({
   toggleDrawer,
+  // isFirst,
+  // isLast,
   openDrawer,
   setOpenDrawer,
   handleClickDrawer,

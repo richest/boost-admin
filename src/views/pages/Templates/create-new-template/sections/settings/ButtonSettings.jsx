@@ -158,6 +158,7 @@ function ButtonSettings({ selectedBlockSettings, pageData }) {
             type="number"
             defaultValue={brad}
             max={100}
+            min={0}
             onChange={(e) => handleChangeBorderRadius(e.target.value)} />
         </div>
 

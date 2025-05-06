@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-function PersonalityQuestionScreen({ formData, errors, questions, handleChangeImage, personalityquizquestion, setPersonalityQuizQuestion }) {
+function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, questions, handleChangeImage, personalityquizquestion, setPersonalityQuizQuestion }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(questions, "questionsquestionsquestions");
   // const [settingsData, setSettingsaData] = useState([
   //   imageSrc: formData?.struct?.questions.map((e)=>e?.image // Set initial state
   // ]};
+  console.log(personalityquizquestion, "personalityquizquestion")
   const [settingsData, setSettingsaData] = useState([formData?.struct?.questions.map((e) => e?.image)])
   console.log(settingsData, "sqsqsqsqsqsqs")
   const dispatch = useDispatch();
@@ -43,14 +44,14 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
       imageDisclaimer: "",
     };
     setPersonalityQuizQuestion((prevQuestions) => [...prevQuestions, question])
-     
+
   };
 
   const handleDeleteQuestion = (questionId) => {
     setPersonalityQuizQuestion((prev) =>
       prev.filter((question) => question.id !== questionId)
     );
-   
+
   };
 
   const handleQuestionTextChange = (e, id) => {
@@ -100,7 +101,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
   const handleCheckCorrectAnswer = (e, id, answerId) => {
 
 
-    
+
   };
 
   const handleDeleteAnswer = (id, answerId) => {
@@ -135,9 +136,9 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
           : question
       )
     );
-   
 
-  
+
+
   };
 
   const handleChangeDescriptionAnswer = (e, id, answerId) => {
@@ -199,7 +200,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
           : question
       )
     );
-   
+
     //   ...templateDetails,
     //   project_structure: {
     //     ...templateDetails.project_structure,
@@ -229,7 +230,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleDeleteQuestionImage = (id) => {
-  
+
     setPersonalityQuizQuestion((prev) =>
       prev.map((question) =>
         question.id === id
@@ -364,12 +365,14 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
                         </div>
                         <button
                           class="button button-primary border-0 me-2 font-sm"
-                          onClick={() =>
+                          onClick={() => {
+                            setSelectedImageType({ type: "personalityquestion", questionId: question.id });
                             handleChangeImage(
                               "question-image",
                               formData?.id,
                               question.id
                             )
+                          }
                           }
                         >
                           Upload
@@ -537,7 +540,7 @@ function PersonalityQuestionScreen({ formData, errors, questions, handleChangeIm
         </div>
 
 
-      </div>
+      </div >
     </>
   );
 }

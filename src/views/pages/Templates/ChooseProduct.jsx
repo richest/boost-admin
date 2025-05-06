@@ -126,7 +126,7 @@ const ChooseProduct = () => {
           type: REQUEST_ACTION.SUCCESS,
           payload: { message: message },
         });
-        toast.success("Product deleted successfull.");
+        toast.success("Product deleted successful.");
         productListCallBack();
       } else {
         dispatch({

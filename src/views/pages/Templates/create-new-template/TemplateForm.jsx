@@ -76,6 +76,7 @@ const TemplateForm = () => {
 
   const datacheck = useSelector((state) => state.DrawerReducer);
   const navigate = useNavigate();
+  const [dontshowup, setDontShowUp] = useState(false)
   const { name } = useParams();
   const {
     register,
@@ -96,6 +97,7 @@ const TemplateForm = () => {
     type: "",
     id: null,
   });
+  console.log(dontshowup, "dontshowupdontshowup")
   const [blockDeleteDetails, setBlockDeleteDetails] = useState(null);
   const [IsOpenFormModal, setIsOpenFormModal] = useState(false);
   const [IsOpenSettingsModal, setIsOpenSettingsModal] = useState(false);
@@ -631,28 +633,30 @@ const TemplateForm = () => {
       console.error("No page found with the selected name:", selectedPage);
       return;
     }
-
     const index = page?.blocks?.findIndex((block) => block.id === id);
-
-    const updatedBlocks = [...page?.blocks];
+    // Prevent moving if it's the first block or not found
+    if (index <= 0) {
+      setDontShowUp(true)
+      console.warn("Block is already at the top or not found.");
+      return;
+    }
+    console.log("oiiioioioiioio")
+    const updatedBlocks = [...page.blocks];
     [updatedBlocks[index], updatedBlocks[index - 1]] = [
       updatedBlocks[index - 1],
       updatedBlocks[index],
     ];
-    // return updatedBlocks;
     const _data = {
       ...templateDetails,
       project_structure: {
         ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: updatedBlocks,
-        })),
+        pages: templateDetails.project_structure.pages.map((p) =>
+          p.name === selectedPage ? { ...p, blocks: updatedBlocks } : p
+        ),
       },
     };
     dispatch(updateTemplateAction(_data));
   };
-
   const handleMoveDown = (id) => {
     const page = templateDetails?.project_structure?.pages?.find(
       (page) => page.name === selectedPage
@@ -661,15 +665,16 @@ const TemplateForm = () => {
       console.error("No page found with the selected name:", selectedPage);
       return;
     }
-
     const index = page?.blocks?.findIndex((block) => block.id === id);
-
+    if (index === -1 || index >= page.blocks.length - 1) {
+      console.warn("Block is already at the bottom or not found.");
+      return;
+    }
     const updatedBlocks = [...page?.blocks];
     [updatedBlocks[index], updatedBlocks[index + 1]] = [
       updatedBlocks[index + 1],
       updatedBlocks[index],
     ];
-
     const _data = {
       ...templateDetails,
       project_structure: {
@@ -682,6 +687,12 @@ const TemplateForm = () => {
     };
     dispatch(updateTemplateAction(_data));
   };
+
+
+
+
+
+
 
   const cloneblock = (id) => {
     const page = templateDetails?.project_structure?.pages?.find(
@@ -861,32 +872,37 @@ const TemplateForm = () => {
     }
     console.log(selectedImage, isEditMedia && isEditMediaDetails?.type, "xakipakapx")
     if (isEditMedia && isEditMediaDetails?.type === "puzzle") {
-      const _data = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    finalScreen: {
-                      ...block.struct.finalScreen,
-                      imageSrc: selectedImage,
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
+      // const _data = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               finalScreen: {
+      //                 ...block.struct.finalScreen,
+      //                 imageSrc: selectedImage,
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
 
-      dispatch(updateTemplateAction(_data));
+      // dispatch(updateTemplateAction(_data));
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
+
+
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "flip-front") {
@@ -979,30 +995,33 @@ const TemplateForm = () => {
     }
     console.log(selectedImage, "selectedImage")
     if (isEditMedia && isEditMediaDetails?.type === "match-up-image") {
-      const _data = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    finalScreen: {
-                      ...block.struct.finalScreen,
-                      imageSrc: selectedImage,
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(_data));
+      // const _data = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               finalScreen: {
+      //                 ...block.struct.finalScreen,
+      //                 imageSrc: selectedImage,
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
+      // dispatch(updateTemplateAction(_data));
+      setSelectedImage(image); // ⬅️this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
 
@@ -1105,38 +1124,41 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "question-image") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    questions: block.struct.questions?.map((question) =>
-                      question.id === isEditMediaDetails?.isLogoCover
-                        ? {
-                          ...question,
-                          image: selectedImage,
-                        }
-                        : question
-                    ),
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               questions: block.struct.questions?.map((question) =>
+      //                 question.id === isEditMediaDetails?.isLogoCover
+      //                   ? {
+      //                     ...question,
+      //                     image: selectedImage,
+      //                   }
+      //                   : question
+      //               ),
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
 
-      dispatch(updateTemplateAction(updatedData));
+      // dispatch(updateTemplateAction(updatedData));
       // setSelectedImage(image); // ⬅️ this is your temporary local state
 
       // setIsEditMedia(false)
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
 
@@ -1279,35 +1301,40 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "result-image") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    results: block.struct.results?.map((result) =>
-                      result.id === isEditMediaDetails?.isLogoCover
-                        ? {
-                          ...result,
-                          image: selectedImage,
-                        }
-                        : result
-                    ),
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               results: block.struct.results?.map((result) =>
+      //                 result.id === isEditMediaDetails?.isLogoCover
+      //                   ? {
+      //                     ...result,
+      //                     image: selectedImage,
+      //                   }
+      //                   : result
+      //               ),
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
 
-      dispatch(updateTemplateAction(updatedData));
+      // dispatch(updateTemplateAction(updatedData));
+      // setOpen(false);
+
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
 
@@ -1338,38 +1365,40 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "quest-header") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) => {
-              if (block.id === isEditMediaDetails.id) {
-                return {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    tiles: {
-                      ...block.struct.tiles,
-                      tileList: block.struct.tiles?.tileList?.map((tile) =>
-                        tile.id === isEditMediaDetails.isLogoCover
-                          ? {
-                            ...tile,
-                            headerImgSrc: selectedImage,
-                          }
-                          : tile
-                      ),
-                    },
-                  },
-                };
-              }
-              return block;
-            }),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(updatedData));
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) => {
+      //         if (block.id === isEditMediaDetails.id) {
+      //           return {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               tiles: {
+      //                 ...block.struct.tiles,
+      //                 tileList: block.struct.tiles?.tileList?.map((tile) =>
+      //                   tile.id === isEditMediaDetails.isLogoCover
+      //                     ? {
+      //                       ...tile,
+      //                       headerImgSrc: selectedImage,
+      //                     }
+      //                     : tile
+      //                 ),
+      //               },
+      //             },
+      //           };
+      //         }
+      //         return block;
+      //       }),
+      //     })),
+      //   },
+      // };
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "final-result-image") {
@@ -1402,38 +1431,41 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "quest-overlay") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) => {
-              if (block.id === isEditMediaDetails.id) {
-                return {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    tiles: {
-                      ...block.struct.tiles,
-                      tileList: block.struct.tiles?.tileList?.map((tile) =>
-                        tile.id === isEditMediaDetails.isLogoCover
-                          ? {
-                            ...tile,
-                            overlaySrc: selectedImage,
-                          }
-                          : tile
-                      ),
-                    },
-                  },
-                };
-              }
-              return block;
-            }),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(updatedData));
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) => {
+      //         if (block.id === isEditMediaDetails.id) {
+      //           return {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               tiles: {
+      //                 ...block.struct.tiles,
+      //                 tileList: block.struct.tiles?.tileList?.map((tile) =>
+      //                   tile.id === isEditMediaDetails.isLogoCover
+      //                     ? {
+      //                       ...tile,
+      //                       overlaySrc: selectedImage,
+      //                     }
+      //                     : tile
+      //                 ),
+      //               },
+      //             },
+      //           };
+      //         }
+      //         return block;
+      //       }),
+      //     })),
+      //   },
+      // };
+      // dispatch(updateTemplateAction(updatedData));
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "card-image") {
@@ -1470,32 +1502,36 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "result-image-treasure") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    finalScreen: {
-                      ...block.struct.finalScreen,
-                      imageSrc: selectedImage,
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(updatedData));
+      setSelectedImage(image); // ⬅️ this is your temporary local state
 
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               finalScreen: {
+      //                 ...block.struct.finalScreen,
+      //                 imageSrc: selectedImage,
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
+      // dispatch(updateTemplateAction(updatedData));
+
+      // setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "result-image-form") {
       const updatedData = {
@@ -1599,32 +1635,35 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "puzzle-image") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    playground: {
-                      ...block.struct.playground,
-                      image: selectedImage,
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(updatedData));
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               playground: {
+      //                 ...block.struct.playground,
+      //                 image: selectedImage,
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
+      // dispatch(updateTemplateAction(updatedData));
+      setSelectedImage(image); // ⬅️ this is your temporary local state
 
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
+
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "hidden-object") {
@@ -1679,62 +1718,65 @@ const TemplateForm = () => {
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "puzzle-result-image") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    finalScreen: {
-                      ...block.struct.finalScreen,
-                      imageSrc: selectedImage,
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(updatedData));
-      // setSelectedImage(image); // ⬅️ this is your temporary local state
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               finalScreen: {
+      //                 ...block.struct.finalScreen,
+      //                 imageSrc: selectedImage,
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
+      // dispatch(updateTemplateAction(updatedData));
+      setSelectedImage(image); // ⬅️ this is your temporary local state
 
-      // setIsEditMedia(false);  // close modal context
-      // setOpen(false);
+      setIsEditMedia(false);  // close modal context
+      setOpen(false);
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "sliding-puzzle-image") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    playground: {
-                      ...block.struct.playground,
-                      imageUrl: selectedImage,
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
-      dispatch(updateTemplateAction(updatedData));
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               playground: {
+      //                 ...block.struct.playground,
+      //                 imageUrl: selectedImage,
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
+      // dispatch(updateTemplateAction(updatedData));
 
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "playing-card-back") {
@@ -1769,85 +1811,94 @@ const TemplateForm = () => {
     }
     console.log(selectedImage, "sqqqsq0808")
     if (isEditMedia && isEditMediaDetails?.type === "first-image") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    pairs: {
-                      ...block.struct.pairs,
-                      pairList: block.struct.pairs.pairList?.map(
-                        (question) =>
-                          question.id === isEditMediaDetails?.isLogoCover
-                            ? {
-                              ...question,
-                              firstImage: {
-                                ...question.firstImage,
-                                src: selectedImage,
-                                cardType: "image",
-                              },
-                            }
-                            : question
-                      ),
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               pairs: {
+      //                 ...block.struct.pairs,
+      //                 pairList: block.struct.pairs.pairList?.map(
+      //                   (question) =>
+      //                     question.id === isEditMediaDetails?.isLogoCover
+      //                       ? {
+      //                         ...question,
+      //                         firstImage: {
+      //                           ...question.firstImage,
+      //                           src: selectedImage,
+      //                           cardType: "image",
+      //                         },
+      //                       }
+      //                       : question
+      //                 ),
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
 
-      dispatch(updateTemplateAction(updatedData));
+      // dispatch(updateTemplateAction(updatedData));
+      setOpen(false);
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "second-image") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    pairs: {
-                      ...block.struct.pairs,
-                      pairList: block.struct.pairs.pairList?.map(
-                        (question) =>
-                          question.id === isEditMediaDetails?.isLogoCover
-                            ? {
-                              ...question,
-                              secondImage: {
-                                ...question.secondImage,
-                                src: selectedImage,
-                                cardType: "image",
-                              },
-                            }
-                            : question
-                      ),
-                    },
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               pairs: {
+      //                 ...block.struct.pairs,
+      //                 pairList: block.struct.pairs.pairList?.map(
+      //                   (question) =>
+      //                     question.id === isEditMediaDetails?.isLogoCover
+      //                       ? {
+      //                         ...question,
+      //                         secondImage: {
+      //                           ...question.secondImage,
+      //                           src: selectedImage,
+      //                           cardType: "image",
+      //                         },
+      //                       }
+      //                       : question
+      //                 ),
+      //               },
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
 
-      dispatch(updateTemplateAction(updatedData));
+      // dispatch(updateTemplateAction(updatedData));
+      // setOpen(false);
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
+
     }
 
     const imageBlock = {
@@ -2713,6 +2764,7 @@ const TemplateForm = () => {
           handleChangeLogo={handleChangeMedia}
         />
         <GameSettingsModal
+          setSelectedImage={setSelectedImage}
           selectedImage={selectedImage}
           isEditMediaTypeDetails={isEditMediaDetails}
           updateParentState={updateParentState}

@@ -16,6 +16,7 @@ const validationSchema = yup.object().shape({
 });
 
 function ResultScreen({
+
   setIsOpenFormModal,
   personalityquizquestion,
   finalResult,
@@ -25,9 +26,11 @@ function ResultScreen({
   selecteScreen,
   setTriggerNext = () => { },
   parenterror,
+  finalImage,
   questions,
   handleSaveQuestion,
   handleDeleteImageMatchUp,
+  setSelectedImageType = () => { },
   formRef,
   setErrorScreen = () => { },
   formData,
@@ -119,7 +122,7 @@ function ResultScreen({
     );
 
     setfinalResult(updatedResults);
-    // setErrors((prevErrors) => ({
+
     //   ...prevErrors,
     //   [id]: value === "" ? "Header is required." : null,
     // }));
@@ -156,10 +159,7 @@ function ResultScreen({
   const handleChangeHeaderResult = (e, id) => {
     console.log(e, "dasddaadda");
 
-    // setErrors((prevErrors) => ({
-    //   ...prevErrors,
-    //   [id]: value === "" ? "Header is required." : null,
-    // }));
+
     const updatedData = {
       ...updatedtemplate,
       project_structure: {
@@ -318,7 +318,12 @@ function ResultScreen({
     setupdatedTemplate(updatedData);
     // dispatch(updateTemplateAction(updatedData));
   };
-
+  const handleDeletePuzzleImage = () => {
+    setfinalResult((prev) => ({
+      ...prev,
+      imageSrc: ""
+    }))
+  }
   const handleDeleteImage = (id) => {
     const updatedData = {
       ...updatedtemplate,
@@ -378,7 +383,7 @@ function ResultScreen({
     setupdatedTemplate(updatedData);
     // dispatch(updateTemplateAction(updatedData));
   };
-  // const handleResultDescriptionFormPuzzle = (e) => {
+
   //   // const updatedData = {
   //   //   ...updatedtemplate,
   //   //   project_structure: {
@@ -410,7 +415,7 @@ function ResultScreen({
     setfinalResult((prev) => ({ ...prev, description: value }));
 
     console.log(value, "checkposition");
-    // const updatedData = {
+
     //   ...updatedtemplate,
     //   project_structure: {
     //     ...updatedtemplate.project_structure,
@@ -471,7 +476,7 @@ function ResultScreen({
     console.log(e, "checkposition");
     setfinalResult((prev) => ({ ...prev, headerText: value }));
     setParentErros((prev) => ({ ...prev, finalResultHeader: false }));
-    // const updatedData = {
+
     //   ...updatedtemplate,
     //   project_structure: {
     //     ...updatedtemplate.project_structure,
@@ -502,7 +507,7 @@ function ResultScreen({
     console.log(e, "checkposition");
     setfinalResult((prev) => ({ ...prev, header: value }));
     setParentErros((prev) => ({ ...prev, finalResultHeader: false }));
-    // const updatedData = {
+
     //   ...updatedtemplate,
     //   project_structure: {
     //     ...updatedtemplate.project_structure,
@@ -532,7 +537,7 @@ function ResultScreen({
   const handleResultTreasureDescription = (e) => {
     const value = e
     setfinalResult((prev) => ({ ...prev, description: value }));
-    // const updatedData = {
+
     //   ...updatedtemplate,
     //   project_structure: {
     //     ...updatedtemplate.project_structure,
@@ -565,7 +570,7 @@ function ResultScreen({
     setfinalResult((prev) => ({ ...prev, header: value }));
     setParentErros((prev) => ({ ...prev, finalResultHeader: false }));
     console.log(value, "checkposition");
-    // const updatedData = {
+
     //   ...updatedtemplate,
     //   project_structure: {
     //     ...updatedtemplate.project_structure,
@@ -594,7 +599,7 @@ function ResultScreen({
   const handleResultDescriptionForm = (e) => {
     const value = e
     setfinalResult((prev) => ({ ...prev, descriptionText: value }));
-    // const updatedData = {
+
     //   ...updatedtemplate,
     //   project_structure: {
     //     ...updatedtemplate.project_structure,
@@ -631,7 +636,7 @@ function ResultScreen({
       description: "Description",
     };
     setfinalResult((prev) => [...prev, answerObject]);
-    // const updatedData = {
+
     //   ...updatedtemplate,
     //   project_structure: {
     //     ...updatedtemplate.project_structure,
@@ -682,7 +687,7 @@ function ResultScreen({
     dispatch(updateTemplateAction(updatedData));
     // dispatch(updateTemplateAction(updatedData));
   };
-  // const handleDeleteImageResultForm = () => {
+
   //   const updatedData = {
   //     ...updatedtemplate,
   //     project_structure: {
@@ -1064,14 +1069,18 @@ function ResultScreen({
                           className=""
                         />
                       </div>
+                      {console.log(result.id, "result.id")}
                       <button
                         className="button button-primary font-sm border-0 me-2"
-                        onClick={() =>
+
+                        onClick={() => {
                           handleChangeImage(
                             "result-image",
                             formData?.id,
                             result.id
                           )
+                          setSelectedImageType({ type: "finalPersonality", resultId: result.id });
+                        }
                         }
                       >
                         Upload
@@ -1173,10 +1182,11 @@ function ResultScreen({
                 Image
               </label>
               <div class="d-flex align-items-center gap-2">
-                {formData?.struct?.finalScreen?.imageSrc && (
+                {/* button image */}
+                {finalResult?.imageSrc && (
                   <div>
                     <img
-                      src={formData?.struct?.finalScreen?.imageSrc}
+                      src={finalResult?.imageSrc}
                       alt="question-image"
                       style={{
                         height: 44,
@@ -1190,8 +1200,10 @@ function ResultScreen({
 
                 <button
                   className="button button-primary border-0"
-                  onClick={() =>
+                  onClick={() => {
+                    setSelectedImageType({ type: "finalTreasureHunt" })
                     handleChangeImage("result-image-treasure", formData?.id)
+                  }
                   }
                 >
                   Change
@@ -1203,10 +1215,10 @@ function ResultScreen({
           <div class="form-right scrollable-div border-start py-4">
             <h6>Approximate preview</h6>
             <div class="preview-box text-center">
-              {formData?.struct?.finalScreen?.imageSrc && (
+              {finalResult?.imageSrc && (
                 <img
                   id="previewImage"
-                  src={formData?.struct?.finalScreen?.imageSrc}
+                  src={finalResult?.imageSrc}
                   alt="Preview"
                   style={{
                     height: 192,
@@ -1374,7 +1386,8 @@ function ResultScreen({
               <div className="d-flex align items-center gap-2">
                 <img
                   src={
-                    formData?.struct?.finalScreen?.imageSrc ||
+
+                    finalResult?.imageSrc ||
                     "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
                   }
                   alt="question-image"
@@ -1388,13 +1401,18 @@ function ResultScreen({
 
                 <button
                   className="button button-primary px-3 border-0"
-                  onClick={() => handleChangeImage("puzzle", formData?.id)}
+                  onClick={() => {
+
+                    setSelectedImageType("puzzleFinal");
+                    handleChangeImage("puzzle", formData?.id)
+                  }
+                  }
                 >
                   Change
                 </button>
                 <button
                   className="button button-secondary sm px-3 border-0 text-muted"
-                  onClick={() => handleDeleteImageMatchUp(formData?.id)}
+                  onClick={() => handleDeletePuzzleImage(formData?.id)}
                 >
                   <i className="fa-solid fa-trash"></i>
                 </button>
@@ -1408,7 +1426,7 @@ function ResultScreen({
               <img
                 id="previewImage"
                 src={
-                  formData?.struct?.finalScreen?.imageSrc ||
+                  finalResult?.imageSrc ||
                   "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
                 }
                 alt="Preview"
@@ -1474,7 +1492,7 @@ function ResultScreen({
               <div className="d-flex align items-center gap-2">
                 <img
                   src={
-                    formData?.struct?.finalScreen?.imageSrc ||
+                    finalImage?.imageSrc ||
                     "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
                   }
                   alt="question-image"
@@ -1488,15 +1506,17 @@ function ResultScreen({
 
                 <button
                   className="button button-primary px-3 border-0"
-                  onClick={() =>
+                  onClick={() => {
+                    setSelectedImageType({ type: "slidingpuzzleFinal" })
                     handleChangeImage("puzzle-result-image", formData?.id)
+                  }
                   }
                 >
                   Change
                 </button>
                 <button
                   className="button button-secondary sm px-3 border-0 text-muted"
-                  onClick={() => handleDeleteImageResultForm(formData?.id)}
+                  onClick={() => handleDeletePuzzleImage(formData?.id)}
                 >
                   <i className="fa-solid fa-trash"></i>
                 </button>
@@ -1509,7 +1529,7 @@ function ResultScreen({
               <img
                 id="previewImage"
                 src={
-                  formData?.struct?.finalScreen?.imageSrc ||
+                  finalImage?.imageSrc ||
                   "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
                 }
                 alt="Preview"
@@ -1576,7 +1596,7 @@ function ResultScreen({
               <div className="d-flex align items-center gap-2">
                 <img
                   src={
-                    formData?.struct?.finalScreen?.imageSrc ||
+                    finalResult?.imageSrc ||
                     "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
                   }
                   alt="question-image"
@@ -1590,8 +1610,11 @@ function ResultScreen({
 
                 <button
                   className="button button-primary px-3 border-0"
-                  onClick={() =>
+                  onClick={() => {
+                    setSelectedImageType("final")
                     handleChangeImage("puzzle-result-image", formData?.id)
+                  }
+
                   }
                 >
                   Change
@@ -1611,7 +1634,7 @@ function ResultScreen({
               <img
                 id="previewImage"
                 src={
-                  formData?.struct?.finalScreen?.imageSrc ||
+                  finalResult?.imageSrc ||
                   "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
                 }
                 alt="Preview"
@@ -1801,8 +1824,11 @@ function ResultScreen({
                 {console.log(formData, "formDataformData")}
                 <button
                   className="button button-primary px-3 border-0"
-                  onClick={() =>
+                  onClick={() => {
+
+                    setSelectedImageType({ type: "finalMatchUp" })
                     handleChangeImage("match-up-image", formData?.id)
+                  }
                   }
                 >
                   Change

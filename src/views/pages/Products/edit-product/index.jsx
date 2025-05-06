@@ -141,7 +141,30 @@ function EditProduct() {
           spacing={2}
         >
           <Grid item>
-            <PageBreadcrumbs breadcrumbs={["dashborad", "product", "edit"]} />
+            <PageBreadcrumbs
+              breadcrumbs={[
+                <Link
+                  style={{
+                    color: "rgb(99, 115, 129)",
+                    textDecoration: "none",
+                  }}
+                  to={ROUTE_SLUGS.DASHBOARD}
+                >
+                  dashboard
+                </Link>,
+                <Link
+                  style={{
+                    color: "rgb(99, 115, 129)",
+                    textDecoration: "none",
+                  }}
+                  to={ROUTE_SLUGS.PRODUCTS}
+                >
+                  product
+                </Link>,
+                "edit",
+              ]}
+            />
+            {/* <PageBreadcrumbs breadcrumbs={["dashborad", "product", "edit"]} /> */}
           </Grid>
           <Grid item mr={1}>
             <Link className="h-link" to={ROUTE_SLUGS.PRODUCTS_LIST}>

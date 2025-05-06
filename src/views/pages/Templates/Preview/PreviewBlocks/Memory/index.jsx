@@ -9,6 +9,7 @@ import { FaStar } from "react-icons/fa";
 import LeadForm from "../Form";
 
 function PreviewMemory({ data, approxvalue, memoryData, startImage }) {
+  console.log(startImage, "startImagestartImage")
   const bestResults = [
     {
       name: "John Brown",

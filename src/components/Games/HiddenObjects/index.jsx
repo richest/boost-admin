@@ -12,6 +12,8 @@ import CustomModal from "components/Models";
 function HiddenObjects({
   data,
   isSelected,
+  isFirst,
+  isLast,
   handleSelectBlock,
   handleDeleteBlock,
   handleEditModal,
@@ -442,22 +444,22 @@ function HiddenObjects({
       <ul
         className={`${isSelected ? "inlineControls selected-controls" : "inlineControls"}  `}
       >
-        <li
+        {!isFirst && (<li
           className="Inline_control__list"
           title="Move up"
           role="button"
           onClick={() => handleMoveUp(data.id)}
         >
           <i className="fa-solid fa-arrow-up"></i>
-        </li>
-        <li
+        </li>)}
+        {!isLast && (<li
           className="Inline_control__list"
           title="Move down"
           role="button"
           onClick={() => handleMoveDown(data.id)}
         >
           <i className="fa-solid fa-arrow-down"></i>
-        </li>
+        </li>)}
         <li
           className="Inline_control__list"
           title="Clone"

@@ -336,6 +336,7 @@ function EditProductForm({ productTypeList, productDetails }) {
                     {...register("name")}
                     label="Name*"
                     disabled={loader}
+                    InputLabelProps={{ shrink: true }}
                     error={!!errors.name}
                     helperText={errors.name ? errors.name.message : ""}
                     variant="outlined"
@@ -375,6 +376,7 @@ function EditProductForm({ productTypeList, productDetails }) {
                   <TextField
                     {...register("description")} // Ensure this is correctly registered
                     fullWidth
+                    InputLabelProps={{ shrink: true }}
                     multiline
                     error={!!errors.description}
                     helperText={

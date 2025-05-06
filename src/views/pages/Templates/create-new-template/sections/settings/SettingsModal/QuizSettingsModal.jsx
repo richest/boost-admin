@@ -28,7 +28,8 @@ function QuizSettingsModal({
   handleChangeLogo,
   setIsOpenFormModal,
   isEditMediaTypeDetails,
-  updateParentState
+  updateParentState,
+
 }) {
   console.log(formData, "formDataformData");
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function QuizSettingsModal({
   const [errorScreen, setErrorScreen] = useState(false);
   const [templateData, setTemplateData] = useState(templateDetails || {});
   const [IsSaveClicked, setIsSaveClicked] = useState(false);
+  const [selectedImageType, setSelectedImageType] = useState({});
   console.log(templateData, "templateDatatemplateData")
   const methods = useForm({
     resolver: yupResolver(validationSchema),

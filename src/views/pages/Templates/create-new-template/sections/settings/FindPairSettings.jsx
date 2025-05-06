@@ -631,7 +631,7 @@ function FindPairSettings({
 
   useEffect(() => {
     if (pageData) {
-      const block = pageData.blocks.find((block) => block.id === id);
+      const block = pageData?.blocks?.find((block) => block.id === id);
       console.log(block, "checkzBLock");
       setBlockValues(block);
     }

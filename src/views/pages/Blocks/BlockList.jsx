@@ -135,7 +135,7 @@ const AllBlocksList = () => {
           type: REQUEST_ACTION.SUCCESS,
           payload: { message: message },
         });
-        toast.success("Product deleted successfull.");
+        toast.success("Product deleted successful.");
         blockListCallBack();
       } else {
         dispatch({

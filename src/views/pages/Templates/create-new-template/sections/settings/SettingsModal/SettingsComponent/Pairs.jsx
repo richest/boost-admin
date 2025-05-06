@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-function Pairs({ formData, questions, handleChangeLogo, pairs, setPairs }) {
+function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pairs, setPairs }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(formData, "questionsquestionsquestions");
   const [opentextModal, setIsOpenTextModal] = useState(false);
@@ -134,7 +134,7 @@ function Pairs({ formData, questions, handleChangeLogo, pairs, setPairs }) {
             ...tile,
             [textModalData.imageType]: {
               ...tile[textModalData.imageType],
-              text: textModalData?.[textModalData.imageType]?.text, // 👈 correct way if nested
+              text: textModalData?.[textModalData.imageType]?.text,
               bgColor: textModalData.bgColor,
               cardType: "text",
             },
@@ -146,65 +146,6 @@ function Pairs({ formData, questions, handleChangeLogo, pairs, setPairs }) {
     setIsOpenTextModal(false);
   };
 
-  // const handleSaveText = (id) => {
-  //   setPairs((prev) => ({
-  //     ...prev,
-  //     pairList: prev.pairList.map((tile) =>
-  //       tile.id === textModalData.tileId
-  //         ? {
-  //           ...tile,
-  //           [textModalData.imageType]: {
-  //             ...tile[textModalData.imageType],
-  //             text: textModalData.text,
-  //             bgColor: textModalData.bgColor,
-  //             cardType: "text",
-  //           },
-  //         }
-  //         : tile
-  //     ),
-  //   }));
-
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) => {
-  //           if (block.id === formData.id) {
-  //             return {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 pairs: {
-  //                   ...block.struct.pairs,
-  //                   pairList: block.struct.pairs.pairList.map((tile) =>
-  //                     tile.id === textModalData.tileId
-  //                       ? {
-  //                         ...tile,
-  //                         [textModalData.imageType]: {
-  //                           ...tile[textModalData.imageType],
-  //                           text: textModalData?.[textModalData.imageType]?.text,
-  //                           bgColor: textModalData.bgColor,
-  //                           cardType: "text",
-  //                         },
-  //                       }
-  //                       : tile
-  //                   ),
-  //                 },
-  //               },
-  //             };
-  //           }
-  //           return block;
-  //         }),
-  //       })),
-  //     },
-  //   };
-
-  //   dispatch(updateTemplateAction(updatedData));
-  //   setIsOpenTextModal(false);
-  // };
-  // console.log(pairs, "qdqddqdqdqqd")
 
 
   const handleChangeSliderDescription = (value, id) => {
@@ -217,39 +158,7 @@ function Pairs({ formData, questions, handleChangeLogo, pairs, setPairs }) {
 
 
 
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) => {
-    //         if (block.id === formData.id) {
-    //           return {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               pairs: {
-    //                 ...block.struct.pairs,
-    //                 pairList: block.struct.pairs?.pairList?.map((tile) =>
-    //                   tile.id === id
-    //                     ? {
-    //                       ...tile,
-    //                       description: e,
-    //                     }
-    //                     : tile
-    //                 ),
-    //               },
-    //             },
-    //           };
-    //         }
-    //         return block;
-    //       }),
-    //     })),
-    //   },
-    // };
 
-    // dispatch(updateTemplateAction(updatedData));
   };
 
   const handlechangedescriptiont = (value, type) => {
@@ -261,19 +170,6 @@ function Pairs({ formData, questions, handleChangeLogo, pairs, setPairs }) {
       },
     }));
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -327,62 +223,7 @@ function Pairs({ formData, questions, handleChangeLogo, pairs, setPairs }) {
                             <div className="questionData">
                               <div class="d-flex gap-3">
                                 <div className="">
-                                  {/* <div
-                                    className="questionImageLabel quest-cover"
-                                    style={{
-                                      width: 90,
-                                      height: 90,
-                                      margin: 0,
-                                    }}
-                                  >
-                                    <img
-                                      src={question.firstImage?.src}
-                                      alt="question-image"
-                                      className="w-100"
-                                    />
-                                    <div className="icons_pairs d-flex align-items-center gap-1">
-                                      <label
-                                        onClick={() => handlePairText("firstImage"
-                                          , question)}
-                                        role="button"
-                                      >
-                                        <i
-                                          class="fa-solid fa-font"
-                                          title="Add Text"
-                                        ></i>{" "}
-                                      </label>
-                                      <label
-                                        onClick={() =>
-                                          handleChangeLogo(
-                                            "first-image",
-                                            formData?.id,
-                                            question.id
-                                          )
-                                        }
-                                        role="button"
-                                      >
-                                        <i
-                                          class="fa-solid fa-camera"
-                                          title="Add Image"
-                                        ></i>
-                                      </label>
-                                      <label
-                                        onClick={() =>
-                                          handleChangeLogo(
-                                            "first-audio",
-                                            formData?.id,
-                                            question.id
-                                          )
-                                        }
-                                        role="button"
-                                      >
-                                        <i
-                                          class="fa-solid fa-music"
-                                          title="Add audio"
-                                        ></i>
-                                      </label>
-                                    </div>
-                                  </div> */}
+                                  
 
                                   <div className="d-flex align-items-start gap-3">
                                     {["firstImage", "secondImage"].map((type) => (
@@ -427,7 +268,10 @@ function Pairs({ formData, questions, handleChangeLogo, pairs, setPairs }) {
                                           <label onClick={() => handlePairText(type, question)} role="button">
                                             <i className="fa-solid fa-font" title="Add Text"></i>
                                           </label>
-                                          <label onClick={() => handleChangeLogo(`${type.replace("Image", "")}-image`, formData?.id, question.id)} role="button">
+                                          <label onClick={() => {
+                                            setSelectedImageType(`pairs-${question.id}`);
+                                            handleChangeLogo(`${type.replace("Image", "")}-image`, formData?.id, question.id)
+                                          }} role="button">
                                             <i className="fa-solid fa-camera" title="Add Image"></i>
                                           </label>
                                           <label onClick={() => handleChangeLogo(`${type.replace("Image", "")}-audio`, formData?.id, question.id)} role="button">

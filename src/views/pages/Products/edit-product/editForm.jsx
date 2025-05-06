@@ -64,22 +64,21 @@ const validationSchema = yup.object().shape({
       "fileSize",
       "Icon's size cannot be more than 5 MB",
       (value, context) => {
-        const { preSelectedImage } = context.options.context;
-        if (preSelectedImage || value.length === 0) return true;
-        return value[0]?.size <= 5242880;
+        const file = value?.[0] || context.options.context?.preSelectedImage;
+        if (!file) return true;
+        return file.size <= 5 * 1024 * 1024;
       }
     )
     .test(
       "fileType",
       "Only *.jpeg, *.jpg, *.png types are allowed.",
       (value, context) => {
-        const { preSelectedImage } = context.options.context;
-        if (preSelectedImage || value.length === 0) return true;
-        return ["image/jpeg", "image/png", "image/jpg"].includes(
-          value[0]?.type
-        );
+        const file = value?.[0] || context.options.context?.preSelectedImage;
+        if (!file) return true;
+        return ["image/jpeg", "image/png", "image/jpg"].includes(file.type);
       }
     ),
+
 });
 
 function EditProductForm({ productTypeList, productDetails }) {
@@ -115,47 +114,72 @@ function EditProductForm({ productTypeList, productDetails }) {
   const { onChange, ...params } = register("icon");
 
   const updateProduct = async (data) => {
-    if (preSelectedImage === null || data.icon?.length === 0) {
-      toast.error("Icon is required");
-    } else {
-      let formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("description", data.description);
-      formData.append("product_type_id", productType);
-      if (preSelectedImage) {
-        formData.append("icon", preSelectedImage);
-      } else if (data.icon.length > 0) {
-        formData.append("icon", data.icon[0]);
-      }
+    console.log(data, "opqwuiiwud");
 
-      try {
-        dispatch({ type: REQUEST_ACTION.PROCESSING });
-        const {
-          status,
-          data: { message },
-        } = await putRequest(
-          `${PRODUCTS.UPDATE}/${productDetails.id}`,
-          formData
-        );
-        if (status === RESPONSE_CODE[200]) {
-          dispatch({
-            type: REQUEST_ACTION.SUCCESS,
-            payload: { message: message },
-          });
-          navigate(ROUTE_SLUGS.PRODUCTS_LIST);
-        } else {
-          dispatch({
-            type: REQUEST_ACTION.FAILURE,
-            payload: { message: ApiErrorMessage() },
-          });
-        }
-        window.scrollTo(0, 0);
-      } catch (error) {
+    const fileList = data.icon;
+    const selectedFile = fileList?.[0];
+    if (!selectedFile && !preSelectedImage) {
+      toast.error("Icon is required", {
+        onClick: () => {
+          console.log("Toast clicked!"); // Log the click
+          toast.dismiss(); // Dismiss the toast
+        },
+        style: {
+          cursor: "pointer",
+        },
+      });
+      return;
+    }
+
+
+
+    let formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("product_type_id", productType);
+
+    // Append the correct image
+    if (selectedFile) {
+      formData.append("icon", selectedFile);
+    } else if (preSelectedImage) {
+      formData.append("icon", preSelectedImage);
+    }
+
+    try {
+      dispatch({ type: REQUEST_ACTION.PROCESSING });
+
+      const {
+        status,
+        data: { message },
+      } = await putRequest(
+        `${PRODUCTS.UPDATE}/${productDetails.id}`,
+        formData
+      );
+
+      if (status === RESPONSE_CODE[200]) {
+        dispatch({
+          type: REQUEST_ACTION.SUCCESS,
+          payload: { message: message },
+        });
+        navigate(ROUTE_SLUGS.PRODUCTS_LIST);
+      } else {
         dispatch({
           type: REQUEST_ACTION.FAILURE,
-          payload: { message: ApiErrorMessage(error) },
+          payload: { message: ApiErrorMessage() },
         });
       }
+
+      // Set image after successful submission
+      if (selectedFile) {
+        setPreSelectedImage(selectedFile);
+      }
+
+      window.scrollTo(0, 0);
+    } catch (error) {
+      dispatch({
+        type: REQUEST_ACTION.FAILURE,
+        payload: { message: ApiErrorMessage(error) },
+      });
     }
   };
 
@@ -243,7 +267,7 @@ function EditProductForm({ productTypeList, productDetails }) {
                 />
 
                 {preSelectedImage ||
-                (selectedImage !== null && selectedImage !== undefined) ? (
+                  (selectedImage !== null && selectedImage !== undefined) ? (
                   <Tooltip placement="top" title="Click to remove icon">
                     <CancelTwoToneIcon
                       sx={{
@@ -288,10 +312,13 @@ function EditProductForm({ productTypeList, productDetails }) {
                   accept="image/*"
                   name="icon"
                   onChange={(event) => {
-                    setSelectedImage(event.target.files[0]);
+                    const file = event.target.files[0];
+                    setSelectedImage(file);
+                    setPreSelectedImage(null); // remove old one when uploading new
                     onChange(event);
                     trigger("icon");
                   }}
+
                   style={{ display: "none" }}
                 />
               </div>
@@ -343,6 +370,7 @@ function EditProductForm({ productTypeList, productDetails }) {
                   <TextField
                     {...register("name")}
                     label="Name*"
+                    InputLabelProps={{ shrink: true }}
                     disabled={loader}
                     error={!!errors.name}
                     helperText={errors.name ? errors.name.message : ""}
@@ -388,6 +416,7 @@ function EditProductForm({ productTypeList, productDetails }) {
                     helperText={
                       errors.description ? errors.description.message : ""
                     }
+                    InputLabelProps={{ shrink: true }}
                     label="Description*"
                     rows={4}
                   />

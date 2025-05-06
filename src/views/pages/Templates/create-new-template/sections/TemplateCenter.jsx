@@ -64,7 +64,7 @@ function TemplateCenter({
               ? "none"
               : templateDetails?.project_structure?.app?.isTransparentBackground
                 ? templateDetails?.project_structure?.app
-                    ?.isTransparentBackground
+                  ?.isTransparentBackground
                 : templateDetails?.project_structure?.app?.colorTheme,
 
             backgroundImage: templateDetails?.project_structure?.app
@@ -73,10 +73,14 @@ function TemplateCenter({
               : "none",
           }}
         >
-          {pageData?.blocks?.map((block, index) => (
-            <div key={index}>
+          {pageData?.blocks?.map((block, index) => {
+            const isFirst = index === 0;
+            const isLast = index === pageData.blocks.length - 1;
+            return (<div key={index}>
               {block?.block === "text" && (
                 <DrawerText
+                  isFirst={isFirst}
+                  isLast={isLast}
                   handleSelectBlock={handleSelectBlock}
                   data={block}
                   handleDeleteBlock={handleDeleteBlock}
@@ -92,6 +96,8 @@ function TemplateCenter({
               {block?.block === "image" && (
                 <>
                   <DrawerImage
+                    isFirst={isFirst}
+                    isLast={isLast}
                     data={block}
                     handleSelectBlock={handleSelectBlock}
                     isSelected={true}
@@ -105,6 +111,8 @@ function TemplateCenter({
               )}
               {block?.block === "logo" && (
                 <DrawerLogo
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   handleDeleteBlock={handleDeleteBlock}
@@ -116,6 +124,8 @@ function TemplateCenter({
               )}
               {block?.block === "youtubeVideo" && (
                 <DrawerYoutubeVideo
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   handleDeleteBlock={handleDeleteBlock}
@@ -127,6 +137,8 @@ function TemplateCenter({
               )}
               {block?.block === "button" && (
                 <DrawerButton
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   handleDeleteBlock={handleDeleteBlock}
@@ -138,6 +150,8 @@ function TemplateCenter({
               )}
               {block?.block === "audio" && (
                 <DrawerAudio
+                isFirst={isFirst}
+                isLast={isLast}
                   handleSelectBlock={handleSelectBlock}
                   data={block}
                   isSelected={isSelected}
@@ -150,6 +164,8 @@ function TemplateCenter({
               )}
               {block?.block === "cover" && (
                 <DrawerCover
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   handleDeleteBlock={handleDeleteBlock}
@@ -161,6 +177,8 @@ function TemplateCenter({
               )}
               {block?.block === "text-image" && (
                 <DrawerTextImage
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -169,11 +187,14 @@ function TemplateCenter({
                   handleMoveDown={handleMoveDown}
                   cloneblock={cloneblock}
                   handleAddBlockFromBlock={handleAddBlockFromBlock}
-                  
+
                 />
               )}
               {block?.block === "quiz" && (
                 <QuizGames
+
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -188,6 +209,8 @@ function TemplateCenter({
               )}
               {block?.block === "personality-quiz" && (
                 <QuizGames
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -202,6 +225,8 @@ function TemplateCenter({
               )}
               {block?.block === "treasure-hunt" && (
                 <TreasureHunt
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -216,6 +241,8 @@ function TemplateCenter({
               )}
               {block?.block === "then-now" && (
                 <ThenNow
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -230,6 +257,8 @@ function TemplateCenter({
               )}
               {block?.block === "rank-battle" && (
                 <RankBattle
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -244,6 +273,8 @@ function TemplateCenter({
               )}
               {block?.block === "slide-show" && (
                 <Slideshow
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -258,6 +289,8 @@ function TemplateCenter({
               )}
               {block?.block === "horoscope" && (
                 <HoroScope
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -272,6 +305,8 @@ function TemplateCenter({
               )}
               {block?.block === "cookies" && (
                 <Cookies
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -286,6 +321,8 @@ function TemplateCenter({
               )}
               {block?.block === "flip-card" && (
                 <Flipcard
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -299,6 +336,8 @@ function TemplateCenter({
               )}
               {block?.block === "form" && (
                 <LeadFormBlock
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -313,6 +352,8 @@ function TemplateCenter({
               )}
               {block?.block === "spin-wheel" && (
                 <SpintheWheel
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -327,6 +368,8 @@ function TemplateCenter({
               )}
               {block?.block === "puzzle" && (
                 <Puzzle
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -341,6 +384,8 @@ function TemplateCenter({
               )}
               {block?.block === "memory" && (
                 <Memory
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -355,6 +400,8 @@ function TemplateCenter({
               )}
               {block?.block === "find-pair" && (
                 <FindOnePair
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -369,6 +416,8 @@ function TemplateCenter({
               )}
               {block?.block === "match-up" && (
                 <MatchUp
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -383,6 +432,8 @@ function TemplateCenter({
               )}
               {block?.block === "timeline" && (
                 <Timeline
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -396,6 +447,8 @@ function TemplateCenter({
               )}
               {block?.block === "sliding-puzzle" && (
                 <SlidingPuzzle
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -410,6 +463,8 @@ function TemplateCenter({
               )}
               {block?.block === "hidden-objects" && (
                 <HiddenObjects
+                isFirst={isFirst}
+                isLast={isLast}
                   data={block}
                   handleSelectBlock={handleSelectBlock}
                   isSelected={isSelected}
@@ -422,10 +477,13 @@ function TemplateCenter({
                   handleAddBlockFromBlock={handleAddBlockFromBlock}
                 />
               )}
-            </div>
-          ))}
+            </div>)
+          }
+          )}
         </div>
         <ListDrawer
+          // isFirst={isFirst}
+          // isLast={isLast}
           toggleDrawer={toggleDrawer}
           openDrawer={openDrawer}
           setOpenDrawer={setOpenDrawer}

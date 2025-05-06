@@ -13,7 +13,8 @@ function MemoryModal({
   formData,
   handleChangeLogo,
   selectedImage,
-  setIsOpenFormModal
+  setIsOpenFormModal,
+  setSelectedImage,
 }) {
   console.log(selectedImage, "9889898989")
   console.log(formData, "checkfiormdqartasdvja")
@@ -40,6 +41,7 @@ function MemoryModal({
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const [memoryData, setMemoryData] = useState({})
   const [pairs, setPairs] = useState({})
+  const [selectedImageType, setSelectedImageType] = useState(null);
   const [StartImage, setstartImage] = useState({ imageSrc: formData?.struct?.playground?.cardBackImage })
   const [errors, setErrors] = useState({
     header: false,
@@ -51,48 +53,7 @@ function MemoryModal({
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
   const [finalResult, setfinalResult] = useState({})
-  // const handleSelectChange = (e) => {
-  //   if (!e?.value || !e.value.includes("x")) return;
 
-  //   const [rows, cols] = e.value.toLowerCase().split("x").map(Number);
-
-  //   if (isNaN(rows) || isNaN(cols)) return;
-
-  //   const totalCards = rows * cols;
-  //   const requiredPairs = totalCards;
-
-  //   // build or trim updated pair list
-  //   let updatedTileList = [...(formData?.struct?.pairs?.pairList || [])];
-
-  //   if (updatedTileList.length > requiredPairs) {
-  //     updatedTileList = updatedTileList.slice(0, requiredPairs);
-  //   } else {
-  //     for (let i = updatedTileList.length; i < requiredPairs; i++) {
-  //       updatedTileList.push({
-  //         id: generateShortId(),
-  //         description: "",
-  //         firstImage: {
-  //           src: "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1739271156/Group_3_jl6d69.png",
-  //           cardType: "image",
-  //         },
-  //         secondImage: {
-  //           src: "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1739271156/Group_3_jl6d69.png",
-  //           cardType: "image",
-  //         },
-  //       });
-  //     }
-  //   }
-
-  //   setMemoryData((prev) => ({
-  //     ...prev,
-  //     cardLayout: {
-  //       ...prev?.cardLayout,
-  //       label: e.label,
-  //       value: e.value,
-  //     },
-  //   }));
-
-  // };
   console.log(StartImage, "StartImage")
   console.log(errorScreen, "errorScreenu")
   const handleSelectChange = (e) => {
@@ -128,7 +89,6 @@ function MemoryModal({
       }
     }
 
-    // Update the memory data state with the selected card layout
     setMemoryData((prev) => ({
       ...prev,
       cardLayout: {
@@ -166,29 +126,7 @@ function MemoryModal({
       ...prev,
       isShowCover: newValue
     }))
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               playground: {
-    //                 ...block.struct.playground,
-    //                 isShowCover: e,
-    //               },
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+
   };
   const isValidWordCount = (text) => {
     console.log(text, "09485");
@@ -209,11 +147,7 @@ function MemoryModal({
   };
   const validateForm = () => {
     const newErrors = {
-      // header: !leadformModel.coverHeader?.trim(),
-      // headerWordCount: !isValidWordCount(leadformModel.coverHeader),
 
-      // buttonText: !leadformModel.buttonText, // check if buttonText is empty
-      // buttonTextWordCount: !isValidWordCount(leadformModel.buttonText),
 
       finalResultHeader: !finalResult.header?.trim(),
       finalResultHeaderWordCount: !isValidWordCount(finalResult.header),
@@ -252,32 +186,11 @@ function MemoryModal({
       ...prev,
       coverHeader: newvalue
     }))
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               playground: {
-    //                 ...block.struct.playground,
-    //                 coverHeader: e,
-    //               },
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
-  };
 
+  };
+  const handleDeleteImageResultForm = () => {
+    setfinalResult((prev) => ({ ...prev, imageSrc: null }));
+  };
   const handleChangeheaderButtonText = (e) => {
     const updatedData = {
       ...templateDetails,
@@ -313,19 +226,61 @@ function MemoryModal({
     setPairs(formData?.struct?.pairs)
     setfinalResult(formData?.struct?.finalScreen)
   }, [formData])
-
   useEffect(() => {
     if (selectedImage) {
-      // setOpen(true);
-      // setIsEditMedia(true);
-      console.log(selectedImage, "selectedImage090");
-      // When selectedImage changes, update the state to reflect the new image
-      setstartImage((prev) => ({
-        ...prev,
-        imageSrc: selectedImage, // Set the selected image
-      }));
+      if (selectedImageType === "start") {
+        setstartImage((prev) => ({ ...prev, imageSrc: selectedImage }));
+      } else if (selectedImageType === "final") {
+        setfinalResult((prev) => ({ ...prev, imageSrc: selectedImage }));
+      } else if (selectedImageType?.startsWith("pairs-")) {
+        const questionId = selectedImageType.split("pairs-")[1];
+        setPairs((prev) => {
+          const updatedPairList = prev.pairList.map((pair) =>
+            pair.id === questionId ? { ...pair, firstImage: { ...pair.firstImage, src: selectedImage } } : pair
+          );
+          return {
+            ...prev,
+            pairList: updatedPairList,
+          };
+        });
+      }
+
+      // setSelectedImageType(null);
     }
   }, [selectedImage]);
+
+  // useEffect(() => {
+  //   if (selectedImage) {
+  //     if (selectedImageType === "start") {
+  //       setstartImage((prev) => ({
+  //         ...prev,
+  //         imageSrc: selectedImage,
+  //       }));
+  //     } else if (selectedImageType === "final") {
+  //       setfinalResult((prev) => ({
+  //         ...prev,
+  //         imageSrc: selectedImage,
+  //       }));
+  //     }
+
+  //     // Reset after use (optional)
+  //     // setSelectedImage("");
+  //     setSelectedImageType(null);
+  //   }
+  // }, [selectedImage]);
+
+  // useEffect(() => {
+  //   if (selectedImage) {
+  //     // setOpen(true);
+  //     // setIsEditMedia(true);
+  //     console.log(selectedImage, "selectedImage090");
+  //     // When selectedImage changes, update the state to reflect the new image
+  //     setstartImage((prev) => ({
+  //       ...prev,
+  //       imageSrc: selectedImage, // Set the selected image
+  //     }));
+  //   }
+  // }, [selectedImage]);
   console.log(finalResult, "memoryData")
   const handleSaveMemory = () => {
     if (!validateForm()) {
@@ -345,7 +300,11 @@ function MemoryModal({
                   ...block,
                   struct: {
                     ...block.struct,
-                    playground: memoryData,
+                    playground: {
+                      ...memoryData,
+                      cardBackImage: StartImage.imageSrc
+
+                    },
                     pairs: {
                       ...block.struct.pairs,
                       pairList: pairs.pairList
@@ -505,11 +464,14 @@ function MemoryModal({
 
                                   <button
                                     className="button button-primary border-0"
-                                    onClick={() =>
+                                    onClick={() => {
+                                      setSelectedImageType("start");
+
                                       handleChangeLogo(
                                         "playing-card-back",
                                         formData?.id
                                       )
+                                    }
                                     }
                                   >
                                     {StartImage?.imageSrc
@@ -613,7 +575,7 @@ function MemoryModal({
             <div className="form-right scrollable-div">
               <h5>Approximate preview</h5>
               <div className={`formPreview cover_modal rankPreview`}>
-                <PreviewMemory data={formData} approxvalue={false} memoryData={memoryData}startImage = {StartImage?.imageSrc} />
+                <PreviewMemory data={formData} approxvalue={false} memoryData={memoryData} startImage={StartImage?.imageSrc} />
               </div>
             </div>
           </>
@@ -621,6 +583,7 @@ function MemoryModal({
 
         {selecteScreen === "pairs" && (
           <Pairs
+            setSelectedImageType={setSelectedImageType}
             setPairs={setPairs}
             pairs={pairs}
             formData={formData}
@@ -631,6 +594,8 @@ function MemoryModal({
 
         {selecteScreen === "final-screen" && (
           <ResultScreen
+            handleDeleteImageResultForm={handleDeleteImageResultForm}
+            setSelectedImageType={setSelectedImageType}
             setParentErros={setErrors}
             finalResult={finalResult}
             setfinalResult={setfinalResult}

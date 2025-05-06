@@ -14,6 +14,7 @@ import PreviewPuzzle from "views/pages/Templates/Preview/PreviewBlocks/Puzzle";
 import PreviewSlidingPuzzle from "views/pages/Templates/Preview/PreviewBlocks/SlidingPuzzle";
 
 function SlidingPuzzleModal({
+  selectedImage,
   selecteScreen,
   setSelectScreen,
   formData,
@@ -49,9 +50,12 @@ function SlidingPuzzleModal({
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
   const [coverHeader, setCoverHeader] = useState("");
+  const [selectedImageType, setSelectedImageType] = useState({ type: "" });
   const [coverButtonText, setCoverButtonText] = useState("");
   const [slidingpuzzle, setSlidingPuzzleData] = useState({})
   const [finalResult, setfinalResult] = useState({})
+  const [finalImage, setfinalImage] = useState({})
+
   const [errors, setErrors] = useState({
     header: false,
     buttonText: false,
@@ -59,6 +63,7 @@ function SlidingPuzzleModal({
     headerWordCount: false,
     buttonTextWordCount: false
   });
+  console.log(finalImage, "finalImage")
   const validateForm = () => {
     const newErrors = {
       header: !slidingpuzzle.coverHeader?.trim(),
@@ -337,10 +342,51 @@ function SlidingPuzzleModal({
 
     }
   }
+  console.log(formData?.struct?.finalScreen, "qwopdiowqu")
   useEffect(() => {
     setSlidingPuzzleData(formData?.struct?.playground)
     setfinalResult(formData?.struct?.final)
+    setfinalImage(formData?.struct?.finalScreen)
   }, [formData])
+  useEffect(() => {
+    if (selectedImage) {
+      console.log(selectedImageType, "selectedImageType")
+      console.log(selectedImage, "selectedImage090");
+      if (selectedImageType?.type === "slidingpuzzlestart") {
+        setSlidingPuzzleData((prev) => ({
+          ...prev,
+          imageUrl: selectedImage
+        }))
+        // setSelectedImageType(null);
+      }
+    } else if (selectedImageType.type === "slidingpuzzleFinal") {
+      console.log("HEEREERERRE")
+      setfinalImage((prev) => ({
+        ...prev,
+        imageSrc: selectedImage
+      }))
+      console.log(selectedImageType.type, "90weqr8r39")
+    }
+
+
+  }, [selectedImage, selectedImageType]);
+  console.log("jdowqdwqdqwd", finalResult)
+  // useEffect(() => {
+  //   if (!selectedImage || !selectedImageType) return;
+
+  //   const { type, questionID } = selectedImageType;
+
+  //   if (type === "slidingpuzzlestart") {
+  //     setSlidingPuzzleData((prev) => ({
+  //       ...prev,
+  //       imageUrl: selectedImage
+  //     }))
+  //     setSelectedImageType(null);
+  //   }
+
+
+  // }, [selectedImage, selectedImageType]);
+  console.log(slidingpuzzle?.imageUrl, "slidingpuzzleslidingpuzzle", selectedImage)
   return (
     <>
 
@@ -424,9 +470,9 @@ function SlidingPuzzleModal({
                             <div className="d-flex align-items-start">
                               <div className="mb-3">
                                 <div className="d-flex gap-2">
-                                  {formData?.struct?.playground.image && (
+                                  {slidingpuzzle?.imageUrl && (
                                     <img
-                                      src={formData?.struct?.playground.image}
+                                      src={slidingpuzzle?.imageUrl}
                                       alt="illustrationImage"
                                       className="image_illustrate"
                                       style={{
@@ -440,14 +486,16 @@ function SlidingPuzzleModal({
 
                                   <button
                                     className="button button-primary border-0"
-                                    onClick={() =>
+                                    onClick={() => {
+                                      setSelectedImageType({ type: "slidingpuzzlestart" })
                                       handleChangeLogo(
                                         "sliding-puzzle-image",
                                         formData?.id
                                       )
                                     }
+                                    }
                                   >
-                                    {formData?.struct?.playground.image
+                                    {slidingpuzzle?.imageUrl
                                       ? "Change"
                                       : "Upload"}
                                   </button>
@@ -559,11 +607,13 @@ function SlidingPuzzleModal({
         {
           selecteScreen === "final-screen" && (
             <ResultScreen
+              finalImage={finalImage}
+              slidingpuzzle={slidingpuzzle}
+              setSelectedImageType={setSelectedImageType}
               finalResult={finalResult}
               setParentErros={setErrors}
               setfinalResult={setfinalResult}
               parenterror={errors}
-              slidingpuzzle={slidingpuzzle}
               setErrorScreen={setErrorScreen}
               setTriggerNext={setTriggerNext}
               formData={formData}

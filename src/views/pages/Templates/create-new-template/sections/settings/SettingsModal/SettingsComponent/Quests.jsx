@@ -1,15 +1,15 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-function Quests({ formData, questions, handleChangeImage, treasurepairs, settreasuretiles }) {
+function Quests({ formData, setSelectedImageType, questions, selectedImage, handleChangeImage, treasurepairs, settreasuretiles }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(formData, "questionsquestionsquestions");
 
   const dispatch = useDispatch();
   console.log(treasurepairs, "treasurepairs")
-  // const handleQuestName = (e, id) => {
+
   //   const updatedData = {
   //     ...templateDetails,
   //     project_structure: {
@@ -110,183 +110,53 @@ function Quests({ formData, questions, handleChangeImage, treasurepairs, settrea
     }));
   };
 
-  // const handleQuestDescription = (e, id) => {
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) => {
-  //           if (block.id === formData.id) {
-  //             return {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 tiles: {
-  //                   ...block.struct.tiles,
-  //                   tileList: block.struct.tiles?.tileList?.map((tile) =>
-  //                     tile.id === id
-  //                       ? {
-  //                         ...tile,
-  //                         questDescription: e,
-  //                       }
-  //                       : tile
-  //                   ),
-  //                 },
-  //               },
-  //             };
-  //           }
-  //           return block;
-  //         }),
-  //       })),
-  //     },
-  //   };
-
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
-  // const handleButtonText = (e, id) => {
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) => {
-  //           if (block.id === formData.id) {
-  //             return {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 tiles: {
-  //                   ...block.struct.tiles,
-  //                   tileList: block.struct.tiles?.tileList?.map((tile) =>
-  //                     tile.id === id
-  //                       ? {
-  //                         ...tile,
-  //                         buttonText: e,
-  //                       }
-  //                       : tile
-  //                   ),
-  //                 },
-  //               },
-  //             };
-  //           }
-  //           return block;
-  //         }),
-  //       })),
-  //     },
-  //   };
-
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
-  // const handleButtonTextLink = (e, id) => {
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) => {
-  //           if (block.id === formData.id) {
-  //             return {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 tiles: {
-  //                   ...block.struct.tiles,
-  //                   tileList: block.struct.tiles?.tileList?.map((tile) =>
-  //                     tile.id === id
-  //                       ? {
-  //                         ...tile,
-  //                         buttonLink: e,
-  //                       }
-  //                       : tile
-  //                   ),
-  //                 },
-  //               },
-  //             };
-  //           }
-  //           return block;
-  //         }),
-  //       })),
-  //     },
-  //   };
-
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
-  // const handleQuestPassword = (e, id) => {
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) => {
-  //           if (block.id === formData.id) {
-  //             return {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 tiles: {
-  //                   ...block.struct.tiles,
-  //                   tileList: block.struct.tiles?.tileList?.map((tile) =>
-  //                     tile.id === id
-  //                       ? {
-  //                         ...tile,
-  //                         password: e,
-  //                       }
-  //                       : tile
-  //                   ),
-  //                 },
-  //               },
-  //             };
-  //           }
-  //           return block;
-  //         }),
-  //       })),
-  //     },
-  //   };
-
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
-
-  const handleDeleteOverLayImage = (id) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) => {
-            if (block.id === formData.id) {
-              return {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  tiles: {
-                    ...block.struct.tiles,
-                    tileList: block.struct.tiles?.tileList?.map((tile) =>
-                      tile.id === id
-                        ? {
-                          ...tile,
-                          overlaySrc: "",
-                        }
-                        : tile
-                    ),
-                  },
-                },
-              };
-            }
-            return block;
-          }),
-        })),
-      },
-    };
-
-    dispatch(updateTemplateAction(updatedData));
+  const handleDeleteOverLayImage = (questionId, fieldKey) => {
+    console.log("MEMEMMEEMEEMEMEEM")
+    settreasuretiles((prev) => {
+      const updatedTileList = prev.tileList.map((tile) =>
+        tile.id === questionId ? { ...tile, [fieldKey]: "" } : tile
+      );
+      return { ...prev, tileList: updatedTileList };
+    });
   };
+
+  // const handleDeleteOverLayImage = (id) => {
+  //   const updatedData = {
+  //     ...templateDetails,
+  //     project_structure: {
+  //       ...templateDetails.project_structure,
+  //       pages: templateDetails.project_structure.pages.map((page) => ({
+  //         ...page,
+  //         blocks: page.blocks.map((block) => {
+  //           if (block.id === formData.id) {
+  //             return {
+  //               ...block,
+  //               struct: {
+  //                 ...block.struct,
+  //                 tiles: {
+  //                   ...block.struct.tiles,
+  //                   tileList: block.struct.tiles?.tileList?.map((tile) =>
+  //                     tile.id === id
+  //                       ? {
+  //                         ...tile,
+  //                         overlaySrc: "",
+  //                       }
+  //                       : tile
+  //                   ),
+  //                 },
+  //               },
+  //             };
+  //           }
+  //           return block;
+  //         }),
+  //       })),
+  //     },
+  //   };
+
+  //   dispatch(updateTemplateAction(updatedData));
+  // };
   console.log(questions, "dfkjbfkjbfjkbfsfs");
+
   return (
     <>
       <div class="d-flex w-100 gap-3 gap-md-0">
@@ -333,12 +203,15 @@ function Quests({ formData, questions, handleChangeImage, treasurepairs, settrea
                           className="w-100"
                         />
                         <label
-                          onClick={() =>
+                          // HEHEHEHEHEHEHEHHHEH
+                          onClick={() => {
+                            setSelectedImageType({ type: "questHeader", questionID: question.id })
                             handleChangeImage(
                               "quest-header",
                               formData?.id,
                               question.id
                             )
+                          }
                           }
                           role="button"
                         >
@@ -348,7 +221,7 @@ function Quests({ formData, questions, handleChangeImage, treasurepairs, settrea
                     </div>
 
                     <div class="col-md-10">
-                      {console.log()}
+
                       <form>
                         <div class="mb-2">
                           <label class="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">Quest name</label>
@@ -433,6 +306,8 @@ function Quests({ formData, questions, handleChangeImage, treasurepairs, settrea
                               Quest header illustration
                             </label>
                             <div className="d-flex gap-2">
+                              {console.log(question, "oiqodqidoqiw")}
+                              {/* HEHEHEHEHEHEHHEHEEHEHEH */}
                               {question?.overlaySrc && (
                                 <img
                                   src={question?.overlaySrc}
@@ -444,12 +319,16 @@ function Quests({ formData, questions, handleChangeImage, treasurepairs, settrea
                                 htmlFor="overlayUpload"
                                 class="button button-primary"
                                 role="button"
-                                onClick={() =>
+                                onClick={() => {
+                                  setSelectedImageType({ type: "quest-overlay", questionID: question.id })
+
                                   handleChangeImage(
                                     "quest-overlay",
                                     formData?.id,
                                     question.id
                                   )
+
+                                }
                                 }
                               >
                                 Change
@@ -460,7 +339,7 @@ function Quests({ formData, questions, handleChangeImage, treasurepairs, settrea
                                   type="button"
                                   className="button button-secondary px-3 border-0 text-muted"
                                   onClick={() =>
-                                    handleDeleteOverLayImage(question.id)
+                                    handleDeleteOverLayImage(question.id, "overlaySrc")
                                   }
                                 >
                                   <i class="fa-solid fa-trash"></i>
@@ -476,7 +355,7 @@ function Quests({ formData, questions, handleChangeImage, treasurepairs, settrea
               </div>
             ))}
         </div>
-      </div>
+      </div >
     </>
   );
 }

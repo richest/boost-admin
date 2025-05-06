@@ -19,7 +19,8 @@ function PuzzleModal({
   formData,
   handleChangeLogo,
   setIsOpenFormModal,
-  setcloserror
+  setcloserror,
+  selectedImage
 }) {
   const [leading, setLeading] = useState({
     left: false,
@@ -27,6 +28,7 @@ function PuzzleModal({
   });
   console.log(selecteScreen, "selecteScreen")
   const [puzzle, setPuzzleData] = useState({})
+  const [selectedImageType, setSelectedImageType] = useState(null);
   const [errors, setErrors] = useState({
     header: false,
     buttonText: false,
@@ -34,6 +36,7 @@ function PuzzleModal({
     headerWordCount: false,
     buttonTextWordCount: false
   });
+  console.log(selectedImageType, "puzzlepuzzlepuzzlepuzzlepuzzlepuzzlepuzzle")
   const [votes, setVotes] = useState({
     left: 0,
     right: 0,
@@ -211,32 +214,6 @@ function PuzzleModal({
     // Re-run validation to check if button text is valid now
     validateForm();
   };
-  // const handleChangeheaderButtonText = (e) => {
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) =>
-  //           block.id === formData?.id
-  //             ? {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 playground: {
-  //                   ...block.struct.playground,
-  //                   coverButtonText: e,
-  //                 },
-  //               },
-  //             }
-  //             : block
-  //         ),
-  //       })),
-  //     },
-  //   };
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
 
   const validateForm = () => {
     const newErrors = {
@@ -338,7 +315,31 @@ function PuzzleModal({
     setPuzzleData(formData?.struct?.playground)
     setfinalResult(formData?.struct?.finalScreen)
   }, [formData])
-  console.log(formData?.struct, "dssds")
+  console.log(puzzle?.image, "dssds")
+
+  useEffect(() => {
+    if (selectedImage) {
+      console.log(selectedImageType, "selectedImageType")
+      console.log(selectedImage, "selectedImage090");
+      // have to chnage state acc to data state 
+      if (selectedImageType === "puzzleStart") {
+        setPuzzleData((prev) => ({
+          ...prev,
+          image: selectedImage,
+        }));
+
+      } else if (selectedImageType === "puzzleFinal") {
+        console.log("CAMEMEMEMEMEEME")
+        setfinalResult((prev) => ({
+          ...prev,
+          imageSrc: selectedImage
+        }))
+        console.log(selectedImageType, "90weqr8r39")
+      }
+    }
+  }, [selectedImage, selectedImageType]);
+  console.log(selectedImageType, "qwdwdo0o0eojhdjhqjdhdjhqjhdhd0eod99")
+  console.log(finalResult, "pqwwdjwq9d")
   return (
     <>
       <div className="form-option-wrap">
@@ -355,8 +356,6 @@ function PuzzleModal({
                 } else {
                   setSelectScreen("start-screen")
                 }
-
-
               }}
             >
               <i class="fa-solid fa-desktop"></i>
@@ -428,9 +427,9 @@ function PuzzleModal({
                             <div className="d-flex align-items-start">
                               <div className="mb-3">
                                 <div className="d-flex gap-2">
-                                  {formData?.struct?.playground.image && (
+                                  {puzzle?.image && (
                                     <img
-                                      src={formData?.struct?.playground.image}
+                                      src={puzzle?.image}
                                       alt="illustrationImage"
                                       className="image_illustrate"
                                       style={{
@@ -444,14 +443,16 @@ function PuzzleModal({
 
                                   <button
                                     className="button button-primary border-0"
-                                    onClick={() =>
+                                    onClick={() => {
+                                      setSelectedImageType("puzzleStart");
                                       handleChangeLogo(
                                         "puzzle-image",
                                         formData?.id
                                       )
                                     }
+                                    }
                                   >
-                                    {formData?.struct?.playground.image
+                                    {puzzle?.image
                                       ? "Change"
                                       : "Upload"}
                                   </button>
@@ -552,6 +553,7 @@ function PuzzleModal({
 
         {selecteScreen === "final-screen" && (
           <ResultScreen
+            setSelectedImageType={setSelectedImageType}
             setParentErros={setErrors}
             finalResult={finalResult}
             parenterror={errors}
@@ -563,7 +565,7 @@ function PuzzleModal({
             handleChangeImage={handleChangeLogo}
           />
         )}
-      </div>
+      </div >
       <ul className="Footer_footer__bMDNk">
         {selecteScreen !== "final-screen" && (
           <li className="Footer_footerItem__yaFNE">
@@ -581,42 +583,44 @@ function PuzzleModal({
           </button>
         </li>
       </ul>
-      {(errorScreen || triggerNext) && (
-        <div className="StopPanel_modalStop__Msu+K">
-          <div className="StopPanel_modalOverlay__1dGP2"></div>
-          <div className="StopPanel_modalContent__8Epq4">
-            <div className="StopPanel_note__c+Qou">
-              <div className="StopPanel_imageBox__2Udoo">
-                <img
-                  className="StopPanel_image__2gtri"
-                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
-                  alt=""
-                />
+      {
+        (errorScreen || triggerNext) && (
+          <div className="StopPanel_modalStop__Msu+K">
+            <div className="StopPanel_modalOverlay__1dGP2"></div>
+            <div className="StopPanel_modalContent__8Epq4">
+              <div className="StopPanel_note__c+Qou">
+                <div className="StopPanel_imageBox__2Udoo">
+                  <img
+                    className="StopPanel_image__2gtri"
+                    src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+                    alt=""
+                  />
+                </div>
+                <div className="StopPanel_textBox__stxYL">
+                  <h4 className="StopPanel_textTitle__T8v5c">
+                    Oh! Need more information
+                  </h4>
+                  <p className="StopPanel_textContent__2I+u6">
+                    Please fill all required fields on this tab for the quiz to
+                    work correctly.
+                  </p>
+                </div>
               </div>
-              <div className="StopPanel_textBox__stxYL">
-                <h4 className="StopPanel_textTitle__T8v5c">
-                  Oh! Need more information
-                </h4>
-                <p className="StopPanel_textContent__2I+u6">
-                  Please fill all required fields on this tab for the quiz to
-                  work correctly.
-                </p>
+              <div className="StopPanel_buttons__cZz5n">
+                <button
+                  onClick={() => {
+                    setErrorScreen(false);
+                    // setTriggerNext(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Back
+                </button>
               </div>
-            </div>
-            <div className="StopPanel_buttons__cZz5n">
-              <button
-                onClick={() => {
-                  setErrorScreen(false);
-                  // setTriggerNext(false);
-                }}
-                className="button button-primary px-3 text-decoration-none"
-              >
-                Back
-              </button>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
     </>
   );
 }

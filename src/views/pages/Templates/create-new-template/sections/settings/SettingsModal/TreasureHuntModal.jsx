@@ -13,6 +13,7 @@ function TreasureHuntModal({
   formData,
   handleChangeLogo,
   setIsOpenFormModal,
+  selectedImage
 }) {
   const questsLength = [
     {
@@ -45,12 +46,13 @@ function TreasureHuntModal({
     buttonTextWordCount: false
   });
   const [finalResult, setfinalResult] = useState({})
+  const [selectedImageType, setSelectedImageType] = useState({ type: "" });
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
   console.log(treasurePlayground, "treasurePlayground")
   const dispatch = useDispatch();
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
-
+  console.log(finalResult, "treasurePlaygroundtreasurePlayground")
   const handleSelectChange = (e) => {
     try {
       console.log("Select change triggered", e);
@@ -146,73 +148,7 @@ function TreasureHuntModal({
 
   console.log(treasurePlayground, "treasurepairs")
 
-  //   let cols, rows;
-  //   let updatedTileList = [...(formData?.struct?.tiles?.tileList || [])];
 
-  //   if (e.value === "1") {
-  //     cols = 1;
-  //     rows = 1;
-  //   } else if (e.value === "4") {
-  //     cols = 2;
-  //     rows = 2;
-  //   } else if (e.value === "6") {
-  //     cols = 3;
-  //     rows = 2;
-  //   } else if (e.value === "9") {
-  //     cols = 3;
-  //     rows = 3;
-  //   }
-
-  //   const requiredLength = parseInt(e.value, 10);
-
-  //   if (updatedTileList.length > requiredLength) {
-  //     updatedTileList = updatedTileList.slice(0, requiredLength);
-  //   } else {
-  //     for (let i = updatedTileList.length; i < requiredLength; i++) {
-  //       updatedTileList.push({
-  //         id: generateShortId(),
-  //         quest: `Quest ${i + 1}`,
-  //         password: `Correct Answer ${i + 1}`,
-  //       });
-  //     }
-  //   }
-
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) =>
-  //           block.id === formData?.id
-  //             ? {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 tiles: {
-  //                   ...block.struct.tiles,
-  //                   tileList: updatedTileList, // Maintain old data while updating the list
-  //                 },
-  //                 playground: {
-  //                   ...block.struct.playground,
-  //                   layout: {
-  //                     ...block.struct.playground.layout,
-  //                     cols: cols,
-  //                     rows: rows,
-  //                     label: e.label,
-  //                     value: e.value,
-  //                   },
-  //                 },
-  //               },
-  //             }
-  //             : block
-  //         ),
-  //       })),
-  //     },
-  //   };
-
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
   const handlehangepropertions = (e) => {
     // update local preview state
     settreasurePlayground((prev) => ({
@@ -223,58 +159,7 @@ function TreasureHuntModal({
     // update global template data
 
   };
-  // const handlehangepropertions = (prop) => {
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) =>
-  //           block.id === formData?.id
-  //             ? {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 playground: {
-  //                   ...block.struct.playground,
-  //                   cardProportions: prop,
-  //                 },
-  //               },
-  //             }
-  //             : block
-  //         ),
-  //       })),
-  //     },
-  //   };
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
-  // const handleShowQuestCover = (e) => {
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) =>
-  //           block.id === formData?.id
-  //             ? {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 playground: {
-  //                   ...block.struct.playground,
-  //                   isShowQuestCover: e,
-  //                 },
-  //               },
-  //             }
-  //             : block
-  //         ),
-  //       })),
-  //     },
-  //   };
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
+
   const handleShowQuestCover = (e) => {
     // ✅ update local playground state
     settreasurePlayground((prev) => ({
@@ -290,33 +175,7 @@ function TreasureHuntModal({
     }));
   };
 
-  // const handleSelectPosition = (e) => {
-  //   console.log(e, "checkposition");
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) =>
-  //           block.id === formData?.id
-  //             ? {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 playground: {
-  //                   ...block.struct.playground,
-  //                   coverPosition: e,
-  //                 },
-  //               },
-  //             }
-  //             : block
-  //         ),
-  //       })),
-  //     },
-  //   };
-  //   dispatch(updateTemplateAction(updatedData));
-  // };
+
   console.log(selecteScreen, "checkacrelkrnl");
   const validateForm = () => {
     const newErrors = {
@@ -341,12 +200,10 @@ function TreasureHuntModal({
   const isValidWordCount = (text) => {
     console.log(text, "09485");
 
-    // Ensure text is a valid string before calling trim
     if (typeof text !== 'string') {
       return false;  // Return false if the text is not a string
     }
 
-    // Remove leading/trailing spaces and collapse multiple spaces between words
     const trimmedText = text.trim().replace(/\s+/g, ' ');
 
     // Split the text into an array of words
@@ -355,20 +212,17 @@ function TreasureHuntModal({
     console.log(trimmedText, "trimmed text");  // Debug the trimmed text
     console.log(wordCount, "word count"); // Log the word count to verify
 
-    // Return true if the word count is less than or equal to 20
     return wordCount <= 20 && wordCount > 0;  // Ensure that word count is greater than 0
   };
   useEffect(() => {
     console.log(formData, "Form Data");
 
     if (formData?.struct?.playground) {
-      // Initialize treasurePlayground from formData
       settreasurePlayground(formData?.struct?.playground);
     }
 
     if (formData?.struct?.tiles) {
       console.log("IYIYYIY")
-      // Initialize treasuretiles from formData
       settreasuretiles(formData?.struct?.tiles);
     }
     if (formData?.struct?.finalScreen) {
@@ -410,7 +264,7 @@ function TreasureHuntModal({
     console.log("Proceed to next step");
   };
   const handleSaveTreasureHunt = () => {
-    
+
     console.log("Saving treasure hunt...");
     if (!validateForm()) {
       setErrorScreen(true);
@@ -460,7 +314,6 @@ function TreasureHuntModal({
     }
   };
   useEffect(() => {
-    // Initialize layout if not present
     if (!treasurePlayground?.layout && questsLength?.[0]) {
       settreasurePlayground((prev) => ({
         ...prev,
@@ -473,6 +326,88 @@ function TreasureHuntModal({
       }));
     }
   }, []);
+  useEffect(() => {
+    if (!selectedImage || !selectedImageType) return;
+
+    const { type, questionID } = selectedImageType;
+
+    if (type === "finalTreasureHunt") {
+      console.log("jiowjhdfiwheufyuey");
+      setfinalResult((prev) => ({
+        ...prev,
+        imageSrc: selectedImage
+      }));
+    }
+
+    if (questionID) {
+      settreasuretiles((prev) => {
+        const updatedTileList = prev.tileList.map((tile) => {
+          if (tile.id === questionID) {
+            if (type === "questHeader") {
+              console.log("RREREREREREREREEER");
+              return { ...tile, headerImgSrc: selectedImage };
+            } else if (type === "quest-overlay") {
+              console.log("HIIIIIIIIIIIIIIIIIIIII*&u");
+              return { ...tile, overlaySrc: selectedImage };
+            }
+          }
+          return tile;
+        });
+
+        return { ...prev, tileList: updatedTileList };
+      });
+    }
+
+    // setSelectedImageType(null);
+  }, [selectedImage]);
+
+  // useEffect(() => {
+  //   if (selectedImage) {
+  //     if (selectedImageType === "questHeader") {
+  //       settreasuretiles((prev) => ({ ...prev, imageSrc: selectedImage }));
+  //     } else if (selectedImageType === "final") {
+  //       setfinalResult((prev) => ({ ...prev, imageSrc: selectedImage }));
+  //     }
+
+  //     setSelectedImageType(null);
+  //   }
+  // }, [selectedImage]);
+  console.log(finalResult, "opwefoifwur932r78")
+  useEffect(() => {
+    if (!selectedImage || !selectedImageType) return;
+
+    const { type, questionID } = selectedImageType;
+
+    if (["first-image", "second-image", "first-audio", "second-audio"].includes(type)) {
+      const imageField = type.startsWith("first") ? "firstImage" : "secondImage";
+      const mediaType = type.endsWith("audio") ? "audio" : "image";
+
+      setPairs((prev) => {
+        const updatedPairList = prev.pairList.map((pair) => {
+          if (pair.id === questionID) {
+            return {
+              ...pair,
+              [imageField]: {
+                ...pair[imageField],
+                src: selectedImage,
+                cardType: mediaType,
+              },
+            };
+          }
+          return pair;
+        });
+
+        return {
+          ...prev,
+          pairList: updatedPairList,
+        };
+      });
+
+      // setSelectedImageType(null);
+    }
+
+
+  }, [selectedImage]);
 
   return (
     <>
@@ -722,6 +657,7 @@ function TreasureHuntModal({
 
         {selecteScreen === "quests" && (
           <Quests
+            setSelectedImageType={setSelectedImageType}
             settreasuretiles={settreasuretiles}
             treasurepairs={treasurepairs}
             formData={formData}
@@ -731,6 +667,7 @@ function TreasureHuntModal({
         )}
         {selecteScreen === "treasureMap" && (
           <ResultScreen
+            setSelectedImageType={setSelectedImageType}
             setParentErros={setErrors}
             finalResult={finalResult}
             setfinalResult={setfinalResult}

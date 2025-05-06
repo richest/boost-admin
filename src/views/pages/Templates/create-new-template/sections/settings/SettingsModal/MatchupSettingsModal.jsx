@@ -5,6 +5,7 @@ import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/action
 import { useDispatch, useSelector } from "react-redux";
 
 function MatchUpModal({
+  selectedImage,
   selecteScreen,
   setSelectScreen,
   formData,
@@ -14,6 +15,7 @@ function MatchUpModal({
     isLargeCards: false,
     pairList: [],
   })
+  const [selectedImageType, setSelectedImageType] = useState({ type: "" });
   const [finalResult, setfinalResult] = useState({})
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
@@ -22,26 +24,22 @@ function MatchUpModal({
     finalResultHeader: false,
 
   });
-  console.log(errors, "errorserrors")
+  console.log(pairData, "errorserrors")
   const dispatch = useDispatch();
   const isValidWordCount = (text) => {
     console.log(text, "09485");
 
-    // Ensure text is a valid string before calling trim
     if (typeof text !== 'string') {
       return false;  // Return false if the text is not a string
     }
 
-    // Remove leading/trailing spaces and collapse multiple spaces between words
     const trimmedText = text.trim().replace(/\s+/g, ' ');
 
-    // Split the text into an array of words
     const wordCount = trimmedText.split(' ').length;
 
     console.log(trimmedText, "trimmed text");  // Debug the trimmed text
     console.log(wordCount, "word count"); // Log the word count to verify
 
-    // Return true if the word count is less than or equal to 20
     return wordCount <= 20 && wordCount > 0;  // Ensure that word count is greater than 0
   };
   console.log(finalResult, "finalResultfinalResult")
@@ -79,8 +77,8 @@ function MatchUpModal({
       setTriggerNext(false);
       if (selecteScreen == "start-screen") {
         setSelectScreen("final-screen");
-      } 
-      
+      }
+
       // else if (selecteScreen == "quests")
       //    {
       //   console.log("jsajasdjhjdh");
@@ -160,6 +158,47 @@ function MatchUpModal({
       setPairData(formData.struct.pairs);
     }
   }, [formData]);
+  useEffect(() => {
+    if (!selectedImage || !selectedImageType) return;
+
+    const { type, questionID } = selectedImageType;
+    console.log(type, "typetypetype")
+    if (["first-image", "second-image", "first-audio", "second-audio"].includes(type)) {
+      const imageField = type.startsWith("first") ? "firstImage" : "secondImage";
+      const mediaType = type.endsWith("audio") ? "audio" : "image";
+
+      setPairData((prev) => {
+        const updatedPairList = prev.pairList.map((pair) => {
+          if (pair.id === questionID) {
+            return {
+              ...pair,
+              [imageField]: {
+                ...pair[imageField],
+                src: selectedImage,
+                cardType: mediaType,
+              },
+            };
+          }
+          return pair;
+        });
+
+        return {
+          ...prev,
+          pairList: updatedPairList,
+        };
+      });
+
+      // setSelectedImageType(null);
+    }
+    if (selectedImageType.type === "finalMatchUp" && selectedImage) {
+      setfinalResult((prev) => ({
+        ...prev,
+        imageSrc: selectedImage
+      }))
+    }
+    // Add your other cases (questHeader, finalTreasureHunt, etc.) below as needed
+  }, [selectedImage]);
+
   return (
     <>
       <div className="form-option-wrap">
@@ -206,6 +245,7 @@ function MatchUpModal({
 
         {selecteScreen === "start-screen" && (
           <MatchUpPairs
+            setSelectedImageType={setSelectedImageType}
             setPairData={setPairData}
             pairData={pairData}
             selecteScreen={selecteScreen}
@@ -216,6 +256,7 @@ function MatchUpModal({
         )}
         {selecteScreen === "final-screen" && (
           <ResultScreen
+            setSelectedImageType={setSelectedImageType}
             handleDeleteImageResultForm={handleDeleteImageResultForm}
             setParentErros={setErrors}
             finalResult={finalResult}

@@ -4,7 +4,7 @@ import QuestionsScreen from "./SettingsComponent/QuestionsScreen";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 import PersonalityQuestionScreen from "./SettingsComponent/PersonalityQuestionScreen";
-
+// setSelectedImageType({ type: "finalPersonality", resultId: result.id });
 function PersonalitySettingModal({
   selecteScreen,
   setSelectScreen,
@@ -33,70 +33,24 @@ function PersonalitySettingModal({
   const [personalityquiz, setPersonalityQuiz] = useState({}); // if it's a single object (cover)
   const [personalityquizquestion, setPersonalityQuizQuestion] = useState([]); // should be array of questions
   const [finalResult, setfinalResult] = useState([]); // should be array of results
-
+  const [selectedImageType, setSelectedImageType] = useState({});
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
-
+  console.log(finalResult, "finalResultfinalResult")
   const handleheaderText = (e) => {
     setPersonalityQuiz((prev) => ({
       ...prev,
       header: e
     }))
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               cover: {
-    //                 ...block.struct.cover,
-    //                 header: e,
-    //               },
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+
   };
-  console.log(personalityquiz, "personalityquizpersonalityquiz")
+  console.log(personalityquizquestion, "personalityquizpersonalityquiz")
   const handleDescriptionText = (e) => {
     setPersonalityQuiz((prev) => ({
       ...prev,
       description: e
     }))
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               cover: {
-    //                 ...block.struct.cover,
-    //                 description: e,
-    //               },
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+
   };
 
   const handleDButtonText = (e) => {
@@ -104,30 +58,7 @@ function PersonalitySettingModal({
       ...prev,
       buttonText: e
     }))
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               cover: {
-    //                 ...block.struct.cover,
-    //                 buttonText: e,
-    //               },
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+
   };
 
   const handleAddImageDisclimar = (e) => {
@@ -135,30 +66,7 @@ function PersonalitySettingModal({
       ...prev,
       imageDisclaimer: e
     }))
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               cover: {
-    //                 ...block.struct.cover,
-    //                 imageDisclaimer: e,
-    //               },
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+
   };
 
   const handleChangeAdditionalText = (e) => {
@@ -191,61 +99,23 @@ function PersonalitySettingModal({
     dispatch(updateTemplateAction(updatedData));
   };
 
-  //   const handleDeleteItem = (id) => {
-  //     setNewFieldsArray((prevFieldsArray) =>
-  //       prevFieldsArray.filter((item) => item.id !== id)
-  //     );
 
-  //     const updatedData = {
-  //       ...templateDetails,
-  //       project_structure: {
-  //         ...templateDetails.project_structure,
-  //         pages: templateDetails.project_structure.pages.map((page) => ({
-  //           ...page,
-  //           blocks: page.blocks.map((block) =>
-  //             block.id === formData?.id
-  //               ? {
-  //                 ...block,
-  //                 struct: {
-  //                   ...block.struct,
-  //                   leadFormStruct: {
-  //                     ...block.struct.leadFormStruct,
-  //                     form: {
-  //                       ...block.struct.leadFormStruct.form,
-  //                       fields: block.struct.leadFormStruct.form.fields.filter(
-  //                         (field) => field.id !== id
-  //                       ),
-  //                     },
-  //                   },
-  //                 },
-  //               }
-  //               : block
-  //           ),
-  //         })),
-  //       },
-  //     };
-
-  //     dispatch(updateTemplateAction(updatedData));
-  //   };
   const isValidWordCount = (text) => {
     console.log(text, "09485");
 
-    // Ensure text is a valid string before calling trim
+
     if (typeof text !== 'string') {
-      return false;  // Return false if the text is not a string
+      return false;
     }
 
-    // Remove leading/trailing spaces and collapse multiple spaces between words
     const trimmedText = text.trim().replace(/\s+/g, ' ');
 
-    // Split the text into an array of words
     const wordCount = trimmedText.split(' ').length;
 
-    console.log(trimmedText, "trimmed text");  // Debug the trimmed text
-    console.log(wordCount, "word count"); // Log the word count to verify
+    console.log(trimmedText, "trimmed text");
+    console.log(wordCount, "word count");
 
-    // Return true if the word count is less than or equal to 20
-    return wordCount <= 20 && wordCount > 0;  // Ensure that word count is greater than 0
+    return wordCount <= 20 && wordCount > 0;
   };
   const validateForm = () => {
     const questionErrors = personalityquizquestion.map((question) => {
@@ -274,7 +144,6 @@ function PersonalitySettingModal({
       return q.text || q.answers?.some((a) => a.text);
     });
 
-    // Final result validation
     const finalResultErrors = finalResult.map((res) => {
       const resErrors = {};
       if (!res.header?.trim()) {
@@ -287,18 +156,15 @@ function PersonalitySettingModal({
 
     const hasFinalError = finalResultErrors.some((r) => Object.keys(r).length > 0);
 
-    // Validate Header for personalityquiz
     const personalityQuizErrors = {};
     if (!personalityquiz?.header?.trim()) {
       personalityQuizErrors.header = "Header is required";
     }
 
-    // Validate Button Text for personalityquiz
     if (!personalityquiz?.buttonText?.trim()) {
       personalityQuizErrors.buttonText = "Button text is required";
     }
 
-    // Final validation object
     const newErrors = {
       questions: questionErrors,
       results: finalResultErrors,
@@ -332,23 +198,7 @@ function PersonalitySettingModal({
     console.log("Proceed to next step");
   };
 
-  // const validateForm = () => {
-  //   const resultErrors = finalResult.map((res) => {
-  //     const errors = {};
-  //     if (!res.header?.trim()) {
-  //       errors.header = "Header can't be empty";
-  //     } else if (!isValidWordCount(res.header)) {
-  //       errors.header = "Header exceeds allowed word count";
-  //     }
-  //     return errors;
-  //   });
 
-  //   const hasErrors = resultErrors.some((err) => Object.keys(err).length > 0);
-
-  //   setErrors({ results: resultErrors });
-
-  //   return !hasErrors;
-  // };
   console.log(errors, "sopaispa")
 
   const handleShowStartScreen = (e) => {
@@ -359,30 +209,7 @@ function PersonalitySettingModal({
     }))
 
     console.log(personalityquiz, "PEPPPEPPPE")
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               cover: {
-    //                 ...block.struct.cover,
-    //                 isShowCover: e,
-    //               },
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+
   };
   const handleSavePersonalityQuiz = () => {
     console.log("Saving PersonalityQuiz...");
@@ -406,9 +233,9 @@ function PersonalitySettingModal({
                   ...block.struct,
                   cover: {
                     ...personalityquiz,
-                    image: selectedImage || settingsData?.imageSrc, 
+                    image: selectedImage || settingsData?.imageSrc,
                   },
-                  
+
                   questions: personalityquizquestion,
                   results: finalResult,
                 },
@@ -433,32 +260,36 @@ function PersonalitySettingModal({
     setfinalResult(formData?.struct?.results
     )
   }, [formData])
-  // useEffect(() => {
-  //   if (selectedImage) {
-  //     setPersonalityQuiz((prev) => ({
-  //       ...prev,
-  //       image: selectedImage,
-  //     }));
-  //   } else {
-  //     setPersonalityQuiz(formData?.struct?.cover || {});
-  //   }
-
-  //   setPersonalityQuizQuestion(formData?.struct?.questions || []);
-  //   setfinalResult(formData?.struct?.results || []);
-  // }, [formData, selectedImage]);
 
   useEffect(() => {
     if (selectedImage) {
-      // setOpen(true);
-      // setIsEditMedia(true);
+      console.log(selectedImageType, "selectedImageType")
       console.log(selectedImage, "selectedImage090");
-      // When selectedImage changes, update the state to reflect the new image
-      setSettingsaData((prev) => ({
-        ...prev,
-        imageSrc: selectedImage, // Set the selected image
-      }));
+      if (selectedImageType.type === "startpersonality") {
+        setSettingsaData((prev) => ({
+          ...prev,
+          imageSrc: selectedImage,
+        }));
+
+      } else if (selectedImageType.type === "personalityquestion") {
+        setPersonalityQuizQuestion((prev) =>
+          prev.map((question) =>
+            question.id === selectedImageType.questionId ? { ...question, image: selectedImage } : question
+          )
+        );
+        console.log(selectedImageType.type, "90weqr8r39")
+      } else if (selectedImageType.type === "finalPersonality") {
+        console.log(selectedImageType.type === "finalPersonality", "`34534535345345`")
+        setfinalResult((prev) =>
+          prev.map((result) => {
+            console.log(result.id, "resultId", selectedImageType.resultId);
+            return result.id === selectedImageType.resultId ? { ...result, image: selectedImage } : result;
+          })
+        );
+      }
     }
-  }, [selectedImage]);
+  }, [selectedImage, selectedImageType]);
+  console.log(selectedImageType.type, "odiwoqdwq")
   return (
     <> <div className="form-option-wrap">
       <div className="form-start">
@@ -581,8 +412,11 @@ function PersonalitySettingModal({
                           />
                           <button
                             className="button button-primary border-0 font-sm"
-                            onClick={() =>
+                            onClick={() => {
+                              setSelectedImageType({ type: "startpersonality" });
+
                               handleChangeLogo("quiz-cover", formData?.id)
+                            }
                             }
                           >
                             Change
@@ -673,7 +507,7 @@ function PersonalitySettingModal({
 
       {selecteScreen === "questions" && (
         <PersonalityQuestionScreen
-        
+          setSelectedImageType={setSelectedImageType}
           errors={errors}
           setPersonalityQuizQuestion={setPersonalityQuizQuestion}
           personalityquizquestion={personalityquizquestion}
@@ -689,7 +523,7 @@ function PersonalitySettingModal({
       )}
       {selecteScreen === "results" && (
         <ResultScreen
-
+          setSelectedImageType={setSelectedImageType}
           personalityquizquestion={personalityquizquestion}
           setParentErros={setErrors}
           finalResult={finalResult}
@@ -701,7 +535,7 @@ function PersonalitySettingModal({
           handleChangeImage={handleChangeLogo}
         />
       )}
-    </div> <ul className="Footer_footer__bMDNk">
+    </div > <ul className="Footer_footer__bMDNk">
         {selecteScreen !== "results" && (
           <li className="Footer_footerItem__yaFNE">
             <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
@@ -719,42 +553,44 @@ function PersonalitySettingModal({
           </button>
         </li>
       </ul>
-      {(errorScreen || triggerNext) && (
-        <div className="StopPanel_modalStop__Msu+K">
-          <div className="StopPanel_modalOverlay__1dGP2"></div>
-          <div className="StopPanel_modalContent__8Epq4">
-            <div className="StopPanel_note__c+Qou">
-              <div className="StopPanel_imageBox__2Udoo">
-                <img
-                  className="StopPanel_image__2gtri"
-                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
-                  alt=""
-                />
+      {
+        (errorScreen || triggerNext) && (
+          <div className="StopPanel_modalStop__Msu+K">
+            <div className="StopPanel_modalOverlay__1dGP2"></div>
+            <div className="StopPanel_modalContent__8Epq4">
+              <div className="StopPanel_note__c+Qou">
+                <div className="StopPanel_imageBox__2Udoo">
+                  <img
+                    className="StopPanel_image__2gtri"
+                    src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+                    alt=""
+                  />
+                </div>
+                <div className="StopPanel_textBox__stxYL">
+                  <h4 className="StopPanel_textTitle__T8v5c">
+                    Oh! Need more information
+                  </h4>
+                  <p className="StopPanel_textContent__2I+u6">
+                    Please fill all required fields on this tab for the quiz to
+                    work correctly.
+                  </p>
+                </div>
               </div>
-              <div className="StopPanel_textBox__stxYL">
-                <h4 className="StopPanel_textTitle__T8v5c">
-                  Oh! Need more information
-                </h4>
-                <p className="StopPanel_textContent__2I+u6">
-                  Please fill all required fields on this tab for the quiz to
-                  work correctly.
-                </p>
+              <div className="StopPanel_buttons__cZz5n">
+                <button
+                  onClick={() => {
+                    setErrorScreen(false);
+                    setTriggerNext(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Back
+                </button>
               </div>
-            </div>
-            <div className="StopPanel_buttons__cZz5n">
-              <button
-                onClick={() => {
-                  setErrorScreen(false);
-                  setTriggerNext(false);
-                }}
-                className="button button-primary px-3 text-decoration-none"
-              >
-                Back
-              </button>
             </div>
           </div>
-        </div>
-      )}</>
+        )
+      }</>
   );
 }
 

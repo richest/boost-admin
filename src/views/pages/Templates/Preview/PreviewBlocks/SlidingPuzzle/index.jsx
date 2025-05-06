@@ -39,7 +39,7 @@ function PreviewSlidingPuzzle({
   // // coverHeader
   // console.log(PLayGroundData?.coverButtonText, "PLayGroundDataPLayGroundData")
   const GameType = PLayGroundData?.gameType;
-  const PuzzleImage = PLayGroundData?.imageUrl;
+  const PuzzleImage = slidingpuzzle?.imageUrl || PLayGroundData?.imageUrl;
 
   const TileCount = PLayGroundData?.tilesCount;
   const HeaderMessage = PLayGroundData?.coverHeader;

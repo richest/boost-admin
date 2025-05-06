@@ -17,7 +17,8 @@ import {
   IconSettings,
   IconMailCheck,
   IconBrandStripe,
-  IconBlockquote
+  IconBlockquote,
+  
 } from "@tabler/icons-react";
 import { AUTH_ROUTE_SLUGS } from "app/constants";
 
@@ -91,10 +92,10 @@ const dashboard = {
     // },
     {
       id: "payments",
-      title: "PAYMENTS",
+      title: "Payments",
       type: "item",
       url: AUTH_ROUTE_SLUGS.PAYMENTS.ROOT,
-      icon: icons.IconBlockquote,
+      icon: icons.IconCashBanknote,
       breadcrumbs: false,
     },
     {

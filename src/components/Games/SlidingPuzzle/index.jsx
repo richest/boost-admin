@@ -8,6 +8,8 @@ function SlidingPuzzle({
   handleSelectBlock,
   handleDeleteBlock,
   handleEditModal,
+  isFirst,
+  isLast,
   setShowTemplatePreview,
   cloneblock,
   handleMoveDown,
@@ -841,22 +843,22 @@ console.log("REOI9903rr98u0r39")
       <ul
         className={`${isSelected ? "inlineControls selected-controls" : "inlineControls"}  `}
       >
-        <li
+       {!isFirst && (<li
           className="Inline_control__list"
           title="Move up"
           role="button"
           onClick={() => handleMoveUp(data.id)}
         >
           <i className="fa-solid fa-arrow-up"></i>
-        </li>
-        <li
+        </li>)}
+        {!isLast && (<li
           className="Inline_control__list"
           title="Move down"
           role="button"
           onClick={() => handleMoveDown(data.id)}
         >
           <i className="fa-solid fa-arrow-down"></i>
-        </li>
+        </li>)}
         <li
           className="Inline_control__list"
           title="Clone"

@@ -11,6 +11,8 @@ function Memory({
   data,
   isSelected,
   handleSelectBlock,
+  isFirst,
+  isLast,
   handleDeleteBlock,
   handleEditModal,
   setShowTemplatePreview,
@@ -577,98 +579,98 @@ function Memory({
                 {(gameWon ||
                   (gameOver &&
                     mainData?.struct?.timerType?.value === "countdown")) && (
-                  <>
-                    <div className="fine-one-pair-finalScreen pt-4">
-                      <div className="fine-one-pair-finalScreen-img">
-                        {gameOver ? (
-                          <img
-                            src={mainData?.struct?.timeIsUpScreen?.imageSrc}
-                            alt="imagesss"
-                          />
-                        ) : (
-                          <img src={finalScreen?.imageSrc} alt="imagesss" />
-                        )}
-                      </div>
-                      <div className="fine-one-pair-finalScreen-text">
-                        <h5>
-                          {gameOver
-                            ? mainData?.struct?.timeIsUpScreen?.header
-                            : finalScreen?.header}
-                        </h5>
-                        <div dangerouslySetInnerHTML={{ __html: finalDes }} />
-
-                        {!gameOver && mainData?.struct?.isActionButton && (
-                          <a
-                            href={mainData?.struct?.actionButtonLink}
-                            style={{
-                              backgroundColor: `${mainData?.struct?.colorTheme}`,
-                            }}
-                            onClick={handleRestart}
-                            className="btn btn-outline-dark"
-                          >
-                            {mainData?.struct?.actionButtonText}
-                          </a>
-                        )}
-
-                        {!mainData?.struct?.isHideRestartButton && (
-                          <button
-                            onClick={handleRestart}
-                            className="btn btn-outline-dark"
-                          >
-                            Restart
-                          </button>
-                        )}
-                      </div>
-
-                      {!gameOver && mainData?.struct?.enableTimer && (
-                        <div className="fine-one-pair-finalScreen-result">
-                          {mainData?.struct?.enableStars &&
-                            starsTimeArray.map((item, i) =>
-                              item > timeTaken ? (
-                                <FaStar key={i} />
-                              ) : (
-                                <CiStar key={i} />
-                              )
-                            )}
-                          <p className="m-0">
-                            Your result:{" "}
-                            {mainData?.struct?.timerType?.value === "countdown"
-                              ? formattedTimeLeft
-                              : formattedTimeTaken}
-                            s
-                          </p>
+                    <>
+                      <div className="fine-one-pair-finalScreen pt-4">
+                        <div className="fine-one-pair-finalScreen-img">
+                          {gameOver ? (
+                            <img
+                              src={mainData?.struct?.timeIsUpScreen?.imageSrc}
+                              alt="imagesss"
+                            />
+                          ) : (
+                            <img src={finalScreen?.imageSrc} alt="imagesss" />
+                          )}
                         </div>
-                      )}
-                    </div>
-                    {(mainData?.struct?.isShowRatingEmail ||
-                      mainData?.struct?.isEnableRating) &&
-                      !gameOver && (
-                        <>
-                          <div className="fine-one-pair-finalScreen-bestResult mt-4">
-                            <p className="p-4">Best results:</p>
-                            <ol>
-                              {bestResults?.map((item, i) => (
-                                <li key={i}>
-                                  <div className="d-flex justify-content-between p-4">
-                                    <p>{item.name}</p>
-                                    <p>{item.time}</p>
-                                  </div>
-                                </li>
-                              ))}
-                            </ol>
-                          </div>
-                          <div className="fine-one-pair-finalScreen-bestResult my-4">
-                            <div className="d-flex justify-content-between p-4">
-                              <p>You</p>
-                              <p>{formattedTimeTaken}s</p>
-                            </div>
-                          </div>
-                        </>
-                      )}
+                        <div className="fine-one-pair-finalScreen-text">
+                          <h5>
+                            {gameOver
+                              ? mainData?.struct?.timeIsUpScreen?.header
+                              : finalScreen?.header}
+                          </h5>
+                          <div dangerouslySetInnerHTML={{ __html: finalDes }} />
 
-                    {mainData?.struct?.isShowLeadForm && <p>LeadForm</p>}
-                  </>
-                )}
+                          {!gameOver && mainData?.struct?.isActionButton && (
+                            <a
+                              href={mainData?.struct?.actionButtonLink}
+                              style={{
+                                backgroundColor: `${mainData?.struct?.colorTheme}`,
+                              }}
+                              onClick={handleRestart}
+                              className="btn btn-outline-dark"
+                            >
+                              {mainData?.struct?.actionButtonText}
+                            </a>
+                          )}
+
+                          {!mainData?.struct?.isHideRestartButton && (
+                            <button
+                              onClick={handleRestart}
+                              className="btn btn-outline-dark"
+                            >
+                              Restart
+                            </button>
+                          )}
+                        </div>
+
+                        {!gameOver && mainData?.struct?.enableTimer && (
+                          <div className="fine-one-pair-finalScreen-result">
+                            {mainData?.struct?.enableStars &&
+                              starsTimeArray.map((item, i) =>
+                                item > timeTaken ? (
+                                  <FaStar key={i} />
+                                ) : (
+                                  <CiStar key={i} />
+                                )
+                              )}
+                            <p className="m-0">
+                              Your result:{" "}
+                              {mainData?.struct?.timerType?.value === "countdown"
+                                ? formattedTimeLeft
+                                : formattedTimeTaken}
+                              s
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                      {(mainData?.struct?.isShowRatingEmail ||
+                        mainData?.struct?.isEnableRating) &&
+                        !gameOver && (
+                          <>
+                            <div className="fine-one-pair-finalScreen-bestResult mt-4">
+                              <p className="p-4">Best results:</p>
+                              <ol>
+                                {bestResults?.map((item, i) => (
+                                  <li key={i}>
+                                    <div className="d-flex justify-content-between p-4">
+                                      <p>{item.name}</p>
+                                      <p>{item.time}</p>
+                                    </div>
+                                  </li>
+                                ))}
+                              </ol>
+                            </div>
+                            <div className="fine-one-pair-finalScreen-bestResult my-4">
+                              <div className="d-flex justify-content-between p-4">
+                                <p>You</p>
+                                <p>{formattedTimeTaken}s</p>
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                      {mainData?.struct?.isShowLeadForm && <p>LeadForm</p>}
+                    </>
+                  )}
               </div>
             </div>
           </>
@@ -677,22 +679,22 @@ function Memory({
       <ul
         className={`${isSelected ? "inlineControls selected-controls" : "inlineControls"}  `}
       >
-        <li
+       {!isFirst && (<li
           className="Inline_control__list"
           title="Move up"
           role="button"
           onClick={() => handleMoveUp(data.id)}
         >
           <i className="fa-solid fa-arrow-up"></i>
-        </li>
-        <li
+        </li>)}
+        {!isLast && (<li
           className="Inline_control__list"
           title="Move down"
           role="button"
           onClick={() => handleMoveDown(data.id)}
         >
           <i className="fa-solid fa-arrow-down"></i>
-        </li>
+        </li>)}
         <li
           className="Inline_control__list"
           title="Clone"

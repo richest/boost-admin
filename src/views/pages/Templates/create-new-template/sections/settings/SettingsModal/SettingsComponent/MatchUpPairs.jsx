@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-function MatchUpPairs({ formData, onRegisterSlideImageCallback, questions, pairData, setPairData, handleChangeLogo, selecteScreen }) {
+function MatchUpPairs({ formData, setSelectedImageType, onRegisterSlideImageCallback, questions, pairData, setPairData, handleChangeLogo, selecteScreen }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(formData, "questionsquestionsquestions");
   const [opentextModal, setIsOpenTextModal] = useState(false);
@@ -327,16 +327,22 @@ function MatchUpPairs({ formData, onRegisterSlideImageCallback, questions, pairD
                                           <i className="fa-solid fa-font" title="Add Text"></i>
                                         </label>
                                         <label
-                                          onClick={() =>
+                                          onClick={() => {
+                                            setSelectedImageType({ type: `${type.replace("Image", "")}-image`, questionID: question.id });
                                             handleChangeLogo(`${type.replace("Image", "")}-image`, formData?.id, question.id)
+                                          }
                                           }
                                           role="button"
                                         >
                                           <i className="fa-solid fa-camera" title="Add Image"></i>
                                         </label>
                                         <label
-                                          onClick={() =>
+                                          onClick={() => {
+                                            setSelectedImageType({ type: `${type.replace("Image", "")}-audio`, questionID: question.id });
                                             handleChangeLogo(`${type.replace("Image", "")}-audio`, formData?.id, question.id)
+
+
+                                          }
                                           }
                                           role="button"
                                         >

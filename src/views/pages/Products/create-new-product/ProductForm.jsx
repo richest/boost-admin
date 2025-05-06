@@ -384,7 +384,7 @@ const ProductForm = () => {
                 <Grid item md={6}>
                   <FormControl fullWidth error={!!errors.role}>
                     <InputLabel id="demo-simple-select-label">
-                      Product Type
+                      Select Product Type*
                     </InputLabel>
                     <Select
                       {...register("product_type_id")}
@@ -418,7 +418,7 @@ const ProductForm = () => {
                     helperText={
                       errors.description ? errors.description.message : ""
                     }
-                    label="Description*"
+                    label="Description"
                     name="description"
                     value={product.description}
                     rows={4}
