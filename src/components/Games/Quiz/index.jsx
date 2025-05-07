@@ -120,7 +120,7 @@ function QuizGames({
               <p>{COVER?.description}</p>
               <button
                 onClick={handleStartQuiz}
-                className="button-boost pulseAnimation_button"
+                className="button-boost pulseAnimation_button m-auto"
               >
                 {COVER?.buttonText}
               </button>

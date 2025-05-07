@@ -701,6 +701,9 @@ table.list-table tr th:last-child {
   flex-direction: column;
   gap: 20px;
 }
+.page-block.active {
+  border: 1px solid var(--primary-color) !important;
+}
 
 .page-block > i {
   font-size: 40px;

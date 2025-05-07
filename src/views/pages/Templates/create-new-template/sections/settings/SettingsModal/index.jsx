@@ -119,6 +119,7 @@ function GameSettingsModal({
           <div className="modal-form-body">
             {formData?.block === "quiz" && (
               <QuizSettingsModal
+                selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 setOpen={setOpen}
                 selectedImage={selectedImage}

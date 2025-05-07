@@ -16,7 +16,7 @@ const validationSchema = yup.object().shape({
 });
 
 function ResultScreen({
-
+  quizdataQuestion = () => { },
   setIsOpenFormModal,
   personalityquizquestion,
   finalResult,
@@ -38,6 +38,7 @@ function ResultScreen({
   onRegisterSlideImageCallback,
   handleDeleteImageResultForm
 }) {
+  console.log(quizdataQuestion?.length, "countResultcountResult")
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(finalResult, "finalResultfinalResultfinalResult");
   const dispatch = useDispatch();
@@ -763,11 +764,199 @@ function ResultScreen({
   console.log(formData?.struct, "checkformdatatatata")
   return (
     <>
+
       {formData.block === "quiz" && (
+        // <div class="d-flex w-100 gap-3 gap-md-0">
+        //   <div class="border-end scrollable-div result-list">
+        //     <div className="sidebarquestions">
+        //       {formData?.struct?.results?.map((result, index) => (
+        //         <div className="questionSidebarList align-items-center">
+        //           <div className="questionImageLabel">
+        //             <img
+        //               src={
+        //                 result.image ||
+        //                 "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+        //               }
+        //               alt="question-image"
+        //               className=""
+        //             />
+        //           </div>
+        //           <p className="mb-0">Result {index + 1}</p>
+        //         </div>
+        //       ))}
+        //     </div>
+        //   </div>
+        //   <div className="w-100 scrollable-div">
+        //     <FormProvider {...methods}>
+        //       <form>
+        //         {formData?.struct?.results?.map((result, index) => {
+        //           const totalQuestions = formData?.struct?.questions?.length;
+
+        //           const resultRange =
+        //             index < totalQuestions + 1 ? index : totalQuestions;
+
+        //           return (
+        //             <div key={result.id} className="resultsscreen p-4">
+        //               <div className="d-flex justify-content-between">
+        //                 <h5 className="fw-bold">
+        //                   Result {index + 1}
+        //                   {/* Adjusting result range dynamically based on the number of questions */}
+        //                   <span className="text-muted">
+        //                     ({resultRange} correct answer
+        //                     {resultRange > 1 ? "s" : ""})
+        //                   </span>
+        //                 </h5>
+
+        //                 <div className="questionTitle d-flex align-items-center gap-2">
+        //                   <button type="button" className="button sm button-secondary px-3 border-0 font-sm">
+        //                     <i className="fa-solid fa-clone"></i>
+        //                   </button>
+        //                   {formData?.struct?.results?.length > 1 && (
+        //                     <button
+        //                       type="button"
+        //                       className="button sm button-secondary bg-danger text-white px-3 border-0 font-sm"
+        //                       onClick={() => handleDeleteResultvalue(result.id)}
+        //                     >
+        //                       <i className="fa-solid fa-trash"></i>
+        //                     </button>
+        //                   )}
+        //                 </div>
+        //               </div>
+
+        //               <div className="mb-3">
+        //                 <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
+        //                   Header<span style={{ color: "red" }}>*</span>
+        //                 </label>
+        //                 <input
+        //                   type="text"
+        //                   {...register(`results[${index}].header`, {
+        //                     required: "Header is required",
+        //                     validate: (value) =>
+        //                       value.trim() !== "" || "Header cannot be empty",
+        //                   })}
+        //                   className="form-control theme-control"
+        //                   defaultValue={result.header}
+        //                   onChange={(e) =>
+        //                     handleChangeHeaderResult(e.target.value, result.id)
+        //                   }
+        //                 />
+        //                 {errors.results?.[index]?.header && (
+        //                   <p className="text-danger font-sm mt-1">
+        //                     {errors.results[index].header.message}
+        //                   </p>
+        //                 )}
+        //               </div>
+
+        //               <div className="mb-3">
+        //                 <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+        //                   Description
+        //                 </label>
+        //                 <textarea
+        //                   className="form-control theme-control"
+        //                   rows="3"
+        //                   defaultValue={result.description}
+        //                   onChange={(e) =>
+        //                     handleChangeDescriptionResult(
+        //                       e.target.value,
+        //                       result.id
+        //                     )
+        //                   }
+        //                 ></textarea>
+        //               </div>
+
+        //               <div className="mb-3">
+        //                 <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+        //                   Result image
+        //                 </label>
+        //                 <div className="d-flex align-items-center">
+        //                   <div className="questionImageLabel">
+        //                     <img
+        //                       src={
+        //                         result.image ||
+        //                         "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+        //                       }
+        //                       alt="question-image"
+        //                       className=""
+        //                     />
+        //                   </div>
+        //                   <button
+        //                     className="button button-primary font-sm border-0 me-2"
+        //                     onClick={() =>
+        //                       handleChangeImage(
+        //                         "result-image",
+        //                         formData?.id,
+        //                         result.id
+        //                       )
+        //                     }
+        //                   >
+        //                     Upload
+        //                   </button>
+        //                   <button
+        //                     className="button button-secondary border-0 px-3"
+        //                     onClick={() => handleDeleteImage(result.id)}
+        //                   >
+        //                     <i className="fa-solid fa-trash"></i>
+        //                   </button>
+        //                 </div>
+        //               </div>
+
+        //               <div className="mb-3">
+        //                 <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+        //                   Image disclaimer (optional)
+        //                 </label>
+        //                 <input
+        //                   type="text"
+        //                   className="form-control theme-control"
+        //                   defaultValue={result.imageDisclaimer}
+        //                   onChange={(e) =>
+        //                     handleChangeImageDisclaimer(
+        //                       e.target.value,
+        //                       result.id
+        //                     )
+        //                   }
+        //                 />
+        //               </div>
+
+        //               <div className="row g-3">
+        //                 <div className="col-md-6">
+        //                   <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+        //                     Button text
+        //                   </label>
+        //                   <input
+        //                     type="text"
+        //                     className="form-control theme-control"
+        //                     defaultValue={result.buttonText}
+        //                     onChange={(e) =>
+        //                       handleChangeButtontext(e.target.value, result.id)
+        //                     }
+        //                   />
+        //                 </div>
+        //                 <div className="col-md-6">
+        //                   <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+        //                     Link
+        //                   </label>
+        //                   <input
+        //                     type="text"
+        //                     className="form-control theme-control"
+        //                     placeholder="Internal page"
+        //                     defaultValue={result.buttonLink}
+        //                     onChange={(e) =>
+        //                       handleChangeButtonLink(e.target.value, result.id)
+        //                     }
+        //                   />
+        //                 </div>
+        //               </div>
+        //             </div>
+        //           );
+        //         })}
+        //       </form>
+        //     </FormProvider>
+        //   </div>
+        // </div>
         <div class="d-flex w-100 gap-3 gap-md-0">
           <div class="border-end scrollable-div result-list">
             <div className="sidebarquestions">
-              {formData?.struct?.results?.map((result, index) => (
+              {finalResult?.map((result, index) => (
                 <div className="questionSidebarList align-items-center">
                   <div className="questionImageLabel">
                     <img
@@ -775,180 +964,190 @@ function ResultScreen({
                         result.image ||
                         "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
                       }
-                      alt="question-image"
+                      alt="questionimage"
                       className=""
                     />
                   </div>
                   <p className="mb-0">Result {index + 1}</p>
                 </div>
               ))}
+              {quizdataQuestion?.length && finalResult?.length < quizdataQuestion.length + 1 && (
+                <div className="button_addNewquestion pb-3">
+                  <button
+                    className="btn button_boost p-0"
+                    onClick={() => handleAddNewResult()}
+                  >
+                    <i className="fa-solid fa-plus"></i> Add New
+                  </button>
+                </div>
+              )}
+
+
             </div>
           </div>
           <div className="w-100 scrollable-div">
-            <FormProvider {...methods}>
-              <form>
-                {formData?.struct?.results?.map((result, index) => {
-                  const totalQuestions = formData?.struct?.questions?.length;
+            {finalResult?.map((result, index) => {
+              const totalQuestions = personalityquizquestion?.length;
 
-                  const resultRange =
-                    index < totalQuestions + 1 ? index : totalQuestions;
+              const resultRange =
+                index < totalQuestions + 1 ? index : totalQuestions;
 
-                  return (
-                    <div key={result.id} className="resultsscreen p-4">
-                      <div className="d-flex justify-content-between">
-                        <h5 className="fw-bold">
-                          Result {index + 1}
-                          {/* Adjusting result range dynamically based on the number of questions */}
-                          <span className="text-muted">
-                            ({resultRange} correct answer
-                            {resultRange > 1 ? "s" : ""})
-                          </span>
-                        </h5>
+              return (
+                <div key={result.id} className="resultsscreen p-4">
+                  <div className="d-flex justify-content-between">
+                    <h5 className="fw-bold">
+                      Result {index + 1}
+                      {/* Adjusting result range dynamically based on the number of questions */}
+                      <span className="text-muted">
+                        ({resultRange} correct answer
+                        {resultRange > 1 ? "s" : ""})
+                      </span>
+                    </h5>
 
-                        <div className="questionTitle d-flex align-items-center gap-2">
-                          <button type="button" className="button sm button-secondary px-3 border-0 font-sm">
-                            <i className="fa-solid fa-clone"></i>
-                          </button>
-                          {formData?.struct?.results?.length > 1 && (
-                            <button
-                              type="button"
-                              className="button sm button-secondary bg-danger text-white px-3 border-0 font-sm"
-                              onClick={() => handleDeleteResultvalue(result.id)}
-                            >
-                              <i className="fa-solid fa-trash"></i>
-                            </button>
-                          )}
-                        </div>
-                      </div>
 
-                      <div className="mb-3">
-                        <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
-                          Header<span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          type="text"
-                          {...register(`results[${index}].header`, {
-                            required: "Header is required",
-                            validate: (value) =>
-                              value.trim() !== "" || "Header cannot be empty",
-                          })}
-                          className="form-control theme-control"
-                          defaultValue={result.header}
-                          onChange={(e) =>
-                            handleChangeHeaderResult(e.target.value, result.id)
-                          }
-                        />
-                        {errors.results?.[index]?.header && (
-                          <p className="text-danger font-sm mt-1">
-                            {errors.results[index].header.message}
-                          </p>
-                        )}
-                      </div>
+                    <div className="questionTitle d-flex align-items-center gap-2">
 
-                      <div className="mb-3">
-                        <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                          Description
-                        </label>
-                        <textarea
-                          className="form-control theme-control"
-                          rows="3"
-                          defaultValue={result.description}
-                          onChange={(e) =>
-                            handleChangeDescriptionResult(
-                              e.target.value,
-                              result.id
-                            )
-                          }
-                        ></textarea>
-                      </div>
-
-                      <div className="mb-3">
-                        <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                          Result image
-                        </label>
-                        <div className="d-flex align-items-center">
-                          <div className="questionImageLabel">
-                            <img
-                              src={
-                                result.image ||
-                                "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-                              }
-                              alt="question-image"
-                              className=""
-                            />
-                          </div>
-                          <button
-                            className="button button-primary font-sm border-0 me-2"
-                            onClick={() =>
-                              handleChangeImage(
-                                "result-image",
-                                formData?.id,
-                                result.id
-                              )
-                            }
-                          >
-                            Upload
-                          </button>
-                          <button
-                            className="button button-secondary border-0 px-3"
-                            onClick={() => handleDeleteImage(result.id)}
-                          >
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="mb-3">
-                        <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                          Image disclaimer (optional)
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control theme-control"
-                          defaultValue={result.imageDisclaimer}
-                          onChange={(e) =>
-                            handleChangeImageDisclaimer(
-                              e.target.value,
-                              result.id
-                            )
-                          }
-                        />
-                      </div>
-
-                      <div className="row g-3">
-                        <div className="col-md-6">
-                          <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                            Button text
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control theme-control"
-                            defaultValue={result.buttonText}
-                            onChange={(e) =>
-                              handleChangeButtontext(e.target.value, result.id)
-                            }
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                            Link
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control theme-control"
-                            placeholder="Internal page"
-                            defaultValue={result.buttonLink}
-                            onChange={(e) =>
-                              handleChangeButtonLink(e.target.value, result.id)
-                            }
-                          />
-                        </div>
-                      </div>
+                      {quizdataQuestion?.length && finalResult.length < quizdataQuestion.length + 1 && (<button onClick={() => handleCloneResult(result.id)} className="button sm button-secondary px-3 border-0 font-sm">
+                        <i className="fa-solid fa-clone"></i>
+                      </button>)
+                      }
+                      {finalResult?.length > 2 && (
+                        <button
+                          type="button"
+                          className="button sm button-secondary bg-danger text-white px-3 border-0 font-sm"
+                          onClick={() => handleDeleteResultvaluepersonalityquiz(result.id)}
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
+                      )}
                     </div>
-                  );
-                })}
-              </form>
-            </FormProvider>
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
+                      Header<span style={{ color: "red" }}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      {...register(`results[${index}].header`, {
+                        required: "Header is required",
+                        validate: (value) =>
+                          value.trim() !== "" || "Header cannot be empty",
+                      })}
+                      className="form-control theme-control"
+                      value={result.header}
+                      onChange={(e) =>
+                        handleChangeHeaderResultPersonality(e.target.value, result.id)
+                      }
+                    />
+                    {/* {parenterror.results?.[index]?.header && (
+                      <p className="text-danger font-sm mt-1">
+                        {parenterror.results[index].header}
+                      </p>
+                    )} */}
+                    {/* {console.log(parenterror.results, "pioioi")} */}
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                      Description
+                    </label>
+                    <textarea
+                      className="form-control theme-control"
+                      rows="3"
+                      defaultValue={result.description}
+                      onChange={(e) =>
+                        handleChangeDescriptionResult(e.target.value, result.id)
+                      }
+                    ></textarea>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                      Result image
+                    </label>
+                    <div className="d-flex align-items-center">
+                      <div className="questionImageLabel">
+                        <img
+                          src={
+                            result.image ||
+                            "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                          }
+                          alt="question-image"
+                          className=""
+                        />
+                      </div>
+                      {console.log(result.id, "result.id")}
+                      <button
+                        className="button button-primary font-sm border-0 me-2"
+
+                        onClick={() => {
+                          setSelectedImageType({ type: "questionImagequiz", resultId: result.id });
+                          handleChangeImage(
+                            "result-image",
+                            formData?.id,
+                            result.id
+                          )
+                          // setSelectedImageType({ type: "finalPersonality", resultId: result.id });
+                        }
+                        }
+                      >
+                        Upload
+                      </button>
+                      <button
+                        className="button button-secondary border-0 px-3"
+                        onClick={() => handleDeleteImage(result.id)}
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                      Image disclaimer (optional)
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control theme-control"
+                      defaultValue={result.imageDisclaimer}
+                      onChange={(e) =>
+                        handleChangeImageDisclaimer(e.target.value, result.id)
+                      }
+                    />
+                  </div>
+
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                        Button text
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control theme-control"
+                        defaultValue={result.buttonText}
+                        onChange={(e) =>
+                          handleChangeButtontext(e.target.value, result.id)
+                        }
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                        Link
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control theme-control"
+                        placeholder="Internal page"
+                        defaultValue={result.buttonLink}
+                        onChange={(e) =>
+                          handleChangeButtonLink(e.target.value, result.id)
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -971,6 +1170,7 @@ function ResultScreen({
                   <p className="mb-0">Result {index + 1}</p>
                 </div>
               ))}
+              {/* {quizdataQuestion?.length} */}
               <div className="button_addNewquestion pb-3">
                 <button
                   className="btn button_boost p-0"
@@ -1037,7 +1237,7 @@ function ResultScreen({
                         {parenterror.results[index].header}
                       </p>
                     )}
-                    {console.log(parenterror.results, "pioioi")}
+                    {/* {console.log(parenterror.results, "pioioi")} */}
                   </div>
 
                   <div className="mb-3">

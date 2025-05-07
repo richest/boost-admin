@@ -2234,6 +2234,11 @@ const TemplateForm = () => {
           ),
         },
       };
+      const currentPage =
+        updatedProject?.project_structure?.pages[
+        updatedProject?.project_structure?.pages.length - 1
+        ];
+      handleSelectPage(currentPage.name);
     } else {
       updatedProject = {
         ...templateDetails,
@@ -2552,7 +2557,8 @@ const TemplateForm = () => {
                             role="button"
                             onClick={() => handleSelectPage(page?.name)}
                           >
-                            <div className="page-block position-relative w-100">
+                            <div className={`page-block position-relative w-100 ${pageData?.name === page?.name ? "active" : ""
+                              }`}>
                               {isEditPageName === page?.id ? (
                                 <div>
                                   <input

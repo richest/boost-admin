@@ -91,22 +91,22 @@ function QuizGamesPreview({ data }) {
           {showLeadForm ? (
             <LeadForm data={data} onSubmit={onSubmit} />
           ) : (
-            <div style={{padding: `${
-              startQuiz
-                ? showResult
-                  ? RESULT[resultIndex]?.image
+            <div style={{
+              padding: `${startQuiz
+                  ? showResult
+                    ? RESULT[resultIndex]?.image
+                      ? ""
+                      : "0 20px"
+                    : QUESTIONS[questionIndex]?.image
+                      ? ""
+                      : "0 20px"
+                  : COVER.image
                     ? ""
                     : "0 20px"
-                  : QUESTIONS[questionIndex]?.image
-                    ? ""
-                    : "0 20px"
-                : COVER.image
-                  ? ""
-                  : "0 20px"
-            }`}}>
+                }`
+            }}>
               <div
-                className={`trivia-quiz ${
-                  startQuiz
+                className={`trivia-quiz ${startQuiz
                     ? showResult
                       ? RESULT[resultIndex]?.image
                         ? ""
@@ -117,7 +117,7 @@ function QuizGamesPreview({ data }) {
                     : COVER.image
                       ? ""
                       : "no-image"
-                }`}
+                  }`}
               >
                 <div
                   className={`trivia-gif`}
@@ -159,7 +159,7 @@ function QuizGamesPreview({ data }) {
                   <button
                     onClick={handleStartQuiz}
                     style={{ backgroundColor: data?.struct?.colorTheme }}
-                    className="button-boost pulseAnimation_button"
+                    className="button-boost pulseAnimation_button m-auto"
                   >
                     {COVER?.buttonText}
                   </button>
@@ -262,11 +262,10 @@ function QuizGamesPreview({ data }) {
                                   <p
                                     className={
                                       !data?.struct?.notMarkCorrectAnswers
-                                        ? `${
-                                            item.isCorrect
-                                              ? "text-success"
-                                              : "text-danger"
-                                          }`
+                                        ? `${item.isCorrect
+                                          ? "text-success"
+                                          : "text-danger"
+                                        }`
                                         : ""
                                     }
                                   >
@@ -344,11 +343,10 @@ function QuizGamesPreview({ data }) {
                                 <p
                                   className={
                                     !data?.struct?.notMarkCorrectAnswers
-                                      ? `${
-                                          item.isCorrect
-                                            ? "text-success"
-                                            : "text-danger"
-                                        }`
+                                      ? `${item.isCorrect
+                                        ? "text-success"
+                                        : "text-danger"
+                                      }`
                                       : ""
                                   }
                                 >
