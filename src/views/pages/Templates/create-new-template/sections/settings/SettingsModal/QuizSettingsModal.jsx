@@ -742,7 +742,6 @@
 
 // export default QuizSettingsModal;
 
-
 import React, { useEffect, useRef, useState } from "react";
 import ResultScreen from "./SettingsComponent/ResultScreen";
 import QuestionsScreen from "./SettingsComponent/QuestionsScreen";
@@ -755,7 +754,6 @@ import { CloseFullscreen } from "@mui/icons-material";
 import { fromJS } from "immutable";
 import { generateShortId } from "utils/helpers";
 
-
 function QuizSettingsModal({
   selecteScreen,
   setSelectScreen,
@@ -765,62 +763,69 @@ function QuizSettingsModal({
   isEditMediaTypeDetails,
   selectedImage,
   updateParentState,
-
+  showQuit,
+  setShowQuit,
+  setAnyChanges,
 }) {
   console.log(formData, "formDataformData");
   const dispatch = useDispatch();
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
-  console.log(templateDetails, "templateDetailstemplateDetails")
+  console.log(templateDetails, "templateDetailstemplateDetails");
   console.log(templateDetails, "templateDetails");
   const [errorScreen, setErrorScreen] = useState(false);
   const [templateData, setTemplateData] = useState(templateDetails || {});
   const [IsSaveClicked, setIsSaveClicked] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState({});
-  const [quizDataCover, setQuizDataCover] = useState({})
+  const [quizDataCover, setQuizDataCover] = useState({});
+  const [settingsData, setSettingsaData] = useState({
+    imageSrc: formData?.struct?.cover?.image || "", // Set initial state
+  });
 
-  const [countResult, setCountResult] = useState(null)
-  const [quizdataQuestion, setQuizDataQuestion] = useState([])
-  const [quizQuestion, setQuizQuestion] = useState({})
-  const [finalResult, setfinalResult] = useState({})
+  const [countResult, setCountResult] = useState(null);
+  const [quizdataQuestion, setQuizDataQuestion] = useState([]);
+  const [finalResult, setfinalResult] = useState({});
   const [triggerNext, setTriggerNext] = useState(false);
-  console.log(templateData, "templateDatatemplateData")
+  const [newFieldsArray, setNewFieldsArray] = useState([]);
 
-  console.log(quizDataCover, "quizDataquizData")
+  const [errors, setErrors] = useState({
+    header: false,
+    buttonText: false,
+    finalResultHeader: false,
+    headerWordCount: false,
+    buttonTextWordCount: false,
+  });
 
   const handleheaderText = (e) => {
     console.log(e, "dsdsds");
     setQuizDataCover((prev) => ({
       ...prev,
-      header: e
-    }))
-
+      header: e,
+    }));
+    setAnyChanges(true);
   };
-
 
   const handleDescriptionText = (e) => {
     setQuizDataCover((prev) => ({
       ...prev,
-      description: e
-    }))
-
+      description: e,
+    }));
+    setAnyChanges(true);
   };
 
   const handleDButtonText = (e) => {
     setQuizDataCover((prev) => ({
       ...prev,
-      buttonText: e
-    }))
-
-
+      buttonText: e,
+    }));
+    setAnyChanges(true);
   };
 
   const handleAddImageDisclimar = (e) => {
     setQuizDataCover((prev) => ({
       ...prev,
-      imageDisclaimer: e
-    }))
-
-
+      imageDisclaimer: e,
+    }));
+    setAnyChanges(true);
   };
 
   const handleChangeAdditionalText = (e) => {
@@ -833,18 +838,18 @@ function QuizSettingsModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  leadFormStruct: {
-                    ...block.struct.leadFormStruct,
-                    form: {
-                      ...block.struct.leadFormStruct.form,
-                      addtionalText: e,
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    leadFormStruct: {
+                      ...block.struct.leadFormStruct,
+                      form: {
+                        ...block.struct.leadFormStruct.form,
+                        addtionalText: e,
+                      },
                     },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -867,20 +872,20 @@ function QuizSettingsModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  leadFormStruct: {
-                    ...block.struct.leadFormStruct,
-                    form: {
-                      ...block.struct.leadFormStruct.form,
-                      fields: block.struct.leadFormStruct.form.fields.filter(
-                        (field) => field.id !== id
-                      ),
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    leadFormStruct: {
+                      ...block.struct.leadFormStruct,
+                      form: {
+                        ...block.struct.leadFormStruct.form,
+                        fields: block.struct.leadFormStruct.form.fields.filter(
+                          (field) => field.id !== id
+                        ),
+                      },
                     },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -893,25 +898,198 @@ function QuizSettingsModal({
   const handleShowStartScreen = (e) => {
     setQuizDataCover((prev) => ({
       ...prev,
-      isShowCover: e
-    }))
+      isShowCover: e,
+    }));
+  };
 
+  const isValidWordCount = (text) => {
+    console.log(text, "09485");
 
+    if (typeof text !== "string") {
+      return false;
+    }
+
+    const trimmedText = text.trim().replace(/\s+/g, " ");
+
+    const wordCount = trimmedText.split(" ").length;
+
+    console.log(trimmedText, "trimmed text");
+    console.log(wordCount, "word count");
+
+    return wordCount <= 20 && wordCount > 0;
+  };
+
+  const validateForm = () => {
+    const questionErrors = quizdataQuestion?.map((question) => {
+      const errors = {};
+
+      // Validate question text
+      if (!question.text?.trim()) {
+        errors.text = "Question text is required";
+      }
+
+      // Validate answers
+      const answerErrors =
+        question.answers?.map((answer) => {
+          const answerError = {};
+          if (!answer.text?.trim()) {
+            answerError.text = "Answer text is required";
+          }
+          return answerError;
+        }) || [];
+
+      errors.answers = answerErrors;
+
+      return errors;
+    });
+
+    const hasQuestionError = questionErrors.some((q) => {
+      return q.text || q.answers?.some((a) => a.text);
+    });
+
+    const finalResultErrors = finalResult.map((res) => {
+      const resErrors = {};
+      if (!res.header?.trim()) {
+        resErrors.header = "Header can't be empty";
+      } else if (!isValidWordCount(res.header)) {
+        resErrors.header = "Header exceeds allowed word count";
+      }
+      return resErrors;
+    });
+
+    const hasFinalError = finalResultErrors.some(
+      (r) => Object.keys(r).length > 0
+    );
+
+    const personalityQuizErrors = {};
+    if (!quizDataCover?.header?.trim()) {
+      personalityQuizErrors.header = "Header is required";
+    }
+
+    if (!quizDataCover?.buttonText?.trim()) {
+      personalityQuizErrors.buttonText = "Button text is required";
+    }
+
+    const newErrors = {
+      questions: questionErrors,
+      results: finalResultErrors,
+      personalityquiz: personalityQuizErrors,
+    };
+
+    setErrors(newErrors);
+
+    return (
+      !hasQuestionError &&
+      !hasFinalError &&
+      !personalityQuizErrors.header &&
+      !personalityQuizErrors.buttonText
+    );
   };
 
   const handleSave = () => {
     console.log("object");
+  };
+
+  console.log("finalResultfinalResultfinalResult", finalResult);
+
+  const handleSaveQuestion = () => {
+    console.log("Saving PersonalityQuiz...");
+
+    if (!validateForm()) {
+      setErrorScreen(true);
+      return;
+    }
+
+    const updatedData = {
+      ...templateDetails,
+      project_structure: {
+        ...templateDetails.project_structure,
+        pages: templateDetails.project_structure.pages.map((page) => ({
+          ...page,
+          blocks: page.blocks.map((block) =>
+            block.id === formData?.id
+              ? {
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    cover: {
+                      ...quizDataCover,
+                      image: selectedImage || settingsData?.imageSrc,
+                    },
+
+                    questions: quizdataQuestion,
+                    results: finalResult,
+                  },
+                }
+              : block
+          ),
+        })),
+      },
+    };
+
+    console.log("Dispatching updated data", updatedData);
+    dispatch(updateTemplateAction(updatedData));
+    setIsOpenFormModal(false);
   };
   // useEffect(() => {
   //   setQuizDataCover(formData?.struct?.cover)
   //   setQuizDataQuestion(formData?.struct?.questions)
   //   setfinalResult(formData?.struct?.results)
   // }, [formData])
+
+  const handleNext = async () => {
+    if (!validateForm()) {
+      setErrorScreen(true);
+      return;
+    } else {
+      setErrorScreen(false);
+      setTriggerNext(false);
+      if (selecteScreen === "start-screen") {
+        setSelectScreen("questions");
+      } else if (selecteScreen === "questions") {
+        console.log("jsajasdjhjdh");
+        setSelectScreen("results");
+      }
+    }
+
+    console.log("Proceed to next step");
+  };
+
+  useEffect(() => {
+    if (selectedImage) {
+      console.log(selectedImageType, "selectedImageType");
+      console.log(selectedImage, "selectedImage090");
+      if (selectedImageType.type === "startpersonality") {
+        setSettingsaData((prev) => ({
+          ...prev,
+          imageSrc: selectedImage,
+        }));
+      } else if (selectedImageType.type === "personalityquestion") {
+        setQuizDataQuestion((prev) =>
+          prev.map((question) =>
+            question.id === selectedImageType.questionId
+              ? { ...question, image: selectedImage }
+              : question
+          )
+        );
+      } else if (selectedImageType.type === "finalPersonality") {
+        setfinalResult((prev) =>
+          prev.map((result) => {
+            console.log(result.id, "resultId", selectedImageType.resultId);
+            return result.id === selectedImageType.resultId
+              ? { ...result, image: selectedImage }
+              : result;
+          })
+        );
+      }
+    }
+  }, [selectedImage, selectedImageType]);
+
   useEffect(() => {
     if (!formData?.struct) return;
 
     const questions = quizdataQuestion || [];
-    console.log(questions, "questionsquestions")
+    console.log(questions, "questionsquestions");
     const questionCount = questions.length;
 
     setQuizDataCover(formData.struct.cover);
@@ -922,23 +1100,28 @@ function QuizSettingsModal({
 
     const existingResults = formData.struct.results || [];
 
-    const filledResults = Array.from({ length: expectedResultCount }, (_, index) => {
-      const existing = existingResults[index];
-      return existing || {
-        id: generateShortId(),
-        score: index,
-        title: `Result for ${index} correct ${index === 1 ? "answer" : "answers"}`,
-        description: "",
-        image: "",
-      };
-    });
+    const filledResults = Array.from(
+      { length: expectedResultCount },
+      (_, index) => {
+        const existing = existingResults[index];
+        return (
+          existing || {
+            id: generateShortId(),
+            score: index,
+            title: `Result for ${index} correct ${index === 1 ? "answer" : "answers"}`,
+            description: "",
+            image: "",
+          }
+        );
+      }
+    );
 
     setfinalResult(formData?.struct?.results);
   }, [formData]);
-  console.log(quizDataCover, "pqwidopqiwdfo")
+  console.log(quizDataCover, "pqwidopqiwdfo");
   useEffect(() => {
     if (selectedImage) {
-      console.log(selectedImageType, "selectedImageType")
+      console.log(selectedImageType, "selectedImageType");
       console.log(selectedImage, "selectedImage090");
       if (selectedImageType.type === "startQuiz") {
         setQuizDataCover((prev) => ({
@@ -953,23 +1136,27 @@ function QuizSettingsModal({
               : question
           )
         );
-        console.log("Image updated for question:", selectedImageType.questionId);
+        console.log(
+          "Image updated for question:",
+          selectedImageType.questionId
+        );
 
-
-        console.log(selectedImageType.type, "90weqr8r39")
+        console.log(selectedImageType.type, "90weqr8r39");
       } else if (selectedImageType.type === "questionImagequiz") {
-        console.log(selectedImageType.type === "questionImagequiz")
+        console.log(selectedImageType.type === "questionImagequiz");
         setfinalResult((prev) =>
           prev.map((result) => {
             console.log(result.id, "resultId", selectedImageType.resultId);
-            return result.id === selectedImageType.resultId ? { ...result, image: selectedImage } : result;
+            return result.id === selectedImageType.resultId
+              ? { ...result, image: selectedImage }
+              : result;
           })
         );
       }
     }
   }, [selectedImage, selectedImageType]);
-  console.log(quizdataQuestion, "qpod")
-  console.log(formData?.struct, "formData32321")
+  console.log(quizdataQuestion, "qpod");
+  console.log(formData?.struct, "formData32321");
   return (
     <>
       <div className="form-option-wrap">
@@ -979,10 +1166,11 @@ function QuizSettingsModal({
               className={`options-settings ${selecteScreen === "start-screen" ? "activeTab" : ""}`}
               role="button"
               onClick={() => {
-                if (false) {
+                if (!validateForm()) {
                   setErrorScreen(true);
-                  setTriggerNext(true);
+                  return;
                 } else {
+                  setErrorScreen(false);
                   setSelectScreen("start-screen");
                 }
               }}
@@ -1035,9 +1223,7 @@ function QuizSettingsModal({
                     <input
                       type="checkbox"
                       checked={quizDataCover?.isShowCover}
-                      onChange={(e) =>
-                        handleShowStartScreen(e.target.checked)
-                      }
+                      onChange={(e) => handleShowStartScreen(e.target.checked)}
                     />
                     <span class="slider"></span>
                   </label>
@@ -1056,19 +1242,16 @@ function QuizSettingsModal({
                           Header <span style={{ color: "red" }}>*</span>
                         </label>
                         <input
-
                           className=" form-control theme-control"
                           type="text"
-                          value={
-                            quizDataCover.header
-                          }
+                          value={quizDataCover.header}
                           onChange={(e) => handleheaderText(e.target.value)}
                         />
-                        {/* {errors.header && (
-                            <p style={{ color: "red" }} className="error">
-                              {errors.header.message}
-                            </p>
-                          )} */}
+                        {errors?.personalityquiz?.header && (
+                          <p className="text-danger font-sm mt-1">
+                            {errors.personalityquiz.header}
+                          </p>
+                        )}
                       </div>
 
                       <div className="mb-3">
@@ -1098,17 +1281,13 @@ function QuizSettingsModal({
                             Cover
                           </label>
                           <div className="coverchangeImage">
-                            <img
-                              src={quizDataCover?.image}
-                              alt="cover"
-                            />
+                            <img src={quizDataCover?.image} alt="cover" />
                             <button
                               className="button button-primary border-0 font-sm"
                               onClick={() => {
                                 setSelectedImageType({ type: "startQuiz" });
-                                handleChangeLogo("quiz-cover", formData?.id)
-                              }
-                              }
+                                handleChangeLogo("quiz-cover", formData?.id);
+                              }}
                             >
                               Change
                             </button>
@@ -1122,15 +1301,14 @@ function QuizSettingsModal({
                           <input
                             className="form-control theme-control"
                             value={quizDataCover?.buttonText}
-                            onChange={(e) =>
-                              handleDButtonText(e.target.value)
-                            }
+                            onChange={(e) => handleDButtonText(e.target.value)}
+                            maxLength={20}
                           />
-                          {/* {errors.buttonText && (
-                              <p style={{ color: "red" }} className="error">
-                                {errors.buttonText.message}
-                              </p>
-                            )} */}
+                          {errors?.personalityquiz?.buttonText && (
+                            <p className="text-danger font-sm mt-1">
+                              {errors.personalityquiz.buttonText}
+                            </p>
+                          )}
                         </div>
                       </div>
 
@@ -1143,9 +1321,7 @@ function QuizSettingsModal({
                         </label>
                         <input
                           className="form-control theme-control"
-                          value={
-                            quizDataCover?.imageDisclaimer
-                          }
+                          value={quizDataCover?.imageDisclaimer}
                           onChange={(e) =>
                             handleAddImageDisclimar(e.target.value)
                           }
@@ -1173,15 +1349,11 @@ function QuizSettingsModal({
                 )}
 
                 {quizDataCover?.header && (
-                  <h4 className="text-center pt-2">
-                    {quizDataCover?.header}
-                  </h4>
+                  <h4 className="text-center pt-2">{quizDataCover?.header}</h4>
                 )}
 
                 {quizDataCover?.description && (
-                  <p className="text-center">
-                    {quizDataCover?.description}
-                  </p>
+                  <p className="text-center">{quizDataCover?.description}</p>
                 )}
 
                 <div className="submitpreview">
@@ -1207,7 +1379,6 @@ function QuizSettingsModal({
         {selecteScreen === "questions" && (
           <QuestionsScreen
             setSelectedImageType={setSelectedImageType}
-
             setQuizDataQuestion={setQuizDataQuestion}
             quizdataQuestion={quizdataQuestion}
             setIsOpenFormModal={setIsOpenFormModal}
@@ -1220,6 +1391,7 @@ function QuizSettingsModal({
             formData={formData}
             questions={formData?.struct}
             handleChangeImage={handleChangeLogo}
+            setAnyChanges={setAnyChanges}
           />
         )}
         {selecteScreen === "results" && (
@@ -1236,71 +1408,122 @@ function QuizSettingsModal({
             // handleSaveQuestion={handleSaveQuestion}
             formData={formData}
             handleChangeImage={handleChangeLogo}
+            setAnyChanges={setAnyChanges}
           />
         )}
-      </div >
+      </div>
       <ul className="Footer_footer__bMDNk">
         {selecteScreen !== "results" && (
           <li className="Footer_footerItem__yaFNE">
-            <button className="button button-primary outline px-3">Next</button>
+            <button
+              className="button button-primary outline px-3"
+              onClick={handleNext}
+            >
+              Next
+            </button>
           </li>
         )}
         <li className="Footer_footerItem__yaFNE">
           <button
-            // onClick={() => {
-            //   setIsSaveClicked(true); // Update state
-            //   handleSaveQuestion(); // Call the save function
-            // }}
+            onClick={() => {
+              setIsSaveClicked(true); // Update state
+              handleSaveQuestion();
+              setAnyChanges(false);
+            }}
             className="button button-primary px-3 text-decoration-none"
           >
             Save
           </button>
         </li>
       </ul>
-      {/* if error is true then have to shiw this  */}
-      {console.log(triggerNext, "triggerNext", errorScreen, "errorScreen")}
-      {
-        (errorScreen || triggerNext) && (
-          <div className="StopPanel_modalStop__Msu+K">
-            <div className="StopPanel_modalOverlay__1dGP2"></div>
-            <div className="StopPanel_modalContent__8Epq4">
-              <div className="StopPanel_note__c+Qou">
-                <div className="StopPanel_imageBox__2Udoo">
-                  <img
-                    className="StopPanel_image__2gtri"
-                    src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
-                    alt=""
-                  />
-                </div>
-                <div className="StopPanel_textBox__stxYL">
-                  <h4 className="StopPanel_textTitle__T8v5c">
-                    Oh! Need more information
-                  </h4>
-                  <p className="StopPanel_textContent__2I+u6">
-                    Please fill all required fields on this tab for the quiz to
-                    work correctly.
-                  </p>
-                </div>
+
+      {(errorScreen || triggerNext) && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+                  alt=""
+                />
               </div>
-              <div className="StopPanel_buttons__cZz5n">
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Oh! Need more information
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  Please fill all required fields on this tab for the quiz to
+                  work correctly.
+                </p>
+              </div>
+            </div>
+            <div className="StopPanel_buttons__cZz5n">
+              <button
+                onClick={() => {
+                  setErrorScreen(false);
+                  setTriggerNext(false);
+                }}
+                className="button button-primary px-3 text-decoration-none"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showQuit && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Are you sure that you want to quit?
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  The changes you made will not be saved
+                </p>
+              </div>
+            </div>
+            <ul className="Footer_footer__bMDNk">
+              <li className="Footer_footerItem__yaFNE">
                 <button
+                  className="button button-primary outline px-3"
                   onClick={() => {
-                    setErrorScreen(false);
-                    setTriggerNext(false);
+                    setShowQuit(false);
                   }}
-                  className="button button-primary px-3 text-decoration-none"
                 >
                   Back
                 </button>
-              </div>
-            </div>
+              </li>
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  onClick={() => {
+                    setIsOpenFormModal(false);
+                    setShowQuit(false);
+                    setAnyChanges(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Quit
+                </button>
+              </li>
+            </ul>
           </div>
-        )
-      }
+        </div>
+      )}
     </>
   );
 }
 
 export default QuizSettingsModal;
-
-

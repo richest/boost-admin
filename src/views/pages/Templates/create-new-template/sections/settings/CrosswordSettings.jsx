@@ -8,7 +8,7 @@ import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/action
 import AudioFileIcon from "@mui/icons-material/AudioFile";
 import Select from "react-select";
 
-function HiddenObjectSettings({
+function CrossWordSettings({
   handleChangeMedia,
   data,
   selectedBlockSettings,
@@ -20,16 +20,26 @@ function HiddenObjectSettings({
   handleTimeUpPage,
 }) {
   const { id } = selectedBlockSettings;
+  console.log(pageData, "sqsqsqsqsqs")
   const [blockValues, setBlockValues] = useState({});
+  const [defaultSelectedValue, setDefaultSelectedValue] = useState({});
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [showColorPickerbtn, setShowColorPickerbtn] = useState(false);
-
   const [showColorPickerForm, setShowColorPickerForm] = useState(false);
+  const [showColorButtonPickerForm, setShowColorButtonPicker] = useState(false)
+  console.log(data, "datadata")
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
-  const colorPickerRef = useRef(null);
-  const colorPickerRefForm = useRef(null);
-  const colorPickerRefButton = useRef(null);
+  const passwordList = templateDetails?.project_structure?.pages
+    .map((page) => page?.blocks) // Map to get the blocks from each page
+    .filter((blockArray) => blockArray) // Filter out undefined or null arrays of blocks
+    .flat() // Flatten the array if blocks are nested in multiple arrays
+    .filter((block) => block !== null && block !== undefined) // Filter out null or undefined blocks
+    .map((block) => block?.struct?.passwordList) // Access passwordList from struct of each block
+    .filter((passwordList) => passwordList); // Filter out null/undefined passwordList values
 
+  console.log(passwordList, "wedws");
+  const colorPickerRef = useRef(null);
+  const colorPickerButtonRef = useRef(null);
+  const colorPickerRefForm = useRef(null);
   const dispatch = useDispatch();
 
   const handleChangeColorInputTextImage = (e) => {
@@ -43,7 +53,7 @@ function HiddenObjectSettings({
             block.id === id
               ? {
                 ...block,
-                struct: { ...block.struct, pcl: e },
+                struct: { ...block.struct, colorTheme: e },
               }
               : block
           ),
@@ -53,8 +63,7 @@ function HiddenObjectSettings({
 
     dispatch(updateTemplateAction(updatedData));
   };
-
-  const handleChangeColorInputButton = (e) => {
+  const handleChangeColorButton = (e) => {
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -65,29 +74,7 @@ function HiddenObjectSettings({
             block.id === id
               ? {
                 ...block,
-                struct: { ...block.struct, btcolor: e },
-              }
-              : block
-          ),
-        })),
-      },
-    };
-
-    dispatch(updateTemplateAction(updatedData));
-  };
-
-  const handleChangeColorButton = (color) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === id
-              ? {
-                ...block,
-                struct: { ...block.struct, btcolor: color },
+                struct: { ...block.struct, correctColor: e },
               }
               : block
           ),
@@ -99,6 +86,7 @@ function HiddenObjectSettings({
   };
 
   const handleChangeColorTextImage = (color) => {
+    console.log("HITTEDTDTTTD")
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -109,7 +97,7 @@ function HiddenObjectSettings({
             block.id === id
               ? {
                 ...block,
-                struct: { ...block.struct, pcl: color },
+                struct: { ...block.struct, colorTheme: color },
               }
               : block
           ),
@@ -121,6 +109,7 @@ function HiddenObjectSettings({
   };
 
   const handleHideRestartButton = (e) => {
+    console.log("esdwddw", e)
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -138,83 +127,11 @@ function HiddenObjectSettings({
         })),
       },
     };
-
+    console.log(updatedData, "wowoqrwqori328903928")
     dispatch(updateTemplateAction(updatedData));
   };
-  // const handleChangeCount = (e) => {
-  //   const updatedData = {
-  //     ...templateDetails,
-  //     project_structure: {
-  //       ...templateDetails.project_structure,
-  //       pages: templateDetails.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) =>
-  //           block.id === id
-  //             ? {
-  //               ...block,
-  //               struct: { ...block.struct, count: e },
-  //             }
-  //             : block
-  //         ),
-  //       })),
-  //     },
-  //   };
-
-  //   dispatch(updateTemplateAction(updatedData));
-    
-  //   console.log("updatedDataupdatedData", updatedData);
-  // };
-
-  const handleChangeCount = (newCount) => {
-    const count = parseInt(newCount, 10);
-  
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) => {
-            if (block.id !== id) return block;
-  
-            const existingPins = block.struct?.pins || [];
-            const updatedPins = [...existingPins];
-  
-            // If count increased, add default pins
-            if (count > existingPins.length) {
-              for (let i = existingPins.length; i < count; i++) {
-                updatedPins.push({
-                  id: crypto.randomUUID(), // unique ID
-                  l: Math.random() * 100,  // random left %
-                  t: Math.random() * 100,  // random top %
-                });
-              }
-            }
-  
-            // If count decreased, trim the array
-            if (count < existingPins.length) {
-              updatedPins.length = count;
-            }
-  
-            return {
-              ...block,
-              struct: {
-                ...block.struct,
-                count,
-                pins: updatedPins,
-              },
-            };
-          }),
-        })),
-      },
-    };
-  
-    dispatch(updateTemplateAction(updatedData));
-    console.log("updatedDataupdatedDataupdatedData", updatedData);
-  };
-
-  console.log("templateDetailstemplateDetails", templateDetails);
-  const handleChangeSize = (e) => {
+  const handleShuffleButton = (e) => {
+    console.log(e, "eeeeeeeeeee")
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -225,7 +142,7 @@ function HiddenObjectSettings({
             block.id === id
               ? {
                 ...block,
-                struct: { ...block.struct, psize: e },
+                struct: { ...block.struct, isShowShuffleButton: e },
               }
               : block
           ),
@@ -235,115 +152,6 @@ function HiddenObjectSettings({
 
     dispatch(updateTemplateAction(updatedData));
   };
-
-  const handleChangeHeader = (e) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === id
-              ? {
-                ...block,
-                struct: { ...block.struct, coverHeader: e },
-              }
-              : block
-          ),
-        })),
-      },
-    };
-
-    dispatch(updateTemplateAction(updatedData));
-  };
-  const handleChangeFinalHeader = (e) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === id
-              ? {
-                ...block,
-                struct: { ...block.struct, suct: e },
-              }
-              : block
-          ),
-        })),
-      },
-    };
-
-    dispatch(updateTemplateAction(updatedData));
-  };
-  const handleChangeFinalDescription = (e) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === id
-              ? {
-                ...block,
-                struct: { ...block.struct, sucd: e },
-              }
-              : block
-          ),
-        })),
-      },
-    };
-
-    dispatch(updateTemplateAction(updatedData));
-  };
-  const handleChangebtnText = (e) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === id
-              ? {
-                ...block,
-                struct: { ...block.struct, coverBtnText: e },
-              }
-              : block
-          ),
-        })),
-      },
-    };
-
-    dispatch(updateTemplateAction(updatedData));
-  };
-
-  const handleShowNumbers = (e) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === id
-              ? {
-                ...block,
-                struct: { ...block.struct, isShowCover: e },
-              }
-              : block
-          ),
-        })),
-      },
-    };
-
-    dispatch(updateTemplateAction(updatedData));
-  };
-
-
 
   const handleChangenoOfattempt = (e) => {
     const updatedData = {
@@ -366,7 +174,6 @@ function HiddenObjectSettings({
 
     dispatch(updateTemplateAction(updatedData));
   };
-
   const handleChangenoLeagalstatment = (e) => {
     const updatedData = {
       ...templateDetails,
@@ -390,6 +197,7 @@ function HiddenObjectSettings({
   };
 
   const handleEnablePlayerRatings = (e) => {
+    console.log(e, "jiji")
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -410,7 +218,28 @@ function HiddenObjectSettings({
 
     dispatch(updateTemplateAction(updatedData));
   };
+  console.log(templateDetails, "templateDetailstemplateDetails")
+  const handleEnableCorrectTile = (e) => {
+    const updatedData = {
+      ...templateDetails,
+      project_structure: {
+        ...templateDetails.project_structure,
+        pages: templateDetails.project_structure.pages.map((page) => ({
+          ...page,
+          blocks: page.blocks.map((block) =>
+            block.id === id
+              ? {
+                ...block,
+                struct: { ...block.struct, isHighlightCorrect: e },
+              }
+              : block
+          ),
+        })),
+      },
+    };
 
+    dispatch(updateTemplateAction(updatedData));
+  };
   const handlehideLeaderBoard = (e) => {
     const updatedData = {
       ...templateDetails,
@@ -432,8 +261,8 @@ function HiddenObjectSettings({
 
     dispatch(updateTemplateAction(updatedData));
   };
-
   const handleSelectTimerType = (e, label) => {
+    console.log(e, label, "checklabel");
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -463,7 +292,8 @@ function HiddenObjectSettings({
   };
 
   const handleSelectTimerTypeclasic = (e, label) => {
-    console.log(label, e, "uueueueueeu")
+    console.log(e, label, "checklabel");
+
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -491,7 +321,6 @@ function HiddenObjectSettings({
 
     dispatch(updateTemplateAction(updatedData));
   };
-
 
   const handleEnableTimer = (e) => {
     const updatedData = {
@@ -538,6 +367,7 @@ function HiddenObjectSettings({
   };
 
   const handleShowLeadForm = (e) => {
+    console.log(e, "sAS")
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -577,6 +407,7 @@ function HiddenObjectSettings({
         })),
       },
     };
+
     dispatch(updateTemplateAction(updatedData));
   };
 
@@ -601,7 +432,6 @@ function HiddenObjectSettings({
 
     dispatch(updateTemplateAction(updatedData));
   };
-
   const handleChangeLink = (e) => {
     const updatedData = {
       ...templateDetails,
@@ -739,27 +569,31 @@ function HiddenObjectSettings({
     }
   }, [pageData, templateDetails]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        colorPickerRef.current &&
-        !colorPickerRef.current.contains(event.target)
-      ) {
-        setShowColorPicker(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       colorPickerRef.current &&
+  //       !colorPickerRef.current.contains(event.target) || colorPickerButtonRef.current &&
+  //       !colorPickerButtonRef.current.contains(event.target)
+  //     ) {
+  //       setShowColorButtonPicker(false)
+  //       setShowColorPicker(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         colorPickerRefForm.current &&
-        !colorPickerRefForm.current.contains(event.target)
+        !colorPickerRefForm.current.contains(event.target) || colorPickerButtonRef.current &&
+        !colorPickerButtonRef.current.contains(event.target)
       ) {
+        setShowColorButtonPicker(false)
         setShowColorPickerForm(false);
       }
     };
@@ -768,30 +602,14 @@ function HiddenObjectSettings({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        colorPickerRefButton.current &&
-        !colorPickerRefButton.current.contains(event.target)
-      ) {
-        setShowColorPickerbtn(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-  console.log(
-    blockValues,
-    "blockValuesvbddddlocksdfgbhnVddddddtuoophgfgaluesblockValuesdsdsd"
-  );
+
+  
 
   return (
     <div className="panel-wrap">
       <div className="setting-block border-bottom">
-        <h6 className="fw-semibold mb-4">Hidden Objects settings</h6>
-        {/* <div>
+        <h6 className="fw-semibold mb-4">Crossword settings</h6>
+        <div>
           <label
             className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
             role="button"
@@ -824,261 +642,77 @@ function HiddenObjectSettings({
               />
             )}
           </div>
-        </div> */}
+        </div>
+        {/* for \button color  */}
       </div>
 
-      <div className="setting-block border-bottom">
-        <div className="upload-button">
-          <label className="upload-button__label form-label font-sm fw-medium d-flex align-items-center cursor-pointer mb-0">
-            Image
-          </label>
-          <div className="content upload">
-            <img
-              className="upload-button__img-preview"
-              style={{ height: 44, width: 44, borderRadius: 8 }}
-              src={blockValues?.struct?.bimg}
-            />
-            <button
-              className="button button-primary w-100 border-0"
-              onClick={() => handleChangeMedia("hidden-object", id)}
-            >
-              Change
-            </button>
-          </div>
-        </div>
-      </div>
 
       <div className="setting-block border-bottom">
-        <div className="mb-3">
-          <label
-            className="form-label font-sm fw-medium  gap-2 cursor-pointer mb-0 w-100"
-            role="button"
-          >Number of hidden tags
-          </label>
-          <input
-            className="colorInput form-control theme-control"
-            type="number"
-            defaultValue={blockValues?.struct?.count}
-            onChange={(e) => handleChangeCount(e.target.value)}
-            min="0"
-            max={20}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label
-            className="form-label font-sm fw-medium  gap-2 cursor-pointer w-100"
-            role="button"
-          >Hidden tag size
-          </label>
-          <input
-            className="colorInput form-control theme-control"
-            type="number"
-            defaultValue={blockValues?.struct?.psize}
-            onChange={(e) => handleChangeSize(e.target.value)}
-            min="0"
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="upload-button__label form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
-            Tag image
-          </label>
-          <div className="content upload d-flex align-items-center">
-            <img
-              className="upload-button__img-preview"
-              style={{ height: 44, width: 44, borderRadius: 8 }}
-              src={blockValues?.struct?.sucImg}
-            />
-            <button
-              className="button button-primary w-100 border-0"
-              onClick={() => handleChangeMedia("hidden-object-tag", id)}
-            >
-              Change
-            </button>
-          </div>
-        </div>
-        <div className="mb-3">
-          <label
-            className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
+        <div className="control-box">
+          < label
+            className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-3"
             role="button"
           >
-            Tag/Button color
+            <input
+              type="checkbox"
+              id="restartbutton"
+              className="form-check-input theme-control shadow-none m-0"
+              onChange={(e) => handleEnableCorrectTile(e.target.checked)}
+              checked={blockValues?.struct?.isHighlightCorrect}
+            />
+            Mark Correct Tiles
           </label>
-          <div ref={colorPickerRef}>
-            <div className="d-flex align-items-center">
-              <div
-                className="color-picker-color"
-                style={{
-                  backgroundColor: `${blockValues?.struct?.pcl}`,
-                }}
-                role="button"
-                onClick={() => setShowColorPicker(!showColorPicker)}
-              ></div>
-              <input
-                className="colorInput form-control theme-control"
-                type="text"
-                defaultValue={blockValues?.struct?.pcl}
-                onChange={(e) =>
-                  handleChangeColorInputTextImage(e.target.value)
-                }
-              />
-            </div>
-            {showColorPicker && (
-              <SketchPicker
-                color={blockValues?.struct?.pcl}
-                onChange={(color) => handleChangeColorTextImage(color.hex)}
-              />
-            )}
-          </div>
-        </div>
-        <div>
-          <label
-            className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
-            role="button"
-          >
-            Button text color
-          </label>
-          <div ref={colorPickerRefButton}>
-            <div className="d-flex align-items-center">
-              <div
-                className="color-picker-color"
-                style={{
-                  backgroundColor: `${blockValues?.struct?.btcolor}`,
-                }}
-                role="button"
-                onClick={() => setShowColorPickerbtn(!showColorPickerbtn)}
-              ></div>
-              <input
-                className="colorInput form-control theme-control"
-                type="text"
-                defaultValue={blockValues?.struct?.btcolor}
-                onChange={(e) => handleChangeColorInputButton(e.target.value)}
-              />
-            </div>
-            {showColorPickerbtn && (
-              <SketchPicker
-                color={blockValues?.struct?.btcolor}
-                onChange={(color) => handleChangeColorButton(color.hex)}
-              />
-            )}
-          </div>
-        </div>
-      </div>
 
-      <div className="setting-block border-bottom">
-        <label
-          className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
-          role="button"
-        >
-          <input
-            type="checkbox"
-            id="restartbutton"
-            className="form-check-input theme-control shadow-none m-0"
-            onChange={(e) => handleShowNumbers(e.target.checked)}
-            checked={blockValues?.struct?.isShowCover}
-          />
-          Show cover
-        </label>
-        {blockValues?.struct?.isShowCover && (
-          <div className="control-box">
-            <div className="form-label font-sm fw-medium  cursor-pointer">
-              <label
-                className="form-label font-sm fw-medium  gap-2 cursor-pointer mb-0 w-100"
-                role="button"
-              >
-                <p>Header</p>
+          {blockValues?.struct?.isHighlightCorrect === true && <div className="mb-3">
+            <label
+              className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
+              role="button"
+            >
+              Correct Tile Color
+            </label>
+            <div ref={colorPickerButtonRef}>
+              <div className="d-flex align-items-center">
+                <div
+                  className="color-picker-color"
+                  style={{
+                    backgroundColor: `${blockValues?.struct?.correctColor}`,
+                  }}
+                  role="button"
+                  onClick={() => setShowColorButtonPicker(!showColorButtonPickerForm)}
+                ></div>
                 <input
                   className="colorInput form-control theme-control"
                   type="text"
-                  defaultValue={blockValues?.struct?.coverHeader}
-                  onChange={(e) => handleChangeHeader(e.target.value)}
+                  defaultValue={blockValues?.struct?.correctColor}
+                  onChange={(e) =>
+                    handleChangeColorButton(e.target.value)
+                  }
                 />
-              </label>
-            </div>
-            <div className="form-label font-sm fw-medium  cursor-pointer">
-              <label
-                className="form-label font-sm fw-medium  gap-2 cursor-pointer mb-0 w-100"
-                role="button"
-              >
-                <p>Button text</p>
-                <input
-                  className="colorInput form-control theme-control"
-                  type="text"
-                  defaultValue={blockValues?.struct?.coverBtnText}
-                  onChange={(e) => handleChangebtnText(e.target.value)}
+              </div>
+              {showColorButtonPickerForm && (
+                <SketchPicker
+                  color={blockValues?.struct?.correctColor}
+                  onChange={(color) => handleChangeColorButton(color.hex)}
                 />
-              </label>
+              )}
             </div>
-          </div>
-        )}
-      </div>
-      <div className="setting-block border-bottom">
-        <div className="control-box">
-          <div className="mb-3">
-            <label
-              className="form-label font-sm fw-medium  gap-2 cursor-pointer w-100"
-              role="button"
-            >Header text in the final message
-            </label>
-            <input
-              className="colorInput form-control theme-control"
-              type="text"
-              defaultValue={blockValues?.struct?.suct}
-              onChange={(e) => handleChangeFinalHeader(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label
-              className="form-label font-sm fw-medium  gap-2 cursor-pointer w-100"
-              role="button"
-            >The main body of the final message
-            </label>
-            <input
-              className="colorInput form-control theme-control"
-              type="text"
-              defaultValue={blockValues?.struct?.sucd}
-              onChange={(e) => handleChangeFinalDescription(e.target.value)}
-            />
-          </div>
-          <div className="upload-button">
-            <label className="upload-button__label form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
-              Image of the final message
-            </label>
-            <div className="content upload">
-              <img
-                className="upload-button__img-preview"
-                style={{ height: 44, width: 44, borderRadius: 8 }}
-                src={blockValues?.struct?.bimg}
-              />
-              <button
-                className="button button-primary w-100 border-0"
-                onClick={() => handleChangeMedia("hidden-object", id)}
-              >
-                Change
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="setting-block border-bottom">
-        <div className="control-box">
+          </div>}
           <div className="d-flex justify-content-between form-label font-sm fw-medium d-flex align-items-center cursor-pointer mb-0">
             <label className="mb-0">Privacy</label>
+            {console.log(blockValues?.struct?.passwordList.length, "uiouiou")}
             <div>
               {blockValues?.struct?.passwordList?.length === 0 ? (
                 <p
-                  role="button"
                   className="mb-0 d-flex gap-2 align-items-center px-3 py-2 button button-primary"
-
+                  role="button"
                   onClick={() => handleOpenPasswordModal(blockValues)}
                 >
                   <i class="fa-solid fa-lock-open"></i> No restrictions
                 </p>
               ) : (
                 <p
-                  role="button"
                   className="mb-0 d-flex gap-2 align-items-center px-3 py-2 button button-primary"
+                  role="button"
                   onClick={() => handleOpenPasswordModal(blockValues)}
                 >
                   <i class="fa-solid fa-lock"></i> Password access
@@ -1093,7 +727,7 @@ function HiddenObjectSettings({
         <div className="control-box">
           <div className="form-label font-sm fw-medium  cursor-pointer">
             <p>Gamification</p>
-            <label
+            < label
               className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
               role="button"
             >
@@ -1110,7 +744,7 @@ function HiddenObjectSettings({
         </div>
         {blockValues?.struct?.isEnableRating && (
           <div className="control-box">
-            <div className="form-label font-sm fw-medium  cursor-pointer">
+            <div className="mb-3">
               <label
                 className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
                 role="button"
@@ -1128,7 +762,7 @@ function HiddenObjectSettings({
 
             <div className="mb-3">
               <label
-                className="form-label font-sm fw-medium gap-2 cursor-pointer mb-0"
+                className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
                 role="button"
               >Number of attempts
               </label>
@@ -1142,7 +776,7 @@ function HiddenObjectSettings({
             </div>
             <div className="mb-3">
               <label
-                className="form-label font-sm fw-medium  gap-2 cursor-pointer mb-0"
+                className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
                 role="button"
               >Links to service policies (html)
               </label>
@@ -1195,7 +829,7 @@ function HiddenObjectSettings({
             Enable timer
           </label>
         </div>
-        {console.log(blockValues?.struct?.enableTimer, "ddcdcdc")}
+
         {blockValues?.struct?.enableTimer && (
           <div className="control-box">
             <div className="form-label font-sm fw-medium  cursor-pointer d-flex justify-content-start gap-3">
@@ -1241,7 +875,6 @@ function HiddenObjectSettings({
             </div>
           </div>
         )}
-
         {blockValues?.struct?.timerType?.value === "countdown" && (
           <div className="">
             <div className="my-3">
@@ -1260,11 +893,12 @@ function HiddenObjectSettings({
               />
             </div>
             <div>
+              {console.log(pageData?.blocks, "pageData?.blocks")}
               <p
+                className="mb-0 font-sm fw-medium"
                 style={{ color: "#20a2b8" }}
                 role="button"
-                className="mb-0 font-sm fw-medium"
-                onClick={() => handleTimeUpPage(data)}
+                onClick={() => handleTimeUpPage(blockValues)}
               >
                 Customize the “Time is up” page
               </p>
@@ -1288,7 +922,26 @@ function HiddenObjectSettings({
           Hide restart button
         </label>
       </div>
+      {/* HIDE sHIFFLE buTTON  */}
+      {console.log(blockValues?.struct, "blockValues?.struct")}
+      <div className="setting-block border-bottom">
+        <label
+          className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
+          role="button"
+        >
+          <input
+            type="checkbox"
+            id="restartbutton"
+            className="form-check-input theme-control shadow-none m-0"
+            onChange={(e) => handleShuffleButton(e.target.checked)}
+            checked={blockValues?.struct?.isShowShuffleButton}
+          />
+          Hide Shuffle button
+        </label>
+      </div>
 
+
+      {/* hiDE sHUFFLE buTTON  */}
       <div className="setting-block border-bottom">
         <label
           className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
@@ -1450,4 +1103,4 @@ function HiddenObjectSettings({
   );
 }
 
-export default HiddenObjectSettings;
+export default CrossWordSettings;

@@ -483,24 +483,27 @@ function CookiesModal({
   setSelectScreen,
   formData,
   handleChangeLogo,
-  setIsOpenFormModal
+  setIsOpenFormModal,
+  showQuit,
+  setShowQuit,
+  setAnyChanges,
 }) {
   const dispatch = useDispatch();
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const [errors, setErrors] = useState({});
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [horo, sethoro] = useState([])
+  const [horo, sethoro] = useState([]);
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
-  const [finalResult, setfinalResult] = useState({})
+  const [finalResult, setfinalResult] = useState({});
+
   const handlechangeSliderDecription = (e, id) => {
     const updatedHoro = horo.map((card) =>
-      card.id === id
-        ? { ...card, description: e }
-        : card
+      card.id === id ? { ...card, description: e } : card
     );
 
     sethoro(updatedHoro);
+    setAnyChanges(true)
   };
 
   const handlechangeSliderHeader = (newHeaderValue, questionId) => {
@@ -515,7 +518,7 @@ function CookiesModal({
     // Check if header is empty (or contains only spaces)
     const isHeaderEmpty = !newHeaderValue.trim(); // true if empty
 
-    console.log(`Is header empty for question ${questionId}?`, isHeaderEmpty);  // Log to check
+    console.log(`Is header empty for question ${questionId}?`, isHeaderEmpty); // Log to check
 
     // Update the errors state
     setErrors((prevErrors) => ({
@@ -525,10 +528,10 @@ function CookiesModal({
         header: isHeaderEmpty, // Set error if empty
       },
     }));
-  };
-  console.log(errors, "trhrtht")
 
-  console.log(errors, "SQSQS")
+    setAnyChanges(true)
+  };
+
   // const handlechangeSliderHeader = (e, id) => {
   //   // const updatedData = {
   //   //   ...templateDetails,
@@ -593,21 +596,19 @@ function CookiesModal({
   // };
   const handlechangeSliderButtontext = (e, id) => {
     const updatedHoro = horo.map((card) =>
-      card.id === id
-        ? { ...card, buttonText: e }
-        : card
+      card.id === id ? { ...card, buttonText: e } : card
     );
 
     sethoro(updatedHoro);
+    setAnyChanges(true)
   };
   const handlechangeSliderButtonLink = (e, id) => {
     const updatedHoro = horo.map((card) =>
-      card.id === id
-        ? { ...card, buttonLink: e }
-        : card
+      card.id === id ? { ...card, buttonLink: e } : card
     );
 
     sethoro(updatedHoro);
+    setAnyChanges(true)
   };
 
   // const handlechangeSliderButtonLink = (e, id) => {
@@ -674,16 +675,16 @@ function CookiesModal({
   // };
   const handlechangeSliderCaption = (e, id) => {
     const updatedHoro = horo.map((card) =>
-      card.id === id
-        ? { ...card, disclaimer: e }
-        : card
+      card.id === id ? { ...card, disclaimer: e } : card
     );
 
     sethoro(updatedHoro);
+    setAnyChanges(true)
   };
   const handleDeleteQuestion = (id) => {
     const updatedHoro = horo.filter((card) => card.id !== id);
     sethoro(updatedHoro);
+    setAnyChanges(true)
   };
   const scrollableDivRef = useRef(null);
   const handleAddNew = () => {
@@ -702,10 +703,10 @@ function CookiesModal({
   };
   const handleMoveUp = (id) => {
     const page = templateDetails?.project_structure?.pages?.find(
-      (page) => page.name === selectedPage
+      // (page) => page.name === selectedPage
     );
     if (!page) {
-      console.error("No page found with the selected name:", selectedPage);
+      // console.error("No page found with the selected name:", selectedPage);
       return;
     }
     const index = page?.blocks?.findIndex((block) => block.id === id);
@@ -730,10 +731,10 @@ function CookiesModal({
 
   const handleMoveDown = (id) => {
     const page = templateDetails?.project_structure?.pages?.find(
-      (page) => page.name === selectedPage
+      // (page) => page.name === selectedPage
     );
     if (!page) {
-      console.error("No page found with the selected name:", selectedPage);
+      // console.error("No page found with the selected name:", selectedPage);
       return;
     }
     const index = page?.blocks?.findIndex((block) => block.id === id);
@@ -803,8 +804,8 @@ function CookiesModal({
     updatedCards.splice(index + 1, 0, clonedCard); // Insert right after original
 
     sethoro(updatedCards); // ✅ update local state
+    setAnyChanges(true)
   };
-
 
   const handleDeleteImage = (cardId) => {
     const updatedData = {
@@ -816,19 +817,19 @@ function CookiesModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  cards: block.struct.cards?.map((question) =>
-                    question.id === cardId
-                      ? {
-                        ...question,
-                        illustrationImage: "",
-                      }
-                      : question
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    cards: block.struct.cards?.map((question) =>
+                      question.id === cardId
+                        ? {
+                            ...question,
+                            illustrationImage: "",
+                          }
+                        : question
+                    ),
+                  },
+                }
               : block
           ),
         })),
@@ -836,6 +837,7 @@ function CookiesModal({
     };
 
     dispatch(updateTemplateAction(updatedData));
+    setAnyChanges(true)
   };
   const validateForm = () => {
     let isValid = true;
@@ -858,14 +860,14 @@ function CookiesModal({
     const sectionElement = document.getElementById(`Card-${index}`);
     if (sectionElement) {
       sectionElement.scrollIntoView({
-        behavior: 'smooth', // Smooth scrolling
-        block: 'start', // Align to the top of the viewport
+        behavior: "smooth", // Smooth scrolling
+        block: "start", // Align to the top of the viewport
       });
     }
   };
 
   const handleScroll = () => {
-    const sections = document.querySelectorAll('.questioncontent'); // All sections
+    const sections = document.querySelectorAll(".questioncontent"); // All sections
     let indexToHighlight = null;
 
     sections.forEach((section, index) => {
@@ -887,6 +889,7 @@ function CookiesModal({
     const updated = [...horo];
     [updated[index], updated[index - 1]] = [updated[index - 1], updated[index]];
     sethoro(updated);
+    setAnyChanges(true)
   };
 
   const moveCardDown = (id) => {
@@ -896,6 +899,8 @@ function CookiesModal({
     const updated = [...horo];
     [updated[index], updated[index + 1]] = [updated[index + 1], updated[index]];
     sethoro(updated);
+
+    setAnyChanges(true)
   };
 
   // const validateForm = () => {
@@ -912,7 +917,7 @@ function CookiesModal({
     console.log("Saving horoscope...");
 
     if (!validateForm()) {
-      setErrorScreen(true)
+      setErrorScreen(true);
       return;
     }
 
@@ -925,20 +930,20 @@ function CookiesModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  cards: horo, // ✅ Use local state for updated cards
-                  // playground: {
-                  //   ...block.struct.playground,
-                  //   ...puzzle, // ✅ Your puzzle state
-                  // },
-                  // finalScreen: {
-                  //   ...block.struct.finalScreen,
-                  //   ...finalResult, // ✅ Your final screen state
-                  // },
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    cards: horo, // ✅ Use local state for updated cards
+                    // playground: {
+                    //   ...block.struct.playground,
+                    //   ...puzzle, // ✅ Your puzzle state
+                    // },
+                    // finalScreen: {
+                    //   ...block.struct.finalScreen,
+                    //   ...finalResult, // ✅ Your final screen state
+                    // },
+                  },
+                }
               : block
           ),
         })),
@@ -951,23 +956,23 @@ function CookiesModal({
     setIsOpenFormModal(false);
   };
 
-  console.log(horo, "horohoro", formData?.struct?.cards)
+  console.log(horo, "horohoro", formData?.struct?.cards);
   useEffect(() => {
-    sethoro(formData?.struct?.cards)
-    setfinalResult(formData?.struct?.finalScreen)
-  }, [formData])
+    sethoro(formData?.struct?.cards);
+    setfinalResult(formData?.struct?.finalScreen);
+  }, [formData]);
   console.log(formData?.struct, "cehchccchformdTAaaformhoroscope");
-  console.log(horo.coverImage, "horo.coverImage")
+  console.log(horo.coverImage, "horo.coverImage");
   useEffect(() => {
     const scrollableDiv = scrollableDivRef.current;
 
     if (scrollableDiv) {
       // Add event listener for scroll events
-      scrollableDiv.addEventListener('scroll', handleScroll);
+      scrollableDiv.addEventListener("scroll", handleScroll);
 
       // Clean up the event listener on component unmount
       return () => {
-        scrollableDiv.removeEventListener('scroll', handleScroll);
+        scrollableDiv.removeEventListener("scroll", handleScroll);
       };
     }
   }, [selectedIndex]);
@@ -979,7 +984,10 @@ function CookiesModal({
           <div className="sidebarquestions">
             {horo &&
               horo?.map((question, index) => (
-                <div className={`questionSidebarList align-items-center ${selectedIndex === index ? 'highlight' : ''}`} onClick={() => handleSelectSector(index)}>
+                <div
+                  className={`questionSidebarList align-items-center ${selectedIndex === index ? "highlight" : ""}`}
+                  onClick={() => handleSelectSector(index)}
+                >
                   <div className="questionImageLabel">
                     <img
                       src={
@@ -1007,14 +1015,17 @@ function CookiesModal({
         <div className="w-100 scrollable-div p-4" ref={scrollableDivRef}>
           {horo &&
             horo?.map((question, index) => (
-              <div key={question.id} className={`questioncontent mb-3 ${selectedIndex === index ? 'highlight' : ''}`}
-
-                style={{ backgroundColor: selectedIndex === index ? '#f0f0f0' : 'transparent' }}
+              <div
+                key={question.id}
+                className={`questioncontent mb-3 ${selectedIndex === index ? "highlight" : ""}`}
+                style={{
+                  backgroundColor:
+                    selectedIndex === index ? "#f0f0f0" : "transparent",
+                }}
               >
                 <div className="titlequestions d-flex align-items-center justify-content-between mb-3">
                   <h4>Card {index + 1}</h4>
                   <div className="questionTitle gap-2 d-flex align-items-center">
-
                     <li
                       className="Inline_control__list"
                       title="Move up"
@@ -1031,8 +1042,10 @@ function CookiesModal({
                     >
                       <i className="fa-solid fa-arrow-down"></i>
                     </li>
-                    <button onClick={() => cloneBlock(question.id)}
-                      className="button button-secondary border-0 p-2 h-auto rounded-5 text-muted font-sm">
+                    <button
+                      onClick={() => cloneBlock(question.id)}
+                      className="button button-secondary border-0 p-2 h-auto rounded-5 text-muted font-sm"
+                    >
                       <i class="fa-solid fa-clone"></i>
                     </button>
                     {horo.length > 1 && (
@@ -1049,14 +1062,16 @@ function CookiesModal({
                 <div className="questionData">
                   <div class="mb-3">
                     <div class="d-flex gap-4">
-                      <div className="questionImageLabel quest-cover"
+                      <div
+                        className="questionImageLabel quest-cover"
                         style={{
                           height: 128,
                           width: 128,
                           objectFit: "cover",
                           borderRadius: 8,
-                          margin: 0
-                        }}>
+                          margin: 0,
+                        }}
+                      >
                         <img
                           src={
                             question.coverImage ||
@@ -1083,7 +1098,7 @@ function CookiesModal({
                       <div className="w-100">
                         <div className="mb-3">
                           <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">
-                            Header <span style={{ color: 'red' }}>*</span>
+                            Header <span style={{ color: "red" }}>*</span>
                           </label>
 
                           {/* <input
@@ -1100,14 +1115,21 @@ function CookiesModal({
                           /> */}
                           <input
                             type="text"
-                            className={`form-control theme-control ${errors[question.id]?.header ? 'is-invalid' : ''}`}
+                            className={`form-control theme-control ${errors[question.id]?.header ? "is-invalid" : ""}`}
                             value={question.header}
-                            onChange={(e) => handlechangeSliderHeader(e.target.value, question.id)}
+                            onChange={(e) =>
+                              handlechangeSliderHeader(
+                                e.target.value,
+                                question.id
+                              )
+                            }
                             required
                           />
 
                           {errors[question.id]?.header && (
-                            <div className="invalid-feedback">Header is required.</div>
+                            <div className="invalid-feedback">
+                              Header is required.
+                            </div>
                           )}
                           {console.log(errors.headerWordCount, "vvvvv")}
                           {/* {errors.headerWordCount && (
@@ -1115,7 +1137,9 @@ function CookiesModal({
                           )} */}
                         </div>
                         <div class="mb-3">
-                          <label class="form-label font-sm fw-medium d-flex align-items-center gap-2">Description</label>
+                          <label class="form-label font-sm fw-medium d-flex align-items-center gap-2">
+                            Description
+                          </label>
                           <textarea
                             class="form-control theme-control"
                             rows="4"
@@ -1131,8 +1155,8 @@ function CookiesModal({
                         </div>
                         <div className="mb-3">
                           <div className="w-100">
-                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">1 st-page disclaimer
-
+                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">
+                              Image disclaimer
                             </label>
                             <input
                               type="text"
@@ -1150,7 +1174,9 @@ function CookiesModal({
                         </div>
                         <div className="illustrationUploadImage d-flex align-items-center gap-3 flex-wrap flex-md-nowrap">
                           <div className="mb-3">
-                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">Illustration</label>
+                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">
+                              Illustration
+                            </label>
 
                             <div className="d-flex gap-2">
                               {question?.illustrationImage && (
@@ -1162,7 +1188,7 @@ function CookiesModal({
                                     height: 44,
                                     width: 44,
                                     borderRadius: 8,
-                                    objectFit: 'cover'
+                                    objectFit: "cover",
                                   }}
                                 />
                               )}
@@ -1192,7 +1218,9 @@ function CookiesModal({
 
                           <div className="buttonlink d-flex w-100 gap-3">
                             <div className="w-100 mb-3">
-                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">Button text </label>
+                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">
+                                Button text{" "}
+                              </label>
                               <input
                                 type="text"
                                 class="form-control theme-control w-100"
@@ -1207,7 +1235,9 @@ function CookiesModal({
                               />
                             </div>
                             <div className="w-100">
-                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">Link</label>
+                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">
+                                Link
+                              </label>
                               <input
                                 type="text"
                                 class="form-control theme-control w-100"
@@ -1229,14 +1259,11 @@ function CookiesModal({
                 </div>
               </div>
             ))}
-          <div>
-
-          </div>
+          <div></div>
         </div>
       </div>
 
       <ul className="Footer_footer__bMDNk">
-
         <li className="Footer_footerItem__yaFNE">
           <button
             onClick={handleSaveHoroscope}
@@ -1280,6 +1307,55 @@ function CookiesModal({
                 Back
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showQuit && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Are you sure that you want to quit?
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  The changes you made will not be saved
+                </p>
+              </div>
+            </div>
+            <ul className="Footer_footer__bMDNk">
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  className="button button-primary outline px-3"
+                  onClick={() => {
+                    setShowQuit(false);
+                  }}
+                >
+                  Back
+                </button>
+              </li>
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  onClick={() => {
+                    setIsOpenFormModal(false);
+                    setShowQuit(false);
+                    setAnyChanges(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Quit
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
       )}

@@ -16,16 +16,18 @@ function LeadFormModal({
   setSelectScreen,
   formData,
   handleChangeLogo,
-  setIsOpenFormModal
+  setIsOpenFormModal,
+  showQuit,
+  setShowQuit,
+  setAnyChanges,
 }) {
   const [checkedFields, setCheckedFields] = useState([]);
-  const [leadformModel, setleadFormModel] = useState({})
+  const [leadformModel, setleadFormModel] = useState({});
   const [newFieldsArray, setNewFieldsArray] = useState([]);
-  const [finalResult, setfinalResult] = useState({})
+  const [finalResult, setfinalResult] = useState({});
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
   const [selectedType, setSelectedType] = useState("");
-
 
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(formData, "cehckTemplateDetailks");
@@ -46,7 +48,7 @@ function LeadFormModal({
     buttonText: false,
     finalResultHeader: false,
     headerWordCount: false,
-    buttonTextWordCount: false
+    buttonTextWordCount: false,
   });
   useEffect(() => {
     // Initialize checked fields based on the fields data
@@ -54,11 +56,9 @@ function LeadFormModal({
       (field) => field.id
     );
     setCheckedFields(checkedLabels);
-  }, [formData]
-
-  );
-  console.log(checkedFields, "finalResult")
-  console.log(finalResult.headerText, "leadformModel")
+  }, [formData]);
+  console.log(checkedFields, "finalResult");
+  console.log(finalResult.headerText, "leadformModel");
   const validateForm = () => {
     const newErrors = {
       // header: !leadformModel.coverHeader?.trim(),
@@ -73,10 +73,18 @@ function LeadFormModal({
 
     setErrors(newErrors);
 
-    return !newErrors.header && !newErrors.buttonText && !newErrors.finalResultHeader &&
-      !newErrors.headerWordCount && !newErrors.buttonTextWordCount && !newErrors.finalResultHeaderWordCount;
+    return (
+      !newErrors.header &&
+      !newErrors.buttonText &&
+      !newErrors.finalResultHeader &&
+      !newErrors.headerWordCount &&
+      !newErrors.buttonTextWordCount &&
+      !newErrors.finalResultHeaderWordCount
+    );
   };
-  { console.log(errors, "sqsqsqs") }
+  {
+    console.log(errors, "sqsqsqs");
+  }
   // const validateForm = () => {
   //   const newErrors = {
 
@@ -99,23 +107,23 @@ function LeadFormModal({
     console.log(text, "09485");
 
     // Ensure text is a valid string before calling trim
-    if (typeof text !== 'string') {
-      return false;  // Return false if the text is not a string
+    if (typeof text !== "string") {
+      return false; // Return false if the text is not a string
     }
 
     // Remove leading/trailing spaces and collapse multiple spaces between words
-    const trimmedText = text.trim().replace(/\s+/g, ' ');
+    const trimmedText = text.trim().replace(/\s+/g, " ");
 
     // Split the text into an array of words
-    const wordCount = trimmedText.split(' ').length;
+    const wordCount = trimmedText.split(" ").length;
 
-    console.log(trimmedText, "trimmed text");  // Debug the trimmed text
+    console.log(trimmedText, "trimmed text"); // Debug the trimmed text
     console.log(wordCount, "word count"); // Log the word count to verify
 
     // Return true if the word count is less than or equal to 20
-    return wordCount <= 20 && wordCount > 0;  // Ensure that word count is greater than 0
+    return wordCount <= 20 && wordCount > 0; // Ensure that word count is greater than 0
   };
-  console.log(checkedFields, "checkedFields")
+  console.log(checkedFields, "checkedFields");
   const handleCheckboxChange = (e, id, label) => {
     const isChecked = e.target.checked;
 
@@ -129,10 +137,8 @@ function LeadFormModal({
         item.id === id ? { ...item, checked: isChecked } : item
       )
     );
+    setAnyChanges(true);
   };
-
-
-
 
   const handleAddItem = () => {
     const addInputField = {
@@ -148,6 +154,7 @@ function LeadFormModal({
 
     // ✅ Also add it to checkedFields
     setCheckedFields((prev) => [...prev, addInputField.id]);
+    setAnyChanges(true);
   };
 
   useEffect(() => {
@@ -173,8 +180,8 @@ function LeadFormModal({
         item.id === id ? { ...item, type: selectedOption?.value } : item
       )
     );
+    setAnyChanges(true);
   };
-
 
   // const handleSelectChange = (selectedOption, id) => {
   //   console.log(selectedOption, "checkokornot");
@@ -262,30 +269,32 @@ function LeadFormModal({
       prevFieldsArray.map((item) =>
         item.id === id
           ? {
-            ...item,
-            initialValue: value,
-            label: value,
-            key: value,
-          }
+              ...item,
+              initialValue: value,
+              label: value,
+              key: value,
+            }
           : item
       )
     );
+    setAnyChanges(true);
   };
 
   const handleheaderText = (value) => {
-
     const newValue = value;
     setleadFormModel((prev) => ({
       ...prev,
-      headerText: newValue
+      headerText: newValue,
     }));
+    setAnyChanges(true);
   };
   const handleDescriptionText = (value) => {
     const newValue = value;
     setleadFormModel((prev) => ({
       ...prev,
-      descriptionText: newValue
+      descriptionText: newValue,
     }));
+    setAnyChanges(true);
 
     //   ...templateDetails,
     //   project_structure: {
@@ -313,9 +322,8 @@ function LeadFormModal({
     // dispatch(updateTemplateAction(updatedData));
   };
 
-
   const handleDButtonText = (value) => {
-    const newValue = value.trim();  // Make sure to trim whitespace
+    const newValue = value.trim(); // Make sure to trim whitespace
 
     setleadFormModel((prev) => ({
       ...prev,
@@ -324,22 +332,23 @@ function LeadFormModal({
 
     setErrors((prev) => ({
       ...prev,
-      buttonText: false,  // Reset error for button text
-      buttonTextWordCount: false,  // Reset error for word count
+      buttonText: false, // Reset error for button text
+      buttonTextWordCount: false, // Reset error for word count
     }));
 
     console.log(newValue, "Button Text");
 
-    validateForm();  // Trigger validation after setting the new value
+    validateForm(); // Trigger validation after setting the new value
+    setAnyChanges(true);
   };
 
   const handleAddLink = (value) => {
-
     const newValue = value;
     setleadFormModel((prev) => ({
       ...prev,
-      linkPrivacyPolicyLink: newValue
+      linkPrivacyPolicyLink: newValue,
     }));
+    setAnyChanges(true);
   };
 
   const handleChangeAdditionalText = (value) => {
@@ -347,14 +356,16 @@ function LeadFormModal({
     const newValue = value;
     setleadFormModel((prev) => ({
       ...prev,
-      addtionalText: newValue
+      addtionalText: newValue,
     }));
+    setAnyChanges(true);
   };
   const handleDeleteItem = (id) => {
     // Remove the item from the local array only
     setNewFieldsArray((prevFieldsArray) =>
       prevFieldsArray.filter((item) => item.id !== id)
     );
+    setAnyChanges(true);
   };
 
   // const handleDeleteItem = (id) => {
@@ -391,16 +402,12 @@ function LeadFormModal({
 
   //   dispatch(updateTemplateAction(updatedData));
   // };
-  console.log(errors, "axaxaax")
+  console.log(errors, "axaxaax");
   const handleNext = async () => {
-
-
     if (!validateForm()) {
-      setErrorScreen(true)
+      setErrorScreen(true);
       return;
-
     } else {
-
       setErrorScreen(false);
       setTriggerNext(false);
       if (selecteScreen == "start-screen") {
@@ -414,12 +421,12 @@ function LeadFormModal({
     console.log("Proceed to next step");
   };
   const hanldleSaveLeadForm = () => {
-    console.log("object")
+    console.log("object");
     if (!validateForm()) {
-      setErrorScreen(true)
+      setErrorScreen(true);
       return;
     } else {
-      console.log("INELSLSSLL")
+      console.log("INELSLSSLL");
       const updatedData = {
         ...templateDetails,
         project_structure: {
@@ -429,34 +436,33 @@ function LeadFormModal({
             blocks: page.blocks.map((block) =>
               block.id === formData?.id
                 ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    // playground: {
-                    //   ...block.struct.playground,
-                    //   ...puzzle
-                    // },
-                    form: {
-                      ...block.struct.form,
-                      ...leadformModel
+                    ...block,
+                    struct: {
+                      ...block.struct,
+                      // playground: {
+                      //   ...block.struct.playground,
+                      //   ...puzzle
+                      // },
+                      form: {
+                        ...block.struct.form,
+                        ...leadformModel,
+                      },
+                      final: {
+                        ...block.struct.final,
+                        ...finalResult,
+                      },
                     },
-                    final: {
-                      ...block.struct.final,
-                      ...finalResult
-                    },
-                  },
-                }
+                  }
                 : block
             ),
           })),
         },
       };
-      console.log(updatedData, "updatedData")
+      console.log(updatedData, "updatedData");
       dispatch(updateTemplateAction(updatedData));
-      setIsOpenFormModal(false)
-
+      setIsOpenFormModal(false);
     }
-  }
+  };
   const handleDeleteImage = (cardId) => {
     const updatedData = {
       ...templateDetails,
@@ -467,15 +473,15 @@ function LeadFormModal({
           blocks: page.blocks.map((block) =>
             block.id === cardId
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  form: {
-                    ...block.struct.form,
-                    logoImage: "",
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    form: {
+                      ...block.struct.form,
+                      logoImage: "",
+                    },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -488,11 +494,11 @@ function LeadFormModal({
   useEffect(() => {
     if (formData) {
       console.log(formData?.struct, "rerendereddddd");
-      setfinalResult(formData?.struct?.final)
+      setfinalResult(formData?.struct?.final);
       setleadFormModel(formData?.struct?.form);
     }
   }, [formData]);
-  console.log(leadformModel, "kjijii")
+  console.log(leadformModel, "kjijii");
   const allFields = [...fields, ...newFieldsArray];
   return (
     <>
@@ -507,8 +513,8 @@ function LeadFormModal({
                   setErrorScreen(true);
                   return;
                 } else {
-                  setErrorScreen(false)
-                  setSelectScreen("start-screen")
+                  setErrorScreen(false);
+                  setSelectScreen("start-screen");
                 }
               }}
             >
@@ -523,8 +529,8 @@ function LeadFormModal({
                   setErrorScreen(true);
                   return;
                 } else {
-                  setErrorScreen(false)
-                  setSelectScreen("final-screen")
+                  setErrorScreen(false);
+                  setSelectScreen("final-screen");
                 }
               }}
             >
@@ -544,26 +550,32 @@ function LeadFormModal({
                     <div className="row gy-3 gx-4 mb-3">
                       {allSelectableFields.map((label, index) => (
                         <div className="col-md-4 d-flex gap-2" key={label.id}>
-                          <label htmlFor={`field-${label.id}`} className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer mb-0">
+                          <label
+                            htmlFor={`field-${label.id}`}
+                            className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer mb-0"
+                          >
                             <input
                               id={`field-${label.id}`}
                               type="checkbox"
                               className="form-check-input theme-control shadow-none m-0"
                               checked={checkedFields.includes(label.id)}
-                              onChange={(e) => handleCheckboxChange(e, label.id, label)}
+                              onChange={(e) =>
+                                handleCheckboxChange(e, label.id, label)
+                              }
                             />
                             {label.label}
                           </label>
                         </div>
                       ))}
-
                     </div>
                     <div className="newFieldsArray">
                       {newFieldsArray.length > 0 &&
                         newFieldsArray.map((type, index) => (
                           <div className="fieldstype d-flex align-items-center justify-content-center mb-3">
                             <div className="selectBox_input w-100">
-                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer">Field type</label>
+                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer">
+                                Field type
+                              </label>
                               <Select
                                 key={index}
                                 className="theme-select"
@@ -577,18 +589,29 @@ function LeadFormModal({
                               />
                             </div>
                             <div className="input_field  w-100">
-                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer">Field Name <span style={{ color: 'red' }}>*</span></label>
+                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer">
+                                Field Name{" "}
+                                <span style={{ color: "red" }}>*</span>
+                              </label>
                               <input
                                 type="text"
                                 className="form-control theme-control"
                                 defaultValue={type.initialValue}
                                 onChange={(e) =>
-                                  handleInputFieldChange(e.target.value, type.id)
+                                  handleInputFieldChange(
+                                    e.target.value,
+                                    type.id
+                                  )
                                 }
                               />
                             </div>
                             <div className="deleteField">
-                              <label htmlFor="" className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">&nbsp;</label>
+                              <label
+                                htmlFor=""
+                                className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
+                              >
+                                &nbsp;
+                              </label>
                               <button
                                 className="button button-secondary px-3 border-0"
                                 onClick={() => handleDeleteItem(type.id)}
@@ -632,7 +655,9 @@ function LeadFormModal({
                               )}
                               <button
                                 className="button button-primary border-0"
-                                onClick={() => handleChangeLogo("formImage", formData?.id)}
+                                onClick={() =>
+                                  handleChangeLogo("formImage", formData?.id)
+                                }
                               >
                                 {formData?.struct?.form?.logoImage
                                   ? "Change"
@@ -655,18 +680,14 @@ function LeadFormModal({
                             <label
                               className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer"
                               role="button"
-                            >Header
+                            >
+                              Header
                             </label>
                             <input
                               className="form-control theme-control"
                               type="text"
-                              defaultValue={
-                                leadformModel
-                                  ?.headerText
-                              }
-                              onChange={(e) =>
-                                handleheaderText(e.target.value)
-                              }
+                              defaultValue={leadformModel?.headerText}
+                              onChange={(e) => handleheaderText(e.target.value)}
                             />
                           </div>
 
@@ -674,14 +695,12 @@ function LeadFormModal({
                             <label
                               className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer"
                               role="button"
-                            >Description
+                            >
+                              Description
                             </label>
                             <textarea
                               className="form-control theme-control"
-                              defaultValue={
-                                leadformModel
-                                  ?.descriptionText
-                              }
+                              defaultValue={leadformModel?.descriptionText}
                               onChange={(e) =>
                                 handleDescriptionText(e.target.value)
                               }
@@ -691,50 +710,54 @@ function LeadFormModal({
                             <label
                               className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer"
                               role="button"
-                            >Button text <span style={{ color: 'red' }}>*</span>
+                            >
+                              Button text{" "}
+                              <span style={{ color: "red" }}>*</span>
                             </label>
                             <input
-                              className={`form-control theme-control ${errors.buttonText || errors.buttonTextWordCount ? 'is-invalid' : ''}`}
-                              defaultValue={
-                                leadformModel
-                                  ?.buttonText
-                              }
+                              className={`form-control theme-control ${errors.buttonText || errors.buttonTextWordCount ? "is-invalid" : ""}`}
+                              defaultValue={leadformModel?.buttonText}
                               onChange={(e) =>
                                 handleDButtonText(e.target.value)
                               }
                             />
-                            {errors.buttonText && <div className="invalid-feedback">Button text is required.</div>}
-                            {errors.buttonTextWordCount && <div className="invalid-feedback">Must be No more than 20 characters .</div>}
+                            {errors.buttonText && (
+                              <div className="invalid-feedback">
+                                Button text is required.
+                              </div>
+                            )}
+                            {errors.buttonTextWordCount && (
+                              <div className="invalid-feedback">
+                                Must be No more than 20 characters .
+                              </div>
+                            )}
                           </div>
 
                           <div className="mb-3">
                             <label
                               className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer"
                               role="button"
-                            >Link to your privacy policy
+                            >
+                              Link to your privacy policy
                             </label>
                             <input
                               className="form-control theme-control"
                               defaultValue={
-                                leadformModel
-                                  ?.linkPrivacyPolicyLink
+                                leadformModel?.linkPrivacyPolicyLink
                               }
-                              onChange={(e) =>
-                                handleAddLink(e.target.value)
-                              }
+                              onChange={(e) => handleAddLink(e.target.value)}
                             />
                           </div>
                           <div className="">
                             <label
                               className="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer"
                               role="button"
-                            >Any additional notes
+                            >
+                              Any additional notes
                             </label>
                             <textarea
                               className="colorInput form-control theme-control"
-                              defaultValue={
-                                leadformModel?.addtionalText
-                              }
+                              defaultValue={leadformModel?.addtionalText}
                               onChange={(e) =>
                                 handleChangeAdditionalText(e.target.value)
                               }
@@ -742,9 +765,7 @@ function LeadFormModal({
                           </div>
                         </div>
                       </div>
-                      <div>
-
-                      </div>
+                      <div></div>
                     </div>
                   </div>
                 </div>
@@ -766,7 +787,9 @@ function LeadFormModal({
                   <h4 className="text-center">{leadformModel?.headerText}</h4>
 
                   {/* Display description text */}
-                  <p className="text-center">{leadformModel?.descriptionText}</p>
+                  <p className="text-center">
+                    {leadformModel?.descriptionText}
+                  </p>
 
                   {/* Preview the checked fields */}
                   {/* <div className="fields-preview mb-4">
@@ -814,13 +837,19 @@ function LeadFormModal({
                     {/* <h5>Selected Fields:</h5> */}
                     {checkedFields.length > 0 ? (
                       checkedFields.map((fieldId) => {
-                        const field = allFields.find(f => f.id === fieldId);
+                        const field = allFields.find((f) => f.id === fieldId);
                         if (!field) return null;
 
                         return (
-                          <label className="form-label font-sm w-100" role="button" key={field.id}>
+                          <label
+                            className="form-label font-sm w-100"
+                            role="button"
+                            key={field.id}
+                          >
                             <div>
-                              {field.type !== "checkbox" && <p>{field.label}</p>}
+                              {field.type !== "checkbox" && (
+                                <p>{field.label}</p>
+                              )}
                               <div>
                                 {field.type === "checkbox" && (
                                   <div className="d-flex align-items-center">
@@ -831,15 +860,36 @@ function LeadFormModal({
                                       checked
                                       readOnly // Just for preview; no change handler needed
                                     />
-                                    <label htmlFor={field.id} className="m-1 user-select-none" role="button">
+                                    <label
+                                      htmlFor={field.id}
+                                      className="m-1 user-select-none"
+                                      role="button"
+                                    >
                                       {field.label}
                                     </label>
                                   </div>
                                 )}
-                                {field.type === "text_area" && <textarea className="w-100 form-control" />}
-                                {field.type === "text" && <input className="form-control theme-control" type="text" />}
-                                {field.type === "email" && <input className="form-control theme-control" type="email" />}
-                                {field.type === "number" && <input className="form-control theme-control" type="number" />}
+                                {field.type === "text_area" && (
+                                  <textarea className="w-100 form-control" />
+                                )}
+                                {field.type === "text" && (
+                                  <input
+                                    className="form-control theme-control"
+                                    type="text"
+                                  />
+                                )}
+                                {field.type === "email" && (
+                                  <input
+                                    className="form-control theme-control"
+                                    type="email"
+                                  />
+                                )}
+                                {field.type === "number" && (
+                                  <input
+                                    className="form-control theme-control"
+                                    type="number"
+                                  />
+                                )}
                               </div>
                             </div>
                           </label>
@@ -849,7 +899,6 @@ function LeadFormModal({
                       <p>No fields selected yet.</p>
                     )}
                   </div>
-
 
                   {/* Submit button */}
                   <div className="submitpreview">
@@ -864,7 +913,9 @@ function LeadFormModal({
                         </label>
                       </div>
                     )}
-                    {leadformModel?.addtionalText && <p>{leadformModel.addtionalText}</p>}
+                    {leadformModel?.addtionalText && (
+                      <p>{leadformModel.addtionalText}</p>
+                    )}
 
                     <div className="text-center m-2">
                       <button
@@ -879,8 +930,6 @@ function LeadFormModal({
                     </div>
                   </div>
                 </div>
-
-
               </div>
             </div>
           </>
@@ -897,13 +946,20 @@ function LeadFormModal({
             formData={formData}
             questions={formData?.struct?.questions}
             handleChangeImage={handleChangeLogo}
+            setAnyChanges={setAnyChanges}
           />
         )}
-      </div> <ul className="Footer_footer__bMDNk">
+      </div>{" "}
+      <ul className="Footer_footer__bMDNk">
         {console.log(selecteScreen, "selecteScreen")}
         {selecteScreen !== "final-screen" && (
           <li className="Footer_footerItem__yaFNE">
-            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+            <button
+              className="button button-primary outline px-3"
+              onClick={handleNext}
+            >
+              Next
+            </button>
           </li>
         )}
         <li className="Footer_footerItem__yaFNE">
@@ -914,7 +970,8 @@ function LeadFormModal({
             Save
           </button>
         </li>
-      </ul> {(errorScreen || triggerNext) && (
+      </ul>{" "}
+      {(errorScreen || triggerNext) && (
         <div className="StopPanel_modalStop__Msu+K">
           <div className="StopPanel_modalOverlay__1dGP2"></div>
           <div className="StopPanel_modalContent__8Epq4">
@@ -949,7 +1006,56 @@ function LeadFormModal({
             </div>
           </div>
         </div>
-      )}</>
+      )}
+      {showQuit && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Are you sure that you want to quit?
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  The changes you made will not be saved
+                </p>
+              </div>
+            </div>
+            <ul className="Footer_footer__bMDNk">
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  className="button button-primary outline px-3"
+                  onClick={() => {
+                    setShowQuit(false);
+                  }}
+                >
+                  Back
+                </button>
+              </li>
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  onClick={() => {
+                    setIsOpenFormModal(false);
+                    setShowQuit(false);
+                    setAnyChanges(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Quit
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

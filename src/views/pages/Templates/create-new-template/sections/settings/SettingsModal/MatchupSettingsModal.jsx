@@ -9,40 +9,44 @@ function MatchUpModal({
   selecteScreen,
   setSelectScreen,
   formData,
-  handleChangeLogo, setIsOpenFormModal, onRegisterSlideImageCallback }) {
+  handleChangeLogo,
+  setIsOpenFormModal,
+  onRegisterSlideImageCallback,
+  showQuit,
+  setShowQuit,
+  setAnyChanges,
+}) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const [pairData, setPairData] = useState({
     isLargeCards: false,
     pairList: [],
-  })
+  });
   const [selectedImageType, setSelectedImageType] = useState({ type: "" });
-  const [finalResult, setfinalResult] = useState({})
+  const [finalResult, setfinalResult] = useState({});
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
   const [errors, setErrors] = useState({
-
     finalResultHeader: false,
-
   });
-  console.log(pairData, "errorserrors")
+  console.log(pairData, "errorserrors");
   const dispatch = useDispatch();
   const isValidWordCount = (text) => {
     console.log(text, "09485");
 
-    if (typeof text !== 'string') {
-      return false;  // Return false if the text is not a string
+    if (typeof text !== "string") {
+      return false; // Return false if the text is not a string
     }
 
-    const trimmedText = text.trim().replace(/\s+/g, ' ');
+    const trimmedText = text.trim().replace(/\s+/g, " ");
 
-    const wordCount = trimmedText.split(' ').length;
+    const wordCount = trimmedText.split(" ").length;
 
-    console.log(trimmedText, "trimmed text");  // Debug the trimmed text
+    console.log(trimmedText, "trimmed text"); // Debug the trimmed text
     console.log(wordCount, "word count"); // Log the word count to verify
 
-    return wordCount <= 20 && wordCount > 0;  // Ensure that word count is greater than 0
+    return wordCount <= 20 && wordCount > 0; // Ensure that word count is greater than 0
   };
-  console.log(finalResult, "finalResultfinalResult")
+  console.log(finalResult, "finalResultfinalResult");
   const validateForm = () => {
     const newErrors = {
       // header: !leadformModel.coverHeader?.trim(),
@@ -60,19 +64,14 @@ function MatchUpModal({
     return !newErrors.finalResultHeader;
   };
 
-  console.log(formData, "formData")
+  console.log(formData, "formData");
 
-  console.log(errors, "sSSSSS")
+  console.log(errors, "sSSSSS");
   const handleNext = async () => {
-
-
     if (!validateForm()) {
       setErrorScreen(true);
       return;
-
-
     } else {
-
       setErrorScreen(false);
       setTriggerNext(false);
       if (selecteScreen == "start-screen") {
@@ -90,7 +89,7 @@ function MatchUpModal({
   };
   const handleSaveMatchUp = () => {
     if (!validateForm()) {
-      setErrorScreen(true)
+      setErrorScreen(true);
       console.log("Validation failed");
       return;
     }
@@ -104,13 +103,13 @@ function MatchUpModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  pairs: pairData, // ✅ updated pair list
-                  finalScreen: finalResult, // ✅ final result screen
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    pairs: pairData, // ✅ updated pair list
+                    finalScreen: finalResult, // ✅ final result screen
+                  },
+                }
               : block
           ),
         })),
@@ -123,29 +122,24 @@ function MatchUpModal({
   };
 
   const handleMatchImageChange = (image, slideId) => {
-    console.log(image, "slideId", slideId)
+    console.log(image, "slideId", slideId);
     setfinalResult((prev) => ({
       ...prev,
-      imageSrc: image
+      imageSrc: image,
     }));
   };
   const handleDeleteImageResultForm = (image, slideId) => {
-    console.log(image, "slideId", slideId)
+    console.log(image, "slideId", slideId);
     setfinalResult((prev) => ({
       ...prev,
-      imageSrc: ""
+      imageSrc: "",
     }));
   };
 
-
-  console.log(formData?.struct?.finalScreen
-    , "oioioioio")
+  console.log(formData?.struct?.finalScreen, "oioioioio");
   useEffect(() => {
     if (formData) {
-
-      setfinalResult(formData?.struct?.finalScreen
-      )
-
+      setfinalResult(formData?.struct?.finalScreen);
     }
   }, [formData]);
   useEffect(() => {
@@ -162,9 +156,15 @@ function MatchUpModal({
     if (!selectedImage || !selectedImageType) return;
 
     const { type, questionID } = selectedImageType;
-    console.log(type, "typetypetype")
-    if (["first-image", "second-image", "first-audio", "second-audio"].includes(type)) {
-      const imageField = type.startsWith("first") ? "firstImage" : "secondImage";
+    console.log(type, "typetypetype");
+    if (
+      ["first-image", "second-image", "first-audio", "second-audio"].includes(
+        type
+      )
+    ) {
+      const imageField = type.startsWith("first")
+        ? "firstImage"
+        : "secondImage";
       const mediaType = type.endsWith("audio") ? "audio" : "image";
 
       setPairData((prev) => {
@@ -193,11 +193,13 @@ function MatchUpModal({
     if (selectedImageType.type === "finalMatchUp" && selectedImage) {
       setfinalResult((prev) => ({
         ...prev,
-        imageSrc: selectedImage
-      }))
+        imageSrc: selectedImage,
+      }));
     }
     // Add your other cases (questHeader, finalTreasureHunt, etc.) below as needed
   }, [selectedImage]);
+
+  console.log("showQuitshowQuitshowQuit", showQuit);
 
   return (
     <>
@@ -212,12 +214,9 @@ function MatchUpModal({
                   setErrorScreen(true);
                   return;
                 } else {
-                  setSelectScreen("start-screen")
+                  setSelectScreen("start-screen");
                 }
-              }
-
-
-              }
+              }}
             >
               <i class="fa-solid fa-desktop"></i>
               <p>Pairs</p>
@@ -230,15 +229,12 @@ function MatchUpModal({
                   setErrorScreen(true);
                   return;
                 } else {
-                  setSelectScreen("final-screen")
+                  setSelectScreen("final-screen");
                 }
-              }
-
-
-              }
+              }}
             >
               <i class="fa-solid fa-circle-question"></i>
-              <p>`Final` screen</p>
+              <p>Final screen</p>
             </div>
           </div>
         </div>
@@ -267,13 +263,19 @@ function MatchUpModal({
             formData={formData}
             questions={formData?.struct?.questions}
             handleChangeImage={handleChangeLogo}
+            setAnyChanges={setAnyChanges}
           />
         )}
       </div>
       <ul className="Footer_footer__bMDNk">
         {selecteScreen !== "final-screen" && (
           <li className="Footer_footerItem__yaFNE">
-            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+            <button
+              className="button button-primary outline px-3"
+              onClick={handleNext}
+            >
+              Next
+            </button>
           </li>
         )}
         <li className="Footer_footerItem__yaFNE">
@@ -318,6 +320,55 @@ function MatchUpModal({
                 Back
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showQuit && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Are you sure that you want to quit?
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  The changes you made will not be saved
+                </p>
+              </div>
+            </div>
+            <ul className="Footer_footer__bMDNk">
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  className="button button-primary outline px-3"
+                  onClick={() => {
+                    setShowQuit(false);
+                  }}
+                >
+                  Back
+                </button>
+              </li>
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  onClick={() => {
+                    setIsOpenFormModal(false);
+                    setShowQuit(false);
+                    setAnyChanges(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Quit
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
       )}

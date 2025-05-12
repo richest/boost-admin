@@ -29,7 +29,7 @@ const bestResults = [
     time: "00:53s",
   },
 ];
-function PreviewHiddenObjects({
+function PreviewInteractiveImage({
   data,
   isSelected,
   handleSelectBlock,
@@ -705,4 +705,4 @@ function PreviewHiddenObjects({
   );
 }
 
-export default PreviewHiddenObjects;
+export default PreviewInteractiveImage;

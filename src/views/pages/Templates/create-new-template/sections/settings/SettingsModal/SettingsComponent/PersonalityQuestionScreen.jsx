@@ -3,15 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, questions, handleChangeImage, personalityquizquestion, setPersonalityQuizQuestion }) {
+function PersonalityQuestionScreen({
+  setSelectedImageType,
+  formData,
+  errors,
+  questions,
+  handleChangeImage,
+  personalityquizquestion,
+  setPersonalityQuizQuestion,
+  setAnyChanges,
+}) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
-  console.log(questions, "questionsquestionsquestions");
   // const [settingsData, setSettingsaData] = useState([
   //   imageSrc: formData?.struct?.questions.map((e)=>e?.image // Set initial state
   // ]};
-  console.log(personalityquizquestion, "personalityquizquestion")
-  const [settingsData, setSettingsaData] = useState([formData?.struct?.questions.map((e) => e?.image)])
-  console.log(settingsData, "sqsqsqsqsqsqs")
+  const [settingsData, setSettingsaData] = useState([
+    formData?.struct?.questions.map((e) => e?.image),
+  ]);
   const dispatch = useDispatch();
   const handleAddNewQuestion = () => {
     const question = {
@@ -43,30 +51,29 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
       ],
       imageDisclaimer: "",
     };
-    setPersonalityQuizQuestion((prevQuestions) => [...prevQuestions, question])
-
+    setPersonalityQuizQuestion((prevQuestions) => [...prevQuestions, question]);
+    setAnyChanges(true);
   };
 
   const handleDeleteQuestion = (questionId) => {
     setPersonalityQuizQuestion((prev) =>
       prev.filter((question) => question.id !== questionId)
     );
-
+    setAnyChanges(true);
   };
 
   const handleQuestionTextChange = (e, id) => {
-
     setPersonalityQuizQuestion((prev) =>
       prev.map((q) =>
         q.id === id
           ? {
-            ...q,
-            text: e,
-          }
+              ...q,
+              text: e,
+            }
           : q
       )
     );
-
+    setAnyChanges(true);
   };
 
   const handleChangeTextImage = (e, id) => {
@@ -75,13 +82,13 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
       prev.map((q) =>
         q.id === id
           ? {
-            ...q,
-            isText,
-          }
+              ...q,
+              isText,
+            }
           : q
       )
     );
-
+    setAnyChanges(true);
   };
 
   const handleImageDisclaimer = (e, id) => {
@@ -89,56 +96,49 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
       prev.map((q) =>
         q.id === id
           ? {
-            ...q,
-            imageDescription: e,
-          }
+              ...q,
+              imageDescription: e,
+            }
           : q
       )
     );
-
+    setAnyChanges(true);
   };
 
-  const handleCheckCorrectAnswer = (e, id, answerId) => {
-
-
-
-  };
+  const handleCheckCorrectAnswer = (e, id, answerId) => {};
 
   const handleDeleteAnswer = (id, answerId) => {
     setPersonalityQuizQuestion((prev) =>
       prev.map((question) =>
         question.id === id
           ? {
-            ...question,
-            answers: question.answers.filter((a) => a.id !== answerId),
-          }
+              ...question,
+              answers: question.answers.filter((a) => a.id !== answerId),
+            }
           : question
       )
     );
-
-
+    setAnyChanges(true);
   };
   const handleChangeTextAnswer = (e, id, answerId) => {
     setPersonalityQuizQuestion((prev) =>
       prev.map((question) =>
         question.id === id
           ? {
-            ...question,
-            answers: question.answers.map((answer) =>
-              answer.id === answerId
-                ? {
-                  ...answer,
-                  text: e,
-                }
-                : answer
-            ),
-          }
+              ...question,
+              answers: question.answers.map((answer) =>
+                answer.id === answerId
+                  ? {
+                      ...answer,
+                      text: e,
+                    }
+                  : answer
+              ),
+            }
           : question
       )
     );
-
-
-
+    setAnyChanges(true);
   };
 
   const handleChangeDescriptionAnswer = (e, id, answerId) => {
@@ -151,26 +151,26 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  questions: block.struct.questions?.map((question) =>
-                    question.id === id
-                      ? {
-                        ...question,
-                        answers: question.answers.map((answer) =>
-                          answer.id === answerId
-                            ? {
-                              ...answer,
-                              description: e,
-                            }
-                            : answer
-                        ),
-                      }
-                      : question
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    questions: block.struct.questions?.map((question) =>
+                      question.id === id
+                        ? {
+                            ...question,
+                            answers: question.answers.map((answer) =>
+                              answer.id === answerId
+                                ? {
+                                    ...answer,
+                                    description: e,
+                                  }
+                                : answer
+                            ),
+                          }
+                        : question
+                    ),
+                  },
+                }
               : block
           ),
         })),
@@ -180,7 +180,7 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
     dispatch(updateTemplateAction(updatedData));
   };
   const handleAddAnswer = (id) => {
-    console.log(id, "saasasaa")
+    console.log(id, "saasasaa");
     const answerObject = {
       id: generateShortId(),
       text: "Answer text",
@@ -194,12 +194,13 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
       prev.map((question) =>
         question.id === id
           ? {
-            ...question,
-            answers: [...question.answers, answerObject],
-          }
+              ...question,
+              answers: [...question.answers, answerObject],
+            }
           : question
       )
     );
+    setAnyChanges(true);
 
     //   ...templateDetails,
     //   project_structure: {
@@ -230,31 +231,35 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleDeleteQuestionImage = (id) => {
-
     setPersonalityQuizQuestion((prev) =>
       prev.map((question) =>
         question.id === id
           ? {
-            ...question,
-            image: "",
-          }
+              ...question,
+              image: "",
+            }
           : question
       )
     );
+    setAnyChanges(true);
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleCloneQuestion = (questionId) => {
     // Find the question you want to clone
-    const questionToClone = personalityquizquestion.find((question) => question.id === questionId);
+    const questionToClone = personalityquizquestion.find(
+      (question) => question.id === questionId
+    );
 
     // Clone the question by creating a new object (you can spread the existing question to retain its data)
     const clonedQuestion = { ...questionToClone, id: generateShortId() }; // Ensure the cloned question has a unique id
 
     // Add the cloned question to the state
-    setPersonalityQuizQuestion((prevQuestions) => [...prevQuestions, clonedQuestion]);
+    setPersonalityQuizQuestion((prevQuestions) => [
+      ...prevQuestions,
+      clonedQuestion,
+    ]);
+    setAnyChanges(true);
   };
-
-  console.log("personalityquizquestion", personalityquizquestion);
 
   return (
     <>
@@ -310,7 +315,10 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
                     <h4>Question {index + 1}</h4>
                   </div>
                   <div className="questionTitle d-flex align-items-center gap-2">
-                    <button onClick={() => handleCloneQuestion(question.id)} className="button sm button-secondary px-3 border-0 font-sm">
+                    <button
+                      onClick={() => handleCloneQuestion(question.id)}
+                      className="button sm button-secondary px-3 border-0 font-sm"
+                    >
                       <i class="fa-solid fa-clone"></i>
                     </button>
                     {console.log(questions?.length, "questions?.length")}
@@ -338,7 +346,6 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
                       onChange={(e) =>
                         handleQuestionTextChange(e.target.value, question.id)
                       }
-
                     ></textarea>
                     {errors?.questions?.[index]?.text && (
                       <p className="text-danger font-sm mt-1">
@@ -366,14 +373,16 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
                         <button
                           class="button button-primary border-0 me-2 font-sm"
                           onClick={() => {
-                            setSelectedImageType({ type: "personalityquestion", questionId: question.id });
+                            setSelectedImageType({
+                              type: "personalityquestion",
+                              questionId: question.id,
+                            });
                             handleChangeImage(
                               "question-image",
                               formData?.id,
                               question.id
-                            )
-                          }
-                          }
+                            );
+                          }}
                         >
                           Upload
                         </button>
@@ -426,7 +435,8 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
                         <div class="mb-4">
                           <div className="d-flex justify-content-between gap-2">
                             <label class="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                              Answer {index + 1} <span style={{ color: "red" }}>*</span>
+                              Answer {index + 1}{" "}
+                              <span style={{ color: "red" }}>*</span>
                             </label>
                             <div className="d-flex align-items-center gap-3 mb-4">
                               <p className="mb-0">Link to result: 1</p>
@@ -497,7 +507,8 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
                                 )
                               }
                             />
-                            {errors?.questions?.[index]?.answers?.[index]?.text && (
+                            {errors?.questions?.[index]?.answers?.[index]
+                              ?.text && (
                               <p className="text-danger font-sm mt-1">
                                 {errors.questions[index].answers[index].text}
                               </p>
@@ -538,9 +549,7 @@ function PersonalityQuestionScreen({ setSelectedImageType, formData, errors, que
               </div>
             ))}
         </div>
-
-
-      </div >
+      </div>
     </>
   );
 }

@@ -7,8 +7,6 @@ import * as yup from "yup";
 import { useFormContext } from "react-hook-form";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-
-
 function QuestionsScreen({
   isEditMediaTypeDetails,
   setSelectedImageType,
@@ -24,21 +22,17 @@ function QuestionsScreen({
   formRef,
   setErrorScreen,
   quizdataQuestion,
-  setQuizDataQuestion
+  setQuizDataQuestion,
+  setAnyChanges,
 }) {
-  console.log(
-    quizdataQuestion,
-    "setSelectScreensetSelectScreenasasasasasasas"
-  );
+  console.log(quizdataQuestion, "setSelectScreensetSelectScreenasasasasasasas");
   console.log(questions, "questionsquestions");
   console.log(formData?.struct, "setSelectScreensetSelectScreen");
   // return
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
 
-  const [localQuestions, setLocalQuestions] = useState(
-    quizdataQuestion || []
-  );
-  console.log(localQuestions, "localQuestionslocalQuestions")
+  const [localQuestions, setLocalQuestions] = useState(quizdataQuestion || []);
+  console.log(localQuestions, "localQuestionslocalQuestions");
   console.log(localQuestions, "localQuestions");
   // console.log(question.text, "23434")
   console.log(questions, "templateDetaddilstemplateDetails");
@@ -94,10 +88,8 @@ function QuestionsScreen({
       imageDisclaimer: "",
     };
 
-
     const updatedLocalQuestions = [...quizdataQuestion, newQuestion];
     setQuizDataQuestion(updatedLocalQuestions);
-
 
     // const updatedData = {
     //   ...updatedtemplate,
@@ -125,7 +117,7 @@ function QuestionsScreen({
 
   console.log(updatedtemplate, "updatedtemplateupdatedtemplate");
   const handleDeleteQuestion = (questionId) => {
-    console.log(questionId, "xaxaaxaxa")
+    console.log(questionId, "xaxaaxaxa");
     // const updatedData = {
     //   ...updatedtemplate,
     //   project_structure: {
@@ -153,37 +145,39 @@ function QuestionsScreen({
       (q) => q.id !== questionId
     );
     setQuizDataQuestion(updatedLocalQuestions);
-
+    setAnyChanges(true);
   };
   const cloneBlock = (idToClone) => {
     setQuizDataQuestion((prevQuestions) => {
-      const questionToClone = prevQuestions.find(q => q.id === idToClone);
+      const questionToClone = prevQuestions.find((q) => q.id === idToClone);
       if (!questionToClone) return prevQuestions;
 
       const clonedQuestion = {
         ...questionToClone,
         id: generateShortId(), // new ID for the question
-        answers: questionToClone.answers.map(answer => ({
+        answers: questionToClone.answers.map((answer) => ({
           ...answer,
           id: generateShortId(), // new ID for each answer
         })),
       };
 
+      console.log("questionToClonequestionToClone", clonedQuestion);
+
       return [...prevQuestions, clonedQuestion]; // Append the clone
     });
+    setAnyChanges(true);
   };
 
+  console.log("quizdataQuestionquizdataQuestion", quizdataQuestion);
 
   const handleQuestionTextChange = (e, id) => {
     setQuizDataQuestion((prev) =>
       prev.map((question) =>
-        question.id === id
-          ? { ...question, text: e }
-          : question
+        question.id === id ? { ...question, text: e } : question
       )
     );
+    setAnyChanges(true);
   };
-
 
   //   const handleQuestionTextChange = (e, id) => {
   //     setQuizDataQuestion((prev)=>({
@@ -220,17 +214,13 @@ function QuestionsScreen({
   //     // };
   //     // setupdatedTemplate(updatedData);
   //   };
-  console.log(updatedtemplate, "wswswsw");
-  const handleChangeTextImage = (type, id) => {
-    console.log("Clicked:", type, "on question:", id);
 
+  const handleChangeTextImage = (type, id) => {
     const updatedQuestions = quizdataQuestion.map((question) =>
       question.id === id ? { ...question, isText: type === "text" } : question
     );
-
-    console.log("Updated Questions:", updatedQuestions);
-
     quizdataQuestion(updatedQuestions);
+    setAnyChanges(true);
   };
 
   const handleImageDisclaimer = (e, id) => {
@@ -243,38 +233,37 @@ function QuestionsScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  questions: block.struct.questions?.map((question) =>
-                    question.id === id
-                      ? {
-                        ...question,
-                        imageDescription: e,
-                      }
-                      : question
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    questions: block.struct.questions?.map((question) =>
+                      question.id === id
+                        ? {
+                            ...question,
+                            imageDescription: e,
+                          }
+                        : question
+                    ),
+                  },
+                }
               : block
           ),
         })),
       },
     };
     setupdatedTemplate(updatedData);
+    setAnyChanges(true);
   };
 
   const handleCheckCorrectAnswer = (e, id, answerId) => {
     const updatedQuestions = quizdataQuestion.map((question) =>
       question.id === id
         ? {
-          ...question,
-          answers: question.answers.map((answer) =>
-            answer.id === answerId
-              ? { ...answer, isCorrect: e }
-              : answer
-          ),
-        }
+            ...question,
+            answers: question.answers.map((answer) =>
+              answer.id === answerId ? { ...answer, isCorrect: e } : answer
+            ),
+          }
         : question
     );
 
@@ -290,12 +279,12 @@ function QuestionsScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  questions: updatedQuestions, // re-use the updated questions
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    questions: updatedQuestions, // re-use the updated questions
+                  },
+                }
               : block
           ),
         })),
@@ -303,6 +292,7 @@ function QuestionsScreen({
     };
 
     setupdatedTemplate(updatedData);
+    setAnyChanges(true);
   };
 
   const handleDeleteAnswer = (questionId, answerId) => {
@@ -311,15 +301,16 @@ function QuestionsScreen({
     const updatedLocalQuestions = quizdataQuestion.map((question) =>
       question.id === questionId
         ? {
-          ...question,
-          answers: question.answers.filter(
-            (answer) => answer.id !== answerId
-          ), // Remove the selected answer
-        }
+            ...question,
+            answers: question.answers.filter(
+              (answer) => answer.id !== answerId
+            ), // Remove the selected answer
+          }
         : question
     );
 
     setQuizDataQuestion(updatedLocalQuestions);
+    setAnyChanges(true);
 
     // Also update the `updatedtemplate`
     // const updatedData = {
@@ -420,18 +411,22 @@ function QuestionsScreen({
   //   // dispatch(updateTemplateAction(updatedData));
   // };
   const handleChangeTextAnswer = (value, questionId, answerId) => {
+    console.log("valueQuestionIdAnswerId", value, questionId, answerId);
     const updated = quizdataQuestion.map((question) =>
       question.id === questionId
         ? {
-          ...question,
-          answers: question.answers.map((ans) =>
-            ans.id === answerId ? { ...ans, text: value } : ans
-          ),
-        }
+            ...question,
+            answers: question.answers.map((ans) =>
+              ans.id === answerId ? { ...ans, text: value } : ans
+            ),
+          }
         : question
     );
-    quizdataQuestion(updated);
+    setQuizDataQuestion(updated);
+    setAnyChanges(true);
   };
+
+  console.log("quizdataQuestionquizdataQuestion", quizdataQuestion);
 
   const handleChangeDescriptionAnswer = (e, id, answerId) => {
     const updatedData = {
@@ -443,26 +438,26 @@ function QuestionsScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  questions: block.struct.questions?.map((question) =>
-                    question.id === id
-                      ? {
-                        ...question,
-                        answers: question.answers.map((answer) =>
-                          answer.id === answerId
-                            ? {
-                              ...answer,
-                              description: e,
-                            }
-                            : answer
-                        ),
-                      }
-                      : question
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    questions: block.struct.questions?.map((question) =>
+                      question.id === id
+                        ? {
+                            ...question,
+                            answers: question.answers.map((answer) =>
+                              answer.id === answerId
+                                ? {
+                                    ...answer,
+                                    description: e,
+                                  }
+                                : answer
+                            ),
+                          }
+                        : question
+                    ),
+                  },
+                }
               : block
           ),
         })),
@@ -470,6 +465,7 @@ function QuestionsScreen({
     };
 
     setupdatedTemplate(updatedData);
+    setAnyChanges(true);
   };
   const handleAddAnswer = (id) => {
     console.log(id, "Adding new answer");
@@ -528,19 +524,19 @@ function QuestionsScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  questions: block.struct.questions?.map((question) =>
-                    question.id === id
-                      ? {
-                        ...question,
-                        image: "",
-                      }
-                      : question
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    questions: block.struct.questions?.map((question) =>
+                      question.id === id
+                        ? {
+                            ...question,
+                            image: "",
+                          }
+                        : question
+                    ),
+                  },
+                }
               : block
           ),
         })),
@@ -552,8 +548,9 @@ function QuestionsScreen({
       updatedData.project_structure.pages
         .find((page) => page.blocks.some((block) => block.id === formData?.id))
         ?.blocks.find((block) => block.id === formData?.id)?.struct.questions ||
-      []
+        []
     ); //
+    setAnyChanges(true);
   };
   console.log(
     isEditMediaTypeDetails,
@@ -571,22 +568,6 @@ function QuestionsScreen({
   //   handleSaveQuestion(data); // Pass validated data to parent
 
   // };
-  console.log(selecteScreen, "ioioiweoio");
-
-
-
-  console.log(
-    updatedtemplate?.project_structure?.pages[0]?.blocks[0]?.struct?.questions,
-    "ioiooioo8900"
-  );
-
-  console.log(questions, "questionsquestions");
-
-
-
-
-
-
 
   return (
     <>
@@ -645,7 +626,11 @@ function QuestionsScreen({
                     <h4>Question {index + 1}</h4>
                   </div>
                   <div className="questionTitle d-flex align-items-center gap-2">
-                    <button onClick={() => cloneBlock(question.id)} type="button" className="button sm button-secondary px-3 border-0 font-sm">
+                    <button
+                      onClick={() => cloneBlock(question.id)}
+                      type="button"
+                      className="button sm button-secondary px-3 border-0 font-sm"
+                    >
                       <i class="fa-solid fa-clone"></i>
                     </button>
                     {quizdataQuestion.length > 1 && (
@@ -674,10 +659,7 @@ function QuestionsScreen({
                       // })}
                       value={question.text} // ✅ this pulls the real value
                       onChange={(e) => {
-                        handleQuestionTextChange(
-                          e.target.value,
-                          question.id
-                        ); // ✅ Update local state
+                        handleQuestionTextChange(e.target.value, question.id); // ✅ Update local state
                       }}
                     ></textarea>
 
@@ -708,23 +690,23 @@ function QuestionsScreen({
                           type="button"
                           class="button button-primary border-0 me-2 font-sm"
                           onClick={() => {
-                            setSelectedImageType({ type: "questionImagequiz", questionId: question.id });
+                            setSelectedImageType({
+                              type: "questionImagequiz",
+                              questionId: question.id,
+                            });
                             handleChangeImage(
                               "question-image",
                               formData?.id,
                               question.id
-                            )
-                          }
-                          }
+                            );
+                          }}
                         >
                           {question.image ? "Change" : "Upload"}
                         </button>
                         <button
                           type="button"
                           class="button button-secondary px-3 border-0 font-sm"
-                          onClick={() =>
-                            handleDeleteQuestionImage(question.id)
-                          }
+                          onClick={() => handleDeleteQuestionImage(question.id)}
                         >
                           <i class="fa-solid fa-trash"></i>
                         </button>
@@ -748,10 +730,9 @@ function QuestionsScreen({
                         <button
                           type="button"
                           htmlFor={`question${index}`}
-                          className={`button button-primary sm font-sm py-2 border-0 ${question.isText === true
-                            ? "selected"
-                            : "outline"
-                            }`}
+                          className={`button button-primary sm font-sm py-2 border-0 ${
+                            question.isText === true ? "selected" : "outline"
+                          }`}
                           onClick={() =>
                             handleChangeTextImage("text", question.id)
                           }
@@ -760,10 +741,9 @@ function QuestionsScreen({
                         </button>
                         <button
                           type="button"
-                          className={`button button-primary sm font-sm py-2 border-0 ${question.isText === false
-                            ? "selected"
-                            : "outline"
-                            }`}
+                          className={`button button-primary sm font-sm py-2 border-0 ${
+                            question.isText === false ? "selected" : "outline"
+                          }`}
                           onClick={() =>
                             handleChangeTextImage("images", question.id)
                           }
@@ -777,120 +757,115 @@ function QuestionsScreen({
                   <div className="answers_content">
                     {/* {console.log(updatedtemplate?.project_structure?.pages[0]?.blocks[0]?.struct?.questions, "questionquestion")} */}
 
-                    {quizdataQuestion?.map((question, index) =>
-                      question?.answers?.map((answer, ansIndex) => (
-                        <div className="contentAnswer" key={answer.id}>
-                          <div className="mb-4">
-                            <div className="d-flex justify-content-between gap-2">
-                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                                Answer {ansIndex + 1}
-                                <span style={{ color: "red" }}>*</span>
-                              </label>
-                              <div>
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  checked={answer?.isCorrect}
-                                  onChange={(e) =>
-                                    handleCheckCorrectAnswer(
-                                      e.target.checked,
-                                      question.id,
-                                      answer.id
-                                    )
-                                  }
-                                />
-                                <label className="form-check-label ms-2">
-                                  Correct answer
-                                </label>
-                                {question.answers.length > 0 && (
-                                  <i
-                                    typeof="button"
-                                    className="fa-solid fa-trash"
-                                    role="button"
-                                    onClick={() =>
-                                      handleDeleteAnswer(
-                                        question.id,
-                                        answer.id
-                                      )
-                                    }
-                                  ></i>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="d-flex align-items-center mb-3">
-                              {/* Show Image Upload only if it's not a text-only question */}
-                              {!question?.isText && (
-                                <>
-                                  <div className="questionImageLabel">
-                                    <img
-                                      src={
-                                        answer.image ||
-                                        "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-                                      }
-                                      alt="question-image"
-                                    />
-                                  </div>
-                                  <button
-                                    type="button"
-                                    className="button button-primary font-sm border-0 me-2"
-                                    onClick={() =>
-                                      handleChangeImage(
-                                        "answer-image",
-                                        formData?.id,
-                                        question.id,
-                                        answer.id
-                                      )
-                                    }
-                                  >
-                                    {answer.image ? "Change" : "Upload"}
-                                  </button>
-                                </>
-                              )}
-
+                    {question?.answers?.map((answer, ansIndex) => (
+                      <div className="contentAnswer" key={answer.id}>
+                        <div className="mb-4">
+                          <div className="d-flex justify-content-between gap-2">
+                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                              Answer {ansIndex + 1}
+                              <span style={{ color: "red" }}>*</span>
+                            </label>
+                            <div>
                               <input
-                                // {...register(
-                                //   `questions.${index}.answers.${ansIndex}.text`,
-                                //   {
-                                //     required: "Answer text is required",
-                                //   }
-                                // )}
-                                type="text"
-                                className="form-control theme-control me-2"
-                                placeholder="Enter answer..."
-                                defaultValue={answer?.text}
+                                className="form-check-input"
+                                type="checkbox"
+                                checked={answer?.isCorrect}
                                 onChange={(e) =>
-                                  handleChangeTextAnswer(
-                                    e.target.value,
+                                  handleCheckCorrectAnswer(
+                                    e.target.checked,
                                     question.id,
                                     answer.id
                                   )
                                 }
                               />
-                            </div>
-
-                            <div className="mb-3">
-                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                                Description
+                              <label className="form-check-label ms-2">
+                                Correct answer
                               </label>
-                              <textarea
-                                className="form-control theme-control"
-                                rows="2"
-                                placeholder="Enter description"
-                                defaultValue={answer?.description}
-                                onChange={(e) =>
-                                  handleChangeDescriptionAnswer(
-                                    e.target.value,
-                                    question.id,
-                                    answer.id
-                                  )
-                                }
-                              ></textarea>
+                              {question.answers.length > 0 && (
+                                <i
+                                  typeof="button"
+                                  className="fa-solid fa-trash"
+                                  role="button"
+                                  onClick={() =>
+                                    handleDeleteAnswer(question.id, answer.id)
+                                  }
+                                ></i>
+                              )}
                             </div>
                           </div>
+
+                          <div className="d-flex align-items-center mb-3">
+                            {/* Show Image Upload only if it's not a text-only question */}
+                            {!question?.isText && (
+                              <>
+                                <div className="questionImageLabel">
+                                  <img
+                                    src={
+                                      answer.image ||
+                                      "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                                    }
+                                    alt="question-image"
+                                  />
+                                </div>
+                                <button
+                                  type="button"
+                                  className="button button-primary font-sm border-0 me-2"
+                                  onClick={() =>
+                                    handleChangeImage(
+                                      "answer-image",
+                                      formData?.id,
+                                      question.id,
+                                      answer.id
+                                    )
+                                  }
+                                >
+                                  {answer.image ? "Change" : "Upload"}
+                                </button>
+                              </>
+                            )}
+
+                            <input
+                              // {...register(
+                              //   `questions.${index}.answers.${ansIndex}.text`,
+                              //   {
+                              //     required: "Answer text is required",
+                              //   }
+                              // )}
+                              type="text"
+                              className="form-control theme-control me-2"
+                              placeholder="Enter answer..."
+                              defaultValue={answer?.text}
+                              onChange={(e) =>
+                                handleChangeTextAnswer(
+                                  e.target.value,
+                                  question.id,
+                                  answer.id
+                                )
+                              }
+                            />
+                          </div>
+
+                          <div className="mb-3">
+                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                              Description
+                            </label>
+                            <textarea
+                              className="form-control theme-control"
+                              rows="2"
+                              placeholder="Enter description"
+                              defaultValue={answer?.description}
+                              onChange={(e) =>
+                                handleChangeDescriptionAnswer(
+                                  e.target.value,
+                                  question.id,
+                                  answer.id
+                                )
+                              }
+                            ></textarea>
+                          </div>
                         </div>
-                      ))
-                    )}
+                      </div>
+                    ))}
 
                     <div>
                       <button
@@ -906,9 +881,8 @@ function QuestionsScreen({
               </div>
             );
           })}
-
         </div>
-      </div >
+      </div>
     </>
   );
 }

@@ -16,7 +16,7 @@ const validationSchema = yup.object().shape({
 });
 
 function ResultScreen({
-  quizdataQuestion = () => { },
+  quizdataQuestion = () => {},
   setIsOpenFormModal,
   personalityquizquestion,
   finalResult,
@@ -24,21 +24,22 @@ function ResultScreen({
   setParentErros,
   setfinalResult,
   selecteScreen,
-  setTriggerNext = () => { },
+  setTriggerNext = () => {},
   parenterror,
   finalImage,
   questions,
   handleSaveQuestion,
   handleDeleteImageMatchUp,
-  setSelectedImageType = () => { },
+  setSelectedImageType = () => {},
   formRef,
-  setErrorScreen = () => { },
+  setErrorScreen = () => {},
   formData,
   handleChangeImage,
   onRegisterSlideImageCallback,
-  handleDeleteImageResultForm
+  handleDeleteImageResultForm,
+  setAnyChanges,
 }) {
-  console.log(quizdataQuestion?.length, "countResultcountResult")
+  console.log(quizdataQuestion?.length, "countResultcountResult");
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(finalResult, "finalResultfinalResultfinalResult");
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ function ResultScreen({
 
   const handleDeleteResultvaluepersonalityquiz = (id) => {
     setfinalResult((prev) => prev.filter((result) => result.id !== id));
+    setAnyChanges(true);
     // const updatedData = {
     //   ...updatedtemplate,
     //   project_structure: {
@@ -90,12 +92,12 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  results: block.struct.results?.filter((e) => e.id !== id),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    results: block.struct.results?.filter((e) => e.id !== id),
+                  },
+                }
               : block
           ),
         })),
@@ -109,6 +111,7 @@ function ResultScreen({
     const resultToClone = finalResult.find((result) => result.id === resultId);
     const clonedResult = { ...resultToClone, id: generateShortId() };
     setfinalResult((prevResults) => [...prevResults, clonedResult]);
+    setAnyChanges(true);
   };
 
   // Utility to generate unique IDs
@@ -123,6 +126,7 @@ function ResultScreen({
     );
 
     setfinalResult(updatedResults);
+    setAnyChanges(true);
 
     //   ...prevErrors,
     //   [id]: value === "" ? "Header is required." : null,
@@ -160,7 +164,6 @@ function ResultScreen({
   const handleChangeHeaderResult = (e, id) => {
     console.log(e, "dasddaadda");
 
-
     const updatedData = {
       ...updatedtemplate,
       project_structure: {
@@ -170,19 +173,19 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  results: block.struct.results?.map((result) =>
-                    result.id === id
-                      ? {
-                        ...result,
-                        header: e,
-                      }
-                      : result
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    results: block.struct.results?.map((result) =>
+                      result.id === id
+                        ? {
+                            ...result,
+                            header: e,
+                          }
+                        : result
+                    ),
+                  },
+                }
               : block
           ),
         })),
@@ -192,7 +195,10 @@ function ResultScreen({
     // dispatch(updateTemplateAction(updatedData));
   };
 
+  console.log("finalResultfinalResultfinalResult-->", finalResult);
+
   const handleChangeDescriptionResult = (e, id) => {
+    console.log("dddddsfasdfasdfasdf", e, id);
     const updatedData = {
       ...updatedtemplate,
       project_structure: {
@@ -202,26 +208,32 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  results: block.struct.results?.map((result) =>
-                    result.id === id
-                      ? {
-                        ...result,
-                        description: e,
-                      }
-                      : result
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    results: block.struct.results?.map((result) =>
+                      result.id === id
+                        ? {
+                            ...result,
+                            description: e,
+                          }
+                        : result
+                    ),
+                  },
+                }
               : block
           ),
         })),
       },
     };
-    console.log(updatedData, "updatedDataupdatedData");
+
+    const updatedResults = finalResult.map((result) =>
+      result.id === id ? { ...result, description: e } : result
+    );
+
+    setfinalResult(updatedResults);
     setupdatedTemplate(updatedData);
+    setAnyChanges(true);
     // dispatch(updateTemplateAction(updatedData));
   };
 
@@ -235,25 +247,26 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  results: block.struct.results?.map((result) =>
-                    result.id === id
-                      ? {
-                        ...result,
-                        imageDisclaimer: e,
-                      }
-                      : result
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    results: block.struct.results?.map((result) =>
+                      result.id === id
+                        ? {
+                            ...result,
+                            imageDisclaimer: e,
+                          }
+                        : result
+                    ),
+                  },
+                }
               : block
           ),
         })),
       },
     };
     setupdatedTemplate(updatedData);
+    setAnyChanges(true);
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleChangeButtontext = (e, id) => {
@@ -266,25 +279,31 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  results: block.struct.results?.map((result) =>
-                    result.id === id
-                      ? {
-                        ...result,
-                        buttonText: e,
-                      }
-                      : result
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    results: block.struct.results?.map((result) =>
+                      result.id === id
+                        ? {
+                            ...result,
+                            buttonText: e,
+                          }
+                        : result
+                    ),
+                  },
+                }
               : block
           ),
         })),
       },
     };
+
+    const updatedResults = finalResult.map((result) =>
+      result.id === id ? { ...result, buttonText: e } : result
+    );
+    setfinalResult(updatedResults);
     setupdatedTemplate(updatedData);
+    setAnyChanges(true);
     // dispatch(updateTemplateAction(updatedData));
   };
 
@@ -298,33 +317,38 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  results: block.struct.results?.map((result) =>
-                    result.id === id
-                      ? {
-                        ...result,
-                        buttonLink: e,
-                      }
-                      : result
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    results: block.struct.results?.map((result) =>
+                      result.id === id
+                        ? {
+                            ...result,
+                            buttonLink: e,
+                          }
+                        : result
+                    ),
+                  },
+                }
               : block
           ),
         })),
       },
     };
+    const updatedResults = finalResult.map((result) =>
+      result.id === id ? { ...result, buttonLink: e } : result
+    );
+    setfinalResult(updatedResults);
     setupdatedTemplate(updatedData);
+    setAnyChanges(true);
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleDeletePuzzleImage = () => {
     setfinalResult((prev) => ({
       ...prev,
-      imageSrc: ""
-    }))
-  }
+      imageSrc: "",
+    }));
+  };
   const handleDeleteImage = (id) => {
     const updatedData = {
       ...updatedtemplate,
@@ -335,25 +359,26 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  results: block.struct.results?.map((result) =>
-                    result.id === id
-                      ? {
-                        ...result,
-                        image: "",
-                      }
-                      : result
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    results: block.struct.results?.map((result) =>
+                      result.id === id
+                        ? {
+                            ...result,
+                            image: "",
+                          }
+                        : result
+                    ),
+                  },
+                }
               : block
           ),
         })),
       },
     };
     setupdatedTemplate(updatedData);
+    setAnyChanges(true);
     // dispatch(updateTemplateAction(updatedData));
   };
 
@@ -367,15 +392,15 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  finalScreen: {
-                    ...block.struct.finalScreen,
-                    header: e,
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    finalScreen: {
+                      ...block.struct.finalScreen,
+                      header: e,
+                    },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -414,6 +439,7 @@ function ResultScreen({
   const handleResultDescriptionFormPuzzle = (e) => {
     const value = e;
     setfinalResult((prev) => ({ ...prev, description: value }));
+    setAnyChanges(true);
 
     console.log(value, "checkposition");
 
@@ -453,27 +479,27 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  finalScreen: {
-                    ...block.struct.finalScreen,
-                    description: e,
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    finalScreen: {
+                      ...block.struct.finalScreen,
+                      description: e,
+                    },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
       },
     };
-    console.log(updatedData, "updatedDataupdatedData")
+    console.log(updatedData, "updatedDataupdatedData");
     setupdatedTemplate(updatedData);
     // dispatch(updateTemplateAction(updatedData));
   };
 
   const handleResultHeaderForm = (e) => {
-    const value = e
+    const value = e;
     console.log(e, "checkposition");
     setfinalResult((prev) => ({ ...prev, headerText: value }));
     setParentErros((prev) => ({ ...prev, finalResultHeader: false }));
@@ -504,7 +530,7 @@ function ResultScreen({
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleResultHeaderTreasureForm = (e) => {
-    const value = e
+    const value = e;
     console.log(e, "checkposition");
     setfinalResult((prev) => ({ ...prev, header: value }));
     setParentErros((prev) => ({ ...prev, finalResultHeader: false }));
@@ -536,7 +562,7 @@ function ResultScreen({
   };
 
   const handleResultTreasureDescription = (e) => {
-    const value = e
+    const value = e;
     setfinalResult((prev) => ({ ...prev, description: value }));
 
     //   ...updatedtemplate,
@@ -567,10 +593,9 @@ function ResultScreen({
 
   const handleResultHeaderFormPuzzle = (e) => {
     const value = e;
-    console.log(value, "asaa")
     setfinalResult((prev) => ({ ...prev, header: value }));
     setParentErros((prev) => ({ ...prev, finalResultHeader: false }));
-    console.log(value, "checkposition");
+    setAnyChanges(true);
 
     //   ...updatedtemplate,
     //   project_structure: {
@@ -598,8 +623,9 @@ function ResultScreen({
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleResultDescriptionForm = (e) => {
-    const value = e
+    const value = e;
     setfinalResult((prev) => ({ ...prev, descriptionText: value }));
+    setAnyChanges(true);
 
     //   ...updatedtemplate,
     //   project_structure: {
@@ -637,6 +663,7 @@ function ResultScreen({
       description: "Description",
     };
     setfinalResult((prev) => [...prev, answerObject]);
+    setAnyChanges(true);
 
     //   ...updatedtemplate,
     //   project_structure: {
@@ -660,7 +687,7 @@ function ResultScreen({
     // setupdatedTemplate(updatedData);
     // dispatch(updateTemplateAction(updatedData));
   };
-  console.log(formData, "finalResult.imageSrc")
+  console.log(formData, "finalResult.imageSrc");
   const handleDeleteImageResultLeadForm = (cardId) => {
     const updatedData = {
       ...templateDetails,
@@ -671,15 +698,15 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === cardId
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  final: {
-                    ...block.struct.final,
-                    imageSrc: "",
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    final: {
+                      ...block.struct.final,
+                      imageSrc: "",
+                    },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -717,14 +744,14 @@ function ResultScreen({
   // };
   console.log(updatedtemplate, "updatedtemplateupdatedtemplate");
   console.log(formData, "checkformdataheerere");
-  const handleSlideImageChange = (image, slideId) => {
-    setSlideShow((prev) => ({
-      ...prev,
-      slides: prev.slides.map((slide) =>
-        slide.id === slideId ? { ...slide, image } : slide
-      ),
-    }));
-  };
+  // const handleSlideImageChange = (image, slideId) => {
+  //   setSlideShow((prev) => ({
+  //     ...prev,
+  //     slides: prev.slides.map((slide) =>
+  //       slide.id === slideId ? { ...slide, image } : slide
+  //     ),
+  //   }));
+  // };
 
   useEffect(() => {
     if (formRef?.current) {
@@ -761,10 +788,9 @@ function ResultScreen({
     methods.reset(updatedtemplate); // Ensure it respects empty values
   }, [updatedtemplate]);
 
-  console.log(formData?.struct, "checkformdatatatata")
+  console.log(finalResult, "checkformdatatatata");
   return (
     <>
-
       {formData.block === "quiz" && (
         // <div class="d-flex w-100 gap-3 gap-md-0">
         //   <div class="border-end scrollable-div result-list">
@@ -956,198 +982,211 @@ function ResultScreen({
         <div class="d-flex w-100 gap-3 gap-md-0">
           <div class="border-end scrollable-div result-list">
             <div className="sidebarquestions">
-              {finalResult?.map((result, index) => (
-                <div className="questionSidebarList align-items-center">
-                  <div className="questionImageLabel">
-                    <img
-                      src={
-                        result.image ||
-                        "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-                      }
-                      alt="questionimage"
-                      className=""
-                    />
+              {finalResult?.length &&
+                finalResult?.map((result, index) => (
+                  <div className="questionSidebarList align-items-center">
+                    <div className="questionImageLabel">
+                      <img
+                        src={
+                          result.image ||
+                          "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                        }
+                        alt="questionimage"
+                        className=""
+                      />
+                    </div>
+                    <p className="mb-0">Result {index + 1}</p>
                   </div>
-                  <p className="mb-0">Result {index + 1}</p>
-                </div>
-              ))}
-              {quizdataQuestion?.length && finalResult?.length < quizdataQuestion.length + 1 && (
-                <div className="button_addNewquestion pb-3">
-                  <button
-                    className="btn button_boost p-0"
-                    onClick={() => handleAddNewResult()}
-                  >
-                    <i className="fa-solid fa-plus"></i> Add New
-                  </button>
-                </div>
-              )}
-
-
+                ))}
+              {quizdataQuestion?.length &&
+                finalResult?.length < quizdataQuestion.length + 1 && (
+                  <div className="button_addNewquestion pb-3">
+                    <button
+                      className="btn button_boost p-0"
+                      onClick={() => handleAddNewResult()}
+                    >
+                      <i className="fa-solid fa-plus"></i> Add New
+                    </button>
+                  </div>
+                )}
             </div>
           </div>
           <div className="w-100 scrollable-div">
-            {finalResult?.map((result, index) => {
-              const totalQuestions = personalityquizquestion?.length;
+            {finalResult?.length &&
+              finalResult?.map((result, index) => {
+                const totalQuestions = personalityquizquestion?.length;
 
-              const resultRange =
-                index < totalQuestions + 1 ? index : totalQuestions;
+                const resultRange =
+                  index < totalQuestions + 1 ? index : totalQuestions;
 
-              return (
-                <div key={result.id} className="resultsscreen p-4">
-                  <div className="d-flex justify-content-between">
-                    <h5 className="fw-bold">
-                      Result {index + 1}
-                      {/* Adjusting result range dynamically based on the number of questions */}
-                      <span className="text-muted">
-                        ({resultRange} correct answer
-                        {resultRange > 1 ? "s" : ""})
-                      </span>
-                    </h5>
+                return (
+                  <div key={result.id} className="resultsscreen p-4">
+                    <div className="d-flex justify-content-between">
+                      <h5 className="fw-bold">
+                        Result {index + 1}
+                        {/* Adjusting result range dynamically based on the number of questions */}
+                        <span className="text-muted">
+                          ({resultRange} correct answer
+                          {resultRange > 1 ? "s" : ""})
+                        </span>
+                      </h5>
 
-
-                    <div className="questionTitle d-flex align-items-center gap-2">
-
-                      {quizdataQuestion?.length && finalResult.length < quizdataQuestion.length + 1 && (<button onClick={() => handleCloneResult(result.id)} className="button sm button-secondary px-3 border-0 font-sm">
-                        <i className="fa-solid fa-clone"></i>
-                      </button>)
-                      }
-                      {finalResult?.length > 2 && (
-                        <button
-                          type="button"
-                          className="button sm button-secondary bg-danger text-white px-3 border-0 font-sm"
-                          onClick={() => handleDeleteResultvaluepersonalityquiz(result.id)}
-                        >
-                          <i className="fa-solid fa-trash"></i>
-                        </button>
-                      )}
+                      <div className="questionTitle d-flex align-items-center gap-2">
+                        {quizdataQuestion?.length &&
+                          finalResult.length < quizdataQuestion.length + 1 && (
+                            <button
+                              onClick={() => handleCloneResult(result.id)}
+                              className="button sm button-secondary px-3 border-0 font-sm"
+                            >
+                              <i className="fa-solid fa-clone"></i>
+                            </button>
+                          )}
+                        {finalResult?.length > 2 && (
+                          <button
+                            type="button"
+                            className="button sm button-secondary bg-danger text-white px-3 border-0 font-sm"
+                            onClick={() =>
+                              handleDeleteResultvaluepersonalityquiz(result.id)
+                            }
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
-                      Header<span style={{ color: "red" }}>*</span>
-                    </label>
-                    <input
-                      type="text"
-                      {...register(`results[${index}].header`, {
-                        required: "Header is required",
-                        validate: (value) =>
-                          value.trim() !== "" || "Header cannot be empty",
-                      })}
-                      className="form-control theme-control"
-                      value={result.header}
-                      onChange={(e) =>
-                        handleChangeHeaderResultPersonality(e.target.value, result.id)
-                      }
-                    />
-                    {/* {parenterror.results?.[index]?.header && (
+                    <div className="mb-3">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
+                        Header<span style={{ color: "red" }}>*</span>
+                      </label>
+                      <input
+                        type="text"
+                        {...register(`results[${index}].header`, {
+                          required: "Header is required",
+                          validate: (value) =>
+                            value.trim() !== "" || "Header cannot be empty",
+                        })}
+                        className="form-control theme-control"
+                        value={result.header}
+                        onChange={(e) =>
+                          handleChangeHeaderResultPersonality(
+                            e.target.value,
+                            result.id
+                          )
+                        }
+                      />
+                      {/* {parenterror.results?.[index]?.header && (
                       <p className="text-danger font-sm mt-1">
                         {parenterror.results[index].header}
                       </p>
                     )} */}
-                    {/* {console.log(parenterror.results, "pioioi")} */}
-                  </div>
+                      {/* {console.log(parenterror.results, "pioioi")} */}
+                    </div>
 
-                  <div className="mb-3">
-                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                      Description
-                    </label>
-                    <textarea
-                      className="form-control theme-control"
-                      rows="3"
-                      defaultValue={result.description}
-                      onChange={(e) =>
-                        handleChangeDescriptionResult(e.target.value, result.id)
-                      }
-                    ></textarea>
-                  </div>
+                    <div className="mb-3">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                        Description
+                      </label>
+                      <textarea
+                        className="form-control theme-control"
+                        rows="3"
+                        defaultValue={result?.description}
+                        onChange={(e) =>
+                          handleChangeDescriptionResult(
+                            e.target.value,
+                            result?.id
+                          )
+                        }
+                      ></textarea>
+                    </div>
 
-                  <div className="mb-3">
-                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                      Result image
-                    </label>
-                    <div className="d-flex align-items-center">
-                      <div className="questionImageLabel">
-                        <img
-                          src={
-                            result.image ||
-                            "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                    <div className="mb-3">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                        Result image
+                      </label>
+                      <div className="d-flex align-items-center">
+                        <div className="questionImageLabel">
+                          <img
+                            src={
+                              result.image ||
+                              "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                            }
+                            alt="question-image"
+                            className=""
+                          />
+                        </div>
+                        {console.log(result.id, "result.id")}
+                        <button
+                          className="button button-primary font-sm border-0 me-2"
+                          onClick={() => {
+                            setSelectedImageType({
+                              type: "questionImagequiz",
+                              resultId: result.id,
+                            });
+                            handleChangeImage(
+                              "result-image",
+                              formData?.id,
+                              result.id
+                            );
+                            // setSelectedImageType({ type: "finalPersonality", resultId: result.id });
+                          }}
+                        >
+                          Upload
+                        </button>
+                        <button
+                          className="button button-secondary border-0 px-3"
+                          onClick={() => handleDeleteImage(result.id)}
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                        Image disclaimer (optional)
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control theme-control"
+                        defaultValue={result.imageDisclaimer}
+                        onChange={(e) =>
+                          handleChangeImageDisclaimer(e.target.value, result.id)
+                        }
+                      />
+                    </div>
+
+                    <div className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                          Button text
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control theme-control"
+                          defaultValue={result.buttonText}
+                          onChange={(e) =>
+                            handleChangeButtontext(e.target.value, result.id)
                           }
-                          alt="question-image"
-                          className=""
                         />
                       </div>
-                      {console.log(result.id, "result.id")}
-                      <button
-                        className="button button-primary font-sm border-0 me-2"
-
-                        onClick={() => {
-                          setSelectedImageType({ type: "questionImagequiz", resultId: result.id });
-                          handleChangeImage(
-                            "result-image",
-                            formData?.id,
-                            result.id
-                          )
-                          // setSelectedImageType({ type: "finalPersonality", resultId: result.id });
-                        }
-                        }
-                      >
-                        Upload
-                      </button>
-                      <button
-                        className="button button-secondary border-0 px-3"
-                        onClick={() => handleDeleteImage(result.id)}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
+                      <div className="col-md-6">
+                        <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                          Link
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control theme-control"
+                          placeholder="Internal page"
+                          defaultValue={result.buttonLink}
+                          onChange={(e) =>
+                            handleChangeButtonLink(e.target.value, result.id)
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
-
-                  <div className="mb-3">
-                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                      Image disclaimer (optional)
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control theme-control"
-                      defaultValue={result.imageDisclaimer}
-                      onChange={(e) =>
-                        handleChangeImageDisclaimer(e.target.value, result.id)
-                      }
-                    />
-                  </div>
-
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                        Button text
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control theme-control"
-                        defaultValue={result.buttonText}
-                        onChange={(e) =>
-                          handleChangeButtontext(e.target.value, result.id)
-                        }
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                        Link
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control theme-control"
-                        placeholder="Internal page"
-                        defaultValue={result.buttonLink}
-                        onChange={(e) =>
-                          handleChangeButtonLink(e.target.value, result.id)
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       )}
@@ -1155,21 +1194,22 @@ function ResultScreen({
         <div class="d-flex w-100 gap-3 gap-md-0">
           <div class="border-end scrollable-div result-list">
             <div className="sidebarquestions">
-              {finalResult?.map((result, index) => (
-                <div className="questionSidebarList align-items-center">
-                  <div className="questionImageLabel">
-                    <img
-                      src={
-                        result.image ||
-                        "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-                      }
-                      alt="questionimage"
-                      className=""
-                    />
+              {finalResult?.length &&
+                finalResult?.map((result, index) => (
+                  <div className="questionSidebarList align-items-center">
+                    <div className="questionImageLabel">
+                      <img
+                        src={
+                          result.image ||
+                          "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                        }
+                        alt="questionimage"
+                        className=""
+                      />
+                    </div>
+                    <p className="mb-0">Result {index + 1}</p>
                   </div>
-                  <p className="mb-0">Result {index + 1}</p>
-                </div>
-              ))}
+                ))}
               {/* {quizdataQuestion?.length} */}
               <div className="button_addNewquestion pb-3">
                 <button
@@ -1182,164 +1222,177 @@ function ResultScreen({
             </div>
           </div>
           <div className="w-100 scrollable-div">
-            {finalResult?.map((result, index) => {
-              const totalQuestions = personalityquizquestion?.length;
+            {finalResult?.length &&
+              finalResult?.map((result, index) => {
+                const totalQuestions = personalityquizquestion?.length;
 
-              const resultRange =
-                index < totalQuestions + 1 ? index : totalQuestions;
+                const resultRange =
+                  index < totalQuestions + 1 ? index : totalQuestions;
 
-              return (
-                <div key={result.id} className="resultsscreen p-4">
-                  <div className="d-flex justify-content-between">
-                    <h5 className="fw-bold">
-                      Result {index + 1}
-                      {/* Adjusting result range dynamically based on the number of questions */}
-                      <span className="text-muted">
-                        ({resultRange} correct answer
-                        {resultRange > 1 ? "s" : ""})
-                      </span>
-                    </h5>
+                return (
+                  <div key={result.id} className="resultsscreen p-4">
+                    <div className="d-flex justify-content-between">
+                      <h5 className="fw-bold">
+                        Result {index + 1}
+                        {/* Adjusting result range dynamically based on the number of questions */}
+                        <span className="text-muted">
+                          ({resultRange} correct answer
+                          {resultRange > 1 ? "s" : ""})
+                        </span>
+                      </h5>
 
-                    <div className="questionTitle d-flex align-items-center gap-2">
-                      <button onClick={() => handleCloneResult(result.id)} className="button sm button-secondary px-3 border-0 font-sm">
-                        <i className="fa-solid fa-clone"></i>
-                      </button>
-                      {finalResult?.length > 1 && (
+                      <div className="questionTitle d-flex align-items-center gap-2">
                         <button
-                          type="button"
-                          className="button sm button-secondary bg-danger text-white px-3 border-0 font-sm"
-                          onClick={() => handleDeleteResultvaluepersonalityquiz(result.id)}
+                          onClick={() => handleCloneResult(result.id)}
+                          className="button sm button-secondary px-3 border-0 font-sm"
+                        >
+                          <i className="fa-solid fa-clone"></i>
+                        </button>
+                        {finalResult?.length > 1 && (
+                          <button
+                            type="button"
+                            className="button sm button-secondary bg-danger text-white px-3 border-0 font-sm"
+                            onClick={() =>
+                              handleDeleteResultvaluepersonalityquiz(result.id)
+                            }
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
+                        Header<span style={{ color: "red" }}>*</span>
+                      </label>
+                      <input
+                        type="text"
+                        {...register(`results[${index}].header`, {
+                          required: "Header is required",
+                          validate: (value) =>
+                            value.trim() !== "" || "Header cannot be empty",
+                        })}
+                        className="form-control theme-control"
+                        value={result.header}
+                        onChange={(e) =>
+                          handleChangeHeaderResultPersonality(
+                            e.target.value,
+                            result.id
+                          )
+                        }
+                      />
+                      {parenterror.results?.[index]?.header && (
+                        <p className="text-danger font-sm mt-1">
+                          {parenterror.results[index].header}
+                        </p>
+                      )}
+                      {/* {console.log(parenterror.results, "pioioi")} */}
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                        Description
+                      </label>
+                      <textarea
+                        className="form-control theme-control"
+                        rows="3"
+                        defaultValue={result.description}
+                        onChange={(e) =>
+                          handleChangeDescriptionResult(
+                            e.target.value,
+                            result.id
+                          )
+                        }
+                      ></textarea>
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                        Result image
+                      </label>
+                      <div className="d-flex align-items-center">
+                        <div className="questionImageLabel">
+                          <img
+                            src={
+                              result.image ||
+                              "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                            }
+                            alt="question-image"
+                            className=""
+                          />
+                        </div>
+                        {console.log(result.id, "result.id")}
+                        <button
+                          className="button button-primary font-sm border-0 me-2"
+                          onClick={() => {
+                            handleChangeImage(
+                              "result-image",
+                              formData?.id,
+                              result.id
+                            );
+                            setSelectedImageType({
+                              type: "finalPersonality",
+                              resultId: result.id,
+                            });
+                          }}
+                        >
+                          Upload
+                        </button>
+                        <button
+                          className="button button-secondary border-0 px-3"
+                          onClick={() => handleDeleteImage(result.id)}
                         >
                           <i className="fa-solid fa-trash"></i>
                         </button>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
-                      Header<span style={{ color: "red" }}>*</span>
-                    </label>
-                    <input
-                      type="text"
-                      {...register(`results[${index}].header`, {
-                        required: "Header is required",
-                        validate: (value) =>
-                          value.trim() !== "" || "Header cannot be empty",
-                      })}
-                      className="form-control theme-control"
-                      value={result.header}
-                      onChange={(e) =>
-                        handleChangeHeaderResultPersonality(e.target.value, result.id)
-                      }
-                    />
-                    {parenterror.results?.[index]?.header && (
-                      <p className="text-danger font-sm mt-1">
-                        {parenterror.results[index].header}
-                      </p>
-                    )}
-                    {/* {console.log(parenterror.results, "pioioi")} */}
-                  </div>
 
-                  <div className="mb-3">
-                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                      Description
-                    </label>
-                    <textarea
-                      className="form-control theme-control"
-                      rows="3"
-                      defaultValue={result.description}
-                      onChange={(e) =>
-                        handleChangeDescriptionResult(e.target.value, result.id)
-                      }
-                    ></textarea>
-                  </div>
+                    <div className="mb-3">
+                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                        Image disclaimer (optional)
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control theme-control"
+                        defaultValue={result.imageDisclaimer}
+                        onChange={(e) =>
+                          handleChangeImageDisclaimer(e.target.value, result.id)
+                        }
+                      />
+                    </div>
 
-                  <div className="mb-3">
-                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                      Result image
-                    </label>
-                    <div className="d-flex align-items-center">
-                      <div className="questionImageLabel">
-                        <img
-                          src={
-                            result.image ||
-                            "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                    <div className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                          Button text
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control theme-control"
+                          defaultValue={result.buttonText}
+                          onChange={(e) =>
+                            handleChangeButtontext(e.target.value, result.id)
                           }
-                          alt="question-image"
-                          className=""
                         />
                       </div>
-                      {console.log(result.id, "result.id")}
-                      <button
-                        className="button button-primary font-sm border-0 me-2"
-
-                        onClick={() => {
-                          handleChangeImage(
-                            "result-image",
-                            formData?.id,
-                            result.id
-                          )
-                          setSelectedImageType({ type: "finalPersonality", resultId: result.id });
-                        }
-                        }
-                      >
-                        Upload
-                      </button>
-                      <button
-                        className="button button-secondary border-0 px-3"
-                        onClick={() => handleDeleteImage(result.id)}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
+                      <div className="col-md-6">
+                        <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                          Link
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control theme-control"
+                          placeholder="Internal page"
+                          defaultValue={result.buttonLink}
+                          onChange={(e) =>
+                            handleChangeButtonLink(e.target.value, result.id)
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
-
-                  <div className="mb-3">
-                    <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                      Image disclaimer (optional)
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control theme-control"
-                      defaultValue={result.imageDisclaimer}
-                      onChange={(e) =>
-                        handleChangeImageDisclaimer(e.target.value, result.id)
-                      }
-                    />
-                  </div>
-
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                        Button text
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control theme-control"
-                        defaultValue={result.buttonText}
-                        onChange={(e) =>
-                          handleChangeButtontext(e.target.value, result.id)
-                        }
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                        Link
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control theme-control"
-                        placeholder="Internal page"
-                        defaultValue={result.buttonLink}
-                        onChange={(e) =>
-                          handleChangeButtonLink(e.target.value, result.id)
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       )}
@@ -1353,8 +1406,9 @@ function ResultScreen({
               </label>
               <input
                 type="text"
-                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
-                  }`}
+                className={`form-control theme-control ${
+                  parenterror.finalResultHeader ? "is-invalid" : ""
+                }`}
                 id="headerInput"
                 placeholder="Congrats message"
                 value={finalResult?.header}
@@ -1374,7 +1428,9 @@ function ResultScreen({
                 rows="3"
                 placeholder="Description"
                 defaultValue={finalResult?.description}
-                onChange={(e) => handleResultTreasureDescription(e.target.value)}
+                onChange={(e) =>
+                  handleResultTreasureDescription(e.target.value)
+                }
               />
             </div>
             <div className="mb-3">
@@ -1401,10 +1457,9 @@ function ResultScreen({
                 <button
                   className="button button-primary border-0"
                   onClick={() => {
-                    setSelectedImageType({ type: "finalTreasureHunt" })
-                    handleChangeImage("result-image-treasure", formData?.id)
-                  }
-                  }
+                    setSelectedImageType({ type: "finalTreasureHunt" });
+                    handleChangeImage("result-image-treasure", formData?.id);
+                  }}
                 >
                   Change
                 </button>
@@ -1445,7 +1500,7 @@ function ResultScreen({
       {formData.block === "form" && (
         <>
           <div class="form-left scrollable-div">
-            <h4 className="mb-4">Thank  you</h4>
+            <h4 className="mb-4">Final Screen</h4>
             <div class="mb-3">
               <label class="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer">
                 Header <span class="text-danger">*</span>
@@ -1453,8 +1508,9 @@ function ResultScreen({
               {console.log(finalResult?.headerText, "finalResult?.headerText")}
               <input
                 type="text"
-                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
-                  }`}
+                className={`form-control theme-control ${
+                  parenterror.finalResultHeader ? "is-invalid" : ""
+                }`}
                 id="headerInput"
                 placeholder="Congrats message"
                 value={finalResult?.headerText}
@@ -1554,8 +1610,9 @@ function ResultScreen({
                 // }
                 // defaultValue={formData?.struct?.finalScreen?.header}
                 onChange={(e) => handleResultHeaderFormPuzzle(e.target.value)}
-                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
-                  }`}
+                className={`form-control theme-control ${
+                  parenterror.finalResultHeader ? "is-invalid" : ""
+                }`}
                 placeholder="Congrats message"
               />
 
@@ -1586,7 +1643,6 @@ function ResultScreen({
               <div className="d-flex align items-center gap-2">
                 <img
                   src={
-
                     finalResult?.imageSrc ||
                     "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
                   }
@@ -1602,11 +1658,9 @@ function ResultScreen({
                 <button
                   className="button button-primary px-3 border-0"
                   onClick={() => {
-
                     setSelectedImageType("puzzleFinal");
-                    handleChangeImage("puzzle", formData?.id)
-                  }
-                  }
+                    handleChangeImage("puzzle", formData?.id);
+                  }}
                 >
                   Change
                 </button>
@@ -1660,8 +1714,9 @@ function ResultScreen({
                 // }
                 // defaultValue={formData?.struct?.finalScreen?.header}
                 onChange={(e) => handleResultHeaderFormPuzzle(e.target.value)}
-                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
-                  }`}
+                className={`form-control theme-control ${
+                  parenterror.finalResultHeader ? "is-invalid" : ""
+                }`}
                 placeholder="Congrats message"
               />
 
@@ -1707,10 +1762,9 @@ function ResultScreen({
                 <button
                   className="button button-primary px-3 border-0"
                   onClick={() => {
-                    setSelectedImageType({ type: "slidingpuzzleFinal" })
-                    handleChangeImage("puzzle-result-image", formData?.id)
-                  }
-                  }
+                    setSelectedImageType({ type: "slidingpuzzleFinal" });
+                    handleChangeImage("puzzle-result-image", formData?.id);
+                  }}
                 >
                   Change
                 </button>
@@ -1764,8 +1818,9 @@ function ResultScreen({
                 // }
                 // defaultValue={formData?.struct?.finalScreen?.header}
                 onChange={(e) => handleResultHeaderFormPuzzle(e.target.value)}
-                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
-                  }`}
+                className={`form-control theme-control ${
+                  parenterror.finalResultHeader ? "is-invalid" : ""
+                }`}
                 placeholder="Congrats message"
               />
 
@@ -1811,11 +1866,9 @@ function ResultScreen({
                 <button
                   className="button button-primary px-3 border-0"
                   onClick={() => {
-                    setSelectedImageType("final")
-                    handleChangeImage("puzzle-result-image", formData?.id)
-                  }
-
-                  }
+                    setSelectedImageType("final");
+                    handleChangeImage("puzzle-result-image", formData?.id);
+                  }}
                 >
                   Change
                 </button>
@@ -1948,7 +2001,6 @@ function ResultScreen({
 
       {formData.block === "match-up" && (
         <>
-          {console.log(finalResult, "finalResultfinalResult")}
           <div class="form-left scrollable-div">
             <h4 className="mb-4">Final screen</h4>
             {/* <div class="mb-3">
@@ -1979,8 +2031,9 @@ function ResultScreen({
                 // }
                 // defaultValue={formData?.struct?.finalScreen?.header}
                 onChange={(e) => handleResultHeaderFormPuzzle(e.target.value)}
-                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
-                  }`}
+                className={`form-control theme-control ${
+                  parenterror.finalResultHeader ? "is-invalid" : ""
+                }`}
                 placeholder="Congrats message"
               />
 
@@ -2025,11 +2078,9 @@ function ResultScreen({
                 <button
                   className="button button-primary px-3 border-0"
                   onClick={() => {
-
-                    setSelectedImageType({ type: "finalMatchUp" })
-                    handleChangeImage("match-up-image", formData?.id)
-                  }
-                  }
+                    setSelectedImageType({ type: "finalMatchUp" });
+                    handleChangeImage("match-up-image", formData?.id);
+                  }}
                 >
                   Change
                 </button>

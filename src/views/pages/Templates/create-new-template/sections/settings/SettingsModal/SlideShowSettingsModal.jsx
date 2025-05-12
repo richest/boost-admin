@@ -15,13 +15,16 @@ function SlideSHowModal({
   handleChangeLogo,
   setIsOpenFormModal,
   onRegisterSlideImageCallback,
+  showQuit,
+  setShowQuit,
+  setAnyChanges,
 }) {
   const dispatch = useDispatch();
   const [slideShow, setSlideShow] = useState({
-    slides: []
+    slides: [],
   });
-  const [showMore, setShowMore] = useState(false)
-  console.log(slideShow, "slideShowslideShow")
+  const [showMore, setShowMore] = useState(false);
+  console.log(slideShow, "slideShowslideShow");
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const toggleShowMore = (id) => {
     setShowMore((prev) => ({
@@ -82,7 +85,6 @@ function SlideSHowModal({
     }));
   };
 
-
   const hanldleSaveSlideShow = () => {
     const updatedData = {
       ...templateDetails,
@@ -93,13 +95,12 @@ function SlideSHowModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  slides: slideShow.slides,
-
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    slides: slideShow.slides,
+                  },
+                }
               : block
           ),
         })),
@@ -112,7 +113,6 @@ function SlideSHowModal({
     dispatch(updateTemplateAction(updatedData));
 
     setIsOpenFormModal(false);
-
   };
 
   const handlechangeSliderDecription = (e, id) => {
@@ -132,6 +132,7 @@ function SlideSHowModal({
 
       return { ...prev, slides: updatedSlides }; // Return the updated state
     });
+    setAnyChanges(true);
   };
 
   const handlechangeSliderHeader = (e, id) => {
@@ -140,10 +141,8 @@ function SlideSHowModal({
 
       const updatedSlides = prev.slides
         ? prev.slides.map((slide) =>
-          slide.id === id
-            ? { ...slide, header: e }
-            : slide
-        )
+            slide.id === id ? { ...slide, header: e } : slide
+          )
         : [];
 
       console.log("Updated slides:", updatedSlides); // Check the updated slides
@@ -153,6 +152,7 @@ function SlideSHowModal({
         slides: updatedSlides,
       };
     });
+    setAnyChanges(true);
   };
 
   // const handlechangeSliderHeader = (e, id) => {
@@ -221,7 +221,8 @@ function SlideSHowModal({
   const handleDeleteQuestion = (id) => {
     setSlideShow((prev) => {
       // Filter out the slide with the matching id
-      const updatedSlides = prev.slides?.filter((slide) => slide.id !== id) || [];
+      const updatedSlides =
+        prev.slides?.filter((slide) => slide.id !== id) || [];
 
       return {
         ...prev,
@@ -229,17 +230,15 @@ function SlideSHowModal({
       };
     });
   };
-  console.log(slideShow, "slideShowslideShow")
+  console.log(slideShow, "slideShowslideShow");
   const handlechangeSliderCaption = (e, id) => {
     setSlideShow((prev) => {
       console.log("Previous state:", prev); // Check state before updating
 
       const updatedSlides = prev.slides
         ? prev.slides.map((slide) =>
-          slide.id === id
-            ? { ...slide, imageCaption: e }
-            : slide
-        )
+            slide.id === id ? { ...slide, imageCaption: e } : slide
+          )
         : [];
 
       console.log("Updated slides:", updatedSlides); // Check the updated slides
@@ -347,9 +346,9 @@ function SlideSHowModal({
 
   console.log(formData?.struct, "cehchccchformdTAaa");
   useEffect(() => {
-    setSlideShow(formData?.struct)
-  }, [formData?.struct])
-  console.log(slideShow, "slideShow")
+    setSlideShow(formData?.struct);
+  }, [formData?.struct]);
+  console.log(slideShow, "slideShow");
   // Inside SlideShowModal
   useEffect(() => {
     if (onRegisterSlideImageCallback) {
@@ -371,22 +370,23 @@ function SlideSHowModal({
           {slideShow.slides &&
             slideShow?.slides.map((question, index) => (
               <div className="questioncontent">
-
-
                 <div className="questionData">
                   <div class="mb-4">
                     <div class="d-flex gap-3">
                       <div className="">
-                        <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer justify-content-center">{index + 1}</label>
-                        <div className="questionImageLabel quest-cover" style={{
-                          width: 90,
-                          height: 90,
-                          margin: 0
-                        }}>
+                        <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer justify-content-center">
+                          {index + 1}
+                        </label>
+                        <div
+                          className="questionImageLabel quest-cover"
+                          style={{
+                            width: 90,
+                            height: 90,
+                            margin: 0,
+                          }}
+                        >
                           <img
-                            src={
-                              question.image
-                            }
+                            src={question.image}
                             alt="question-image"
                             className="w-100"
                           />
@@ -438,7 +438,9 @@ function SlideSHowModal({
                               {slideShow?.slides.length > 1 && (
                                 <button
                                   className="button button-secondary border-0 p-2 h-auto rounded-5 text-muted font-sm"
-                                  onClick={() => handleDeleteQuestion(question.id)}
+                                  onClick={() =>
+                                    handleDeleteQuestion(question.id)
+                                  }
                                 >
                                   <i className="fa-solid fa-trash"></i>
                                 </button>
@@ -451,16 +453,23 @@ function SlideSHowModal({
                             rows="4"
                             defaultValue={question.description}
                             onChange={(e) =>
-                              handlechangeSliderDecription(e.target.value, question.id)
+                              handlechangeSliderDecription(
+                                e.target.value,
+                                question.id
+                              )
                             }
                           ></textarea>
                         </div>
 
                         {/* Toggle Button */}
                         {showMore[question.id] ? (
-                          <p onClick={() => toggleShowMore(question.id)}>Less Text Option</p>
+                          <p onClick={() => toggleShowMore(question.id)}>
+                            Less Text Option
+                          </p>
                         ) : (
-                          <p onClick={() => toggleShowMore(question.id)}>More Text Option</p>
+                          <p onClick={() => toggleShowMore(question.id)}>
+                            More Text Option
+                          </p>
                         )}
 
                         {/* Conditional Inputs */}
@@ -478,7 +487,10 @@ function SlideSHowModal({
                                 className="form-control theme-control"
                                 defaultValue={question.header}
                                 onChange={(e) =>
-                                  handlechangeSliderHeader(e.target.value, question.id)
+                                  handlechangeSliderHeader(
+                                    e.target.value,
+                                    question.id
+                                  )
                                 }
                               />
                             </div>
@@ -492,14 +504,16 @@ function SlideSHowModal({
                                 className="form-control theme-control"
                                 defaultValue={question.imageCaption}
                                 onChange={(e) =>
-                                  handlechangeSliderCaption(e.target.value, question.id)
+                                  handlechangeSliderCaption(
+                                    e.target.value,
+                                    question.id
+                                  )
                                 }
                               />
                             </div>
                           </div>
                         )}
                       </div>
-
                     </div>
                   </div>
                 </div>
@@ -511,8 +525,8 @@ function SlideSHowModal({
             </button>
           </div>
         </div>
-      </div > <ul className="Footer_footer__bMDNk">
-
+      </div>{" "}
+      <ul className="Footer_footer__bMDNk">
         <li className="Footer_footerItem__yaFNE">
           <button
             onClick={hanldleSaveSlideShow}
@@ -521,7 +535,56 @@ function SlideSHowModal({
             Save
           </button>
         </li>
-      </ul></>
+      </ul>
+      {showQuit && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Are you sure that you want to quit?
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  The changes you made will not be saved
+                </p>
+              </div>
+            </div>
+            <ul className="Footer_footer__bMDNk">
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  className="button button-primary outline px-3"
+                  onClick={() => {
+                    setShowQuit(false);
+                  }}
+                >
+                  Back
+                </button>
+              </li>
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  onClick={() => {
+                    setIsOpenFormModal(false);
+                    setShowQuit(false);
+                    setAnyChanges(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Quit
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

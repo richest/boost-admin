@@ -14,7 +14,10 @@ function RankBattleModal({
   setSelectScreen,
   formData,
   handleChangeLogo,
-  setIsOpenFormModal
+  setIsOpenFormModal,
+  showQuit,
+  setShowQuit,
+  setAnyChanges,
 }) {
   const [leading, setLeading] = useState({
     left: false,
@@ -25,15 +28,15 @@ function RankBattleModal({
     right: 0,
   });
   const [showTag, setShowTag] = useState(false);
-  const [rankMain, setRankMain] = useState([])
-  const [rankCard, setRankCard] = useState([])
-  const [finalResult, setfinalResult] = useState({})
+  const [rankMain, setRankMain] = useState([]);
+  const [rankCard, setRankCard] = useState([]);
+  const [finalResult, setfinalResult] = useState({});
   const [errors, setErrors] = useState({
     header: false,
     buttonText: false,
     finalResultHeader: false,
     headerWordCount: false,
-    buttonTextWordCount: false
+    buttonTextWordCount: false,
   });
   const handleVote = (data) => {
     if (data.text === "Card 1") {
@@ -92,15 +95,16 @@ function RankBattleModal({
       for (let i = updatedTileList.length; i < requiredLength; i++) {
         updatedTileList.push({
           id: generateShortId(),
-          imageUrl: "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1739271156/Group_3_jl6d69.png",
+          imageUrl:
+            "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1739271156/Group_3_jl6d69.png",
           description: "",
           text: `Card ${i + 1}`,
         });
       }
     }
-    console.log(updatedTileList, "oioioii")
+    console.log(updatedTileList, "oioioii");
     setRankCard(updatedTileList);
-    console.log(rankCard, "dioaj")
+    console.log(rankCard, "dioaj");
     // const updatedData = {
     //   ...templateDetails,
     //   project_structure: {
@@ -154,15 +158,14 @@ function RankBattleModal({
     return isValid;
   };
 
-
-  console.log(errors, "ikodjwq")
+  console.log(errors, "ikodjwq");
 
   const handleChangeTextImage = (e) => {
-    console.log(e, "ioioioi")
+    console.log(e, "ioioioi");
     setRankMain((prev) => ({
       ...prev,
-      cardType: e
-    }))
+      cardType: e,
+    }));
     // const updatedData = {
     //   ...templateDetails,
     //   project_structure: {
@@ -191,8 +194,8 @@ function RankBattleModal({
   const handlehangepropertions = (prop) => {
     setRankMain((prev) => ({
       ...prev,
-      cardProportions: prop
-    }))
+      cardProportions: prop,
+    }));
     // const updatedData = {
     //   ...templateDetails,
     //   project_structure: {
@@ -219,10 +222,9 @@ function RankBattleModal({
     // dispatch(updateTemplateAction(updatedData));
   };
   const handleNext = async () => {
-    console.log("CALLLIIINNNNINI", selecteScreen)
+    console.log("CALLLIIINNNNINI", selecteScreen);
 
-
-    setSelectScreen("quests")
+    setSelectScreen("quests");
 
     console.log("Proceed to next step");
   };
@@ -243,13 +245,13 @@ function RankBattleModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  cards: rankCard,  // Using rankCard to update the questions
-                  playground: rankMain, // Using rankMain to update the playground
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    cards: rankCard, // Using rankCard to update the questions
+                    playground: rankMain, // Using rankMain to update the playground
+                  },
+                }
               : block
           ),
         })),
@@ -264,154 +266,169 @@ function RankBattleModal({
     setIsOpenFormModal(false); // Close modal after saving
   };
 
-  console.log(errors, "piopiipoi")
+  console.log(errors, "piopiipoi");
   console.log(formData, "cehchccchformdTAaa");
   useEffect(() => {
-    setRankMain(formData?.struct?.playground)
-    setRankCard(formData?.struct?.cards)
-
-  }, [formData])
-  console.log(rankMain, "rankMain")
+    setRankMain(formData?.struct?.playground);
+    setRankCard(formData?.struct?.cards);
+  }, [formData]);
+  console.log(rankMain, "rankMain");
   return (
-    <>   <div className="form-option-wrap">
-      <div className="form-start">
-        <div className="optionsEditScreen">
-          <div
-            className={`options-settings ${selecteScreen === "start-screen" ? "activeTab" : ""}`}
-            role="button"
-            onClick={() => setSelectScreen("start-screen")}
-          >
-            <i class="fa-solid fa-desktop"></i>
-            <p>Layout</p>
-          </div>
-          <div
-            className={`options-settings ${selecteScreen === "quests" ? "activeTab" : ""}`}
-            role="button"
-            onClick={() => setSelectScreen("quests")}
-          >
-            <i class="fa-solid fa-circle-question"></i>
-            <p>Cards</p>
+    <>
+      {" "}
+      <div className="form-option-wrap">
+        <div className="form-start">
+          <div className="optionsEditScreen">
+            <div
+              className={`options-settings ${selecteScreen === "start-screen" ? "activeTab" : ""}`}
+              role="button"
+              onClick={() => setSelectScreen("start-screen")}
+            >
+              <i class="fa-solid fa-desktop"></i>
+              <p>Layout</p>
+            </div>
+            <div
+              className={`options-settings ${selecteScreen === "quests" ? "activeTab" : ""}`}
+              role="button"
+              onClick={() => setSelectScreen("quests")}
+            >
+              <i class="fa-solid fa-circle-question"></i>
+              <p>Cards</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {selecteScreen === "start-screen" && (
-        <>
-          <div className="form-left border-end">
-            <div className="fields-output">
-              <label class="toggle-container mb-4">Layout</label>
-              <div className={`formFieldsList`}>
-                <div className="additionalInfo">
-                  <div className="fields_info">
-                    <div className="row g-3 mb-3">
-                      <div className="col-md-6">
-                        <div className="">
-                          <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">No of cards</label>
-                          {console.log(formData
-                            , "ioioii")}
-                          <Select
-                            defaultValue={
-                              rankMain?.cardsCount
-                                ? questsLength.find(
-                                  (opt) =>
-                                    opt.value === rankMain?.cardsCount
-                                )
-                                : null
-                            }
-                            className="theme-select"
-                            classNamePrefix="react-select"
-                            options={questsLength}
-                            onChange={(selected) =>
-                              handleSelectChange(selected)
-                            }
-                            placeholder="no of cards"
-                          />
+        {selecteScreen === "start-screen" && (
+          <>
+            <div className="form-left border-end">
+              <div className="fields-output">
+                <label class="toggle-container mb-4">Layout</label>
+                <div className={`formFieldsList`}>
+                  <div className="additionalInfo">
+                    <div className="fields_info">
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <div className="">
+                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                              No of cards
+                            </label>
+                            {console.log(formData, "ioioii")}
+                            <Select
+                              defaultValue={
+                                rankMain?.cardsCount
+                                  ? questsLength.find(
+                                      (opt) =>
+                                        opt.value === rankMain?.cardsCount
+                                    )
+                                  : null
+                              }
+                              className="theme-select"
+                              classNamePrefix="react-select"
+                              options={questsLength}
+                              onChange={(selected) =>
+                                handleSelectChange(selected)
+                              }
+                              placeholder="no of cards"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="cardTypesection">
-                          <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">Card type</label>
-                          <div className="button___cardTYPE d-flex gap-2">
-                            <button
-                              className={`btn selectypebutton w-100 ${rankMain?.cardType === "IMAGE" ? "selected primary-text" : ""}`}
-                              onClick={() => handleChangeTextImage("IMAGE")}
-                            >
-                              <i class="fa-solid fa-image"></i> Image
-                            </button>
-                            <button
-                              className={`btn selectypebutton w-100 ${rankMain?.cardType === "TEXT" ? "selected primary-text" : ""}`}
-                              onClick={() => handleChangeTextImage("TEXT")}
-                            >
-                              <i class="fa-solid fa-pen-to-square"></i> Text
-                            </button>
+                        <div className="col-md-6">
+                          <div className="cardTypesection">
+                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                              Card type
+                            </label>
+                            <div className="button___cardTYPE d-flex gap-2">
+                              <button
+                                className={`btn selectypebutton w-100 ${rankMain?.cardType === "IMAGE" ? "selected primary-text" : ""}`}
+                                onClick={() => handleChangeTextImage("IMAGE")}
+                              >
+                                <i class="fa-solid fa-image"></i> Image
+                              </button>
+                              <button
+                                className={`btn selectypebutton w-100 ${rankMain?.cardType === "TEXT" ? "selected primary-text" : ""}`}
+                                onClick={() => handleChangeTextImage("TEXT")}
+                              >
+                                <i class="fa-solid fa-pen-to-square"></i> Text
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">Card proportions</label>
-                      <div className="d-flex align-items-start">
-                        <button
-                          className={`btn btn-propertion ${rankMain?.cardProportions === "1/1" ? "selctedProp" : ""}`}
-                          style={{ aspectRatio: '1/1', height: 'unset' }}
-                          onClick={() => handlehangepropertions("1/1")}
-                        >
-                          1:1
-                        </button>
-                        <button
-                          className={`btn btn-propertion ${rankMain?.cardProportions === "5/4" ? "selctedProp" : ""}`}
-                          style={{ aspectRatio: '5/4', height: 'unset' }}
-                          onClick={() => handlehangepropertions("5/4")}
-                        >
-                          5:4
-                        </button>
-                        <button
-                          className={`btn btn-propertion ${rankMain?.cardProportions === "4/5" ? "selctedProp" : ""}`}
-                          style={{ aspectRatio: '4/5', height: 'unset' }}
-                          onClick={() => handlehangepropertions("4/5")}
-                        >
-                          4:5
-                        </button>
+                      <div>
+                        <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                          Card proportions
+                        </label>
+                        <div className="d-flex align-items-start">
+                          <button
+                            className={`btn btn-propertion ${rankMain?.cardProportions === "1/1" ? "selctedProp" : ""}`}
+                            style={{ aspectRatio: "1/1", height: "unset" }}
+                            onClick={() => handlehangepropertions("1/1")}
+                          >
+                            1:1
+                          </button>
+                          <button
+                            className={`btn btn-propertion ${rankMain?.cardProportions === "5/4" ? "selctedProp" : ""}`}
+                            style={{ aspectRatio: "5/4", height: "unset" }}
+                            onClick={() => handlehangepropertions("5/4")}
+                          >
+                            5:4
+                          </button>
+                          <button
+                            className={`btn btn-propertion ${rankMain?.cardProportions === "4/5" ? "selctedProp" : ""}`}
+                            style={{ aspectRatio: "4/5", height: "unset" }}
+                            onClick={() => handlehangepropertions("4/5")}
+                          >
+                            4:5
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="form-right scrollable-div">
-            <h5>Approximate preview</h5>
-            <div className={`formPreview cover_modal rankPreview`}>
-              <RankBattlePreview data={formData} rankCard={rankCard} rankMain={rankMain} />
+            <div className="form-right scrollable-div">
+              <h5>Approximate preview</h5>
+              <div className={`formPreview cover_modal rankPreview`}>
+                <RankBattlePreview
+                  data={formData}
+                  rankCard={rankCard}
+                  rankMain={rankMain}
+                />
+              </div>
             </div>
-          </div>
-        </>
-      )}
-      {console.log(selecteScreen, "selecteScreen")}
-      {selecteScreen === "quests" && (
-        <CardsRank
-          errors={errors}
-          setRankCard={setRankCard}
-          setRankMain={setRankMain}
-          rankMain={rankMain}
-          rankCard={rankCard}
-          formData={formData}
-          questions={formData?.struct?.questions}
-          handleChangeImage={handleChangeLogo}
-        />
-      )}
-    </div>
+          </>
+        )}
+        {console.log(selecteScreen, "selecteScreen")}
+        {selecteScreen === "quests" && (
+          <CardsRank
+            errors={errors}
+            setRankCard={setRankCard}
+            setRankMain={setRankMain}
+            rankMain={rankMain}
+            rankCard={rankCard}
+            formData={formData}
+            questions={formData?.struct?.questions}
+            handleChangeImage={handleChangeLogo}
+            setAnyChanges={setAnyChanges}
+          />
+        )}
+      </div>
       {console.log(selecteScreen, "9i9i9i99i9")}
       <ul className="Footer_footer__bMDNk">
         {selecteScreen !== "quests" && (
           <li className="Footer_footerItem__yaFNE">
-            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+            <button
+              className="button button-primary outline px-3"
+              onClick={handleNext}
+            >
+              Next
+            </button>
           </li>
         )}
         <li className="Footer_footerItem__yaFNE">
           <button
             onClick={() => {
-
               handleSaveRankBattle(); // Call the save function
             }}
             className="button button-primary px-3 text-decoration-none"
@@ -419,7 +436,56 @@ function RankBattleModal({
             Save
           </button>
         </li>
-      </ul></>
+      </ul>
+      {showQuit && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Are you sure that you want to quit?
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  The changes you made will not be saved
+                </p>
+              </div>
+            </div>
+            <ul className="Footer_footer__bMDNk">
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  className="button button-primary outline px-3"
+                  onClick={() => {
+                    setShowQuit(false);
+                  }}
+                >
+                  Back
+                </button>
+              </li>
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  onClick={() => {
+                    setIsOpenFormModal(false);
+                    setShowQuit(false);
+                    setAnyChanges(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Quit
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

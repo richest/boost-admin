@@ -26,7 +26,6 @@ import SlidingPuzzleModal from "./SlidingPuzzleSettingsModal";
 import PersonalitySettingModal from "./PersonalitySettingModal";
 
 function GameSettingsModal({
-
   IsOpenFormModal,
   setIsOpenFormModal,
   formData,
@@ -39,14 +38,15 @@ function GameSettingsModal({
   setOpen,
   setIsEditMedia,
   setSelectedImage,
-
 }) {
   const [checkedFields, setCheckedFields] = useState([]);
   const [selectedType, setSelectedType] = useState("");
   const [selecteScreen, setSelectScreen] = useState("start-screen");
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
-  const [closeerror, setcloserror] = useState(false)
-  console.log(selectedImage, "closeerror")
+  const [closeerror, setcloserror] = useState(false);
+  const [showQuit, setShowQuit] = useState(false);
+  const [anyChanges, setAnyChanges] = useState(false);
+  console.log(selectedImage, "closeerror");
   const style = {
     position: "absolute",
     top: "50%",
@@ -91,6 +91,8 @@ function GameSettingsModal({
     return pascal?.replace(/([a-z])([A-Z])/g, "$1 $2");
   };
 
+  console.log("anychangessss", anyChanges);
+
   return (
     <Modal
       aria-labelledby="spring-modal-title"
@@ -111,7 +113,13 @@ function GameSettingsModal({
             <button
               className="btn text-white"
               style={{ fontSize: "30px" }}
-              onClick={() => setIsOpenFormModal(false)}
+              onClick={() => {
+                if (!anyChanges) {
+                  setIsOpenFormModal(false);
+                } else {
+                  setShowQuit(true);
+                }
+              }}
             >
               <i class="fa-solid fa-xmark"></i>
             </button>
@@ -122,13 +130,15 @@ function GameSettingsModal({
                 selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 setOpen={setOpen}
-                selectedImage={selectedImage}
                 isEditMediaTypeDetails={isEditMediaTypeDetails}
                 updateParentState={updateParentState}
                 selecteScreen={selecteScreen}
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "personality-quiz" && (
@@ -141,6 +151,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "treasure-hunt" && (
@@ -162,6 +175,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
 
@@ -174,6 +190,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
 
@@ -185,6 +204,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
 
@@ -196,6 +218,9 @@ function GameSettingsModal({
                 formData={formData}
                 setIsOpenFormModal={setIsOpenFormModal}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "form" && (
@@ -206,6 +231,9 @@ function GameSettingsModal({
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
                 setIsOpenFormModal={setIsOpenFormModal}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "spin-wheel" && (
@@ -238,6 +266,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "memory" && (
@@ -249,6 +280,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "find-pair" && (
@@ -259,6 +293,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "match-up" && (
@@ -274,6 +311,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
           </div>

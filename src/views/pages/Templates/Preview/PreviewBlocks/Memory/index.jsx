@@ -32,7 +32,7 @@ function PreviewMemory({ data, approxvalue, memoryData, startImage }) {
       time: "00:53s",
     },
   ];
-  console.log(memoryData, "memoryData")
+  console.log(memoryData, "memoryDatamemorydataaaaaaaa")
   // return
   // if (!data || !memoryData || !data.struct) {
   //   return <div>Loading game...</div>; // or a spinner
@@ -313,6 +313,8 @@ function PreviewMemory({ data, approxvalue, memoryData, startImage }) {
 
   //   setCardLayout(totalCards / 2);
   // }, [playground]);
+
+  console.log("playground?.cardLayout?.value", playground?.cardLayout?.value);
   useEffect(() => {
     const layoutValue = playground?.cardLayout?.value;
 
@@ -324,11 +326,13 @@ function PreviewMemory({ data, approxvalue, memoryData, startImage }) {
     setCardLayout(totalCards / 2);
   }, [playground]);
 
-  console.log("matchedData", showLeadForm);
+  console.log("cardLayoutcardLayoutcardLayout", cardLayout);
   const onSubmitForm = (e) => {
     alert("form subbmited");
     setShowLeadForm(false);
   };
+  
+  console.log("data?.struct?.playground?.cardProportions", data?.struct?.playground?.cardProportions);
   return (
     <div style={{ fontSize: "unset" }} className={"block-builderd"}>
       <div className="game_mainParent">

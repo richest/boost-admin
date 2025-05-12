@@ -25,6 +25,7 @@ import TimelineSettings from "./settings/TimelineSettings";
 import SlidingPuzzleSettings from "./settings/SlidingPuzzleSettings";
 import HiddenObjectSettings from "./settings/HiddenObjectSettings";
 import SlideShowSettings from "./settings/SlideShowSettings";
+import CrossWordSettings from "./settings/CrosswordSettings";
 
 function TemplateSettings({
   selectedBlock,
@@ -295,6 +296,18 @@ function TemplateSettings({
           handleOpenLinkModal={handleOpenLinkModal}
         />
       )}
+   {selectedBlock === "crossword" && (
+        <CrossWordSettings
+          pageData={pageData}
+          handleChangeMedia={handleChangeMedia}
+          selectedBlockSettings={selectedBlockSettings}
+          handleOpenFormFields={handleOpenFormFields}
+          handleOpenPasswordModal={handleOpenPasswordModal}
+          handleTimeUpPage={handleTimeUpPage}
+          handleOpenLinkModal={handleOpenLinkModal}
+        />
+      )}
+
     </div>
   );
 }

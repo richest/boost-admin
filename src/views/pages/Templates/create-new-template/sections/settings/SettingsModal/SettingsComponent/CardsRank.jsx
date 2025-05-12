@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-function CardsRank({ formData, errors, setRankMain, setRankCard, questions, rankCard, rankMain, handleChangeImage }) {
+function CardsRank({ formData, errors, setRankMain, setRankCard, questions, rankCard, rankMain, handleChangeImage, setAnyChanges }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(formData?.struct?.playground?.cardType, "questionsquestionsquestions");
   console.log(rankMain, "rankMain")
@@ -54,6 +54,7 @@ function CardsRank({ formData, errors, setRankMain, setRankCard, questions, rank
           : card
       )
     );
+    setAnyChanges(true)
     // dispatch(updateTemplateAction(updatedData));
   };
   console.log(rankMain, "sjoqjso")
@@ -74,6 +75,7 @@ function CardsRank({ formData, errors, setRankMain, setRankCard, questions, rank
         )
         : []
     );
+    setAnyChanges(true)
   };
 
 

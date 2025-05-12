@@ -43,6 +43,7 @@ function HiddenObjects({
   const blocks = data;
   console.log(blocks?.struct?.pins, "blocks?.struct?.pins");
   const totalPins = blocks?.struct?.pins?.slice(0, blocks?.struct?.count);
+  console.log("templateDetailstemplateDetails", templateDetails);
   const starsTimeArray = blocks?.struct?.starsTimeList
     .split(",")
     .map((item) => item.trim());
@@ -308,7 +309,7 @@ function HiddenObjects({
     dispatch(updateTemplateAction(updatedData));
   };
 
-  const handleButtonText = (e) => {
+  const handleButtonText = (e, id) => {
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -339,7 +340,7 @@ function HiddenObjects({
     dispatch(updateTemplateAction(updatedData));
   };
 
-  const handleButtonLink = (e) => {
+  const handleButtonLink = (e, id) => {
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -376,7 +377,7 @@ function HiddenObjects({
     }
   }, [data]);
 
-  console.log(pins, "checkpinddsdsdsddayaioooioio");
+  console.log(blocks, "blocksblocksblocksblocks");
   return (
     <div
       style={{ fontSize: "unset" }}

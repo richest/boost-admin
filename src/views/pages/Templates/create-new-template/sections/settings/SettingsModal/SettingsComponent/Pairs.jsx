@@ -570,7 +570,7 @@ function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pa
               className="button button-primary border-0"
             // disabled={textModalData?.text ? false : true}
             >
-              Saveqssqs
+              Save
             </button>
           </div>
         </div>

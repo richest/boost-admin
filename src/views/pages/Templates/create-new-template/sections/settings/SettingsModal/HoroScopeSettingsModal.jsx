@@ -13,7 +13,10 @@ function HoroScopeModal({
   setSelectScreen,
   formData,
   handleChangeLogo,
-  setIsOpenFormModal
+  setIsOpenFormModal,
+  showQuit,
+  setShowQuit,
+  setAnyChanges,
 }) {
   const dispatch = useDispatch();
   const [errorScreen, setErrorScreen] = useState(false);
@@ -232,10 +235,10 @@ function HoroScopeModal({
   };
   const handleMoveUp = (id) => {
     const page = templateDetails?.project_structure?.pages?.find(
-      (page) => page.name === selectedPage
+      // (page) => page.name === selectedPage
     );
     if (!page) {
-      console.error("No page found with the selected name:", selectedPage);
+      // console.error("No page found with the selected name:", selectedPage);
       return;
     }
     const index = page?.blocks?.findIndex((block) => block.id === id);
@@ -260,10 +263,10 @@ function HoroScopeModal({
 
   const handleMoveDown = (id) => {
     const page = templateDetails?.project_structure?.pages?.find(
-      (page) => page.name === selectedPage
+      // (page) => page.name === selectedPage
     );
     if (!page) {
-      console.error("No page found with the selected name:", selectedPage);
+      // console.error("No page found with the selected name:", selectedPage);
       return;
     }
     const index = page?.blocks?.findIndex((block) => block.id === id);
@@ -661,7 +664,7 @@ function HoroScopeModal({
                         </div>
                         <div className="mb-3">
                           <div className="w-100">
-                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">1 st-page disclaimer
+                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2">Image disclaimer
 
                             </label>
                             <input
@@ -809,7 +812,56 @@ function HoroScopeModal({
             </div>
           </div>
         </div>
-      )}</>
+      )}
+      {showQuit && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Are you sure that you want to quit?
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  The changes you made will not be saved
+                </p>
+              </div>
+            </div>
+            <ul className="Footer_footer__bMDNk">
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  className="button button-primary outline px-3"
+                  onClick={() => {
+                    setShowQuit(false);
+                  }}
+                >
+                  Back
+                </button>
+              </li>
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  onClick={() => {
+                    setIsOpenFormModal(false);
+                    setShowQuit(false);
+                    setAnyChanges(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Quit
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
+      </>
   );
 }
 

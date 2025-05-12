@@ -15,9 +15,12 @@ function MemoryModal({
   selectedImage,
   setIsOpenFormModal,
   setSelectedImage,
+  showQuit,
+  setShowQuit,
+  setAnyChanges,
 }) {
-  console.log(selectedImage, "9889898989")
-  console.log(formData, "checkfiormdqartasdvja")
+  console.log(selectedImage, "9889898989");
+  console.log(formData, "checkfiormdqartasdvja");
   const questsLength = [
     {
       label: "2x2",
@@ -39,23 +42,23 @@ function MemoryModal({
 
   const dispatch = useDispatch();
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
-  const [memoryData, setMemoryData] = useState({})
-  const [pairs, setPairs] = useState({})
+  const [memoryData, setMemoryData] = useState({});
+  const [pairs, setPairs] = useState({});
   const [selectedImageType, setSelectedImageType] = useState(null);
-  const [StartImage, setstartImage] = useState({ imageSrc: formData?.struct?.playground?.cardBackImage })
+  const [StartImage, setstartImage] = useState({
+    imageSrc: formData?.struct?.playground?.cardBackImage,
+  });
   const [errors, setErrors] = useState({
     header: false,
     buttonText: false,
     finalResultHeader: false,
     headerWordCount: false,
-    buttonTextWordCount: false
+    buttonTextWordCount: false,
   });
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
-  const [finalResult, setfinalResult] = useState({})
+  const [finalResult, setfinalResult] = useState({});
 
-  console.log(StartImage, "StartImage")
-  console.log(errorScreen, "errorScreenu")
   const handleSelectChange = (e) => {
     if (!e?.value || !e.value.includes("x")) return;
 
@@ -63,8 +66,8 @@ function MemoryModal({
 
     if (isNaN(rows) || isNaN(cols)) return;
 
-    const totalCards = rows * cols;  // Total number of cards based on layout
-    const requiredPairs = totalCards / 2;  // Each pair will use 2 cards, so it's equal to total cards
+    const totalCards = rows * cols; // Total number of cards based on layout
+    const requiredPairs = totalCards / 2; // Each pair will use 2 cards, so it's equal to total cards
 
     // Build or trim updated pair list
     let updatedTileList = [...(formData?.struct?.pairs?.pairList || [])];
@@ -75,7 +78,7 @@ function MemoryModal({
       // Add new pairs to meet the required number of pairs
       for (let i = updatedTileList.length; i < requiredPairs; i++) {
         updatedTileList.push({
-          id: generateShortId(),  // Generate a new unique id
+          id: generateShortId(), // Generate a new unique id
           description: "",
           firstImage: {
             src: "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1739271156/Group_3_jl6d69.png",
@@ -105,8 +108,7 @@ function MemoryModal({
     }));
   };
 
-  console.log(memoryData, "sqsqsqsq")
-  console.log(pairs, "pairs")
+  console.log("memorydataaaaaaaa", memoryData);
 
   const handlehangepropertions = (e) => {
     // update local preview state
@@ -114,65 +116,55 @@ function MemoryModal({
       ...prev,
       cardProportions: e,
     }));
-    console.log(memoryData, "sqsqsqsq")
+    console.log(memoryData, "sqsqsqsq");
     // update global template data
-
   };
-  console.log(StartImage, "StartImage")
+
   const handleIsShowCover = (e) => {
-    const newValue = e
-    console.log(newValue, "wddwd")
+    const newValue = e;
+    console.log(newValue, "wddwd");
     setMemoryData((prev) => ({
       ...prev,
-      isShowCover: newValue
-    }))
-
+      isShowCover: newValue,
+    }));
   };
   const isValidWordCount = (text) => {
     console.log(text, "09485");
 
-    if (typeof text !== 'string') {
+    if (typeof text !== "string") {
       return false;
     }
 
-    const trimmedText = text.trim().replace(/\s+/g, ' ');
+    const trimmedText = text.trim().replace(/\s+/g, " ");
 
-    const wordCount = trimmedText.split(' ').length;
+    const wordCount = trimmedText.split(" ").length;
 
     console.log(trimmedText, "trimmed text");
     console.log(wordCount, "word count");
-
 
     return wordCount <= 20 && wordCount > 0;
   };
   const validateForm = () => {
     const newErrors = {
-
-
       finalResultHeader: !finalResult.header?.trim(),
       finalResultHeaderWordCount: !isValidWordCount(finalResult.header),
     };
-    console.log(finalResult, "axaaxaaxaxaax33r3")
+    console.log(finalResult, "axaaxaaxaxaax33r3");
     setErrors(newErrors);
 
-    return !newErrors.finalResultHeader && !newErrors?.buttonTextWordCount
+    return !newErrors.finalResultHeader && !newErrors?.buttonTextWordCount;
   };
-  console.log(selecteScreen, "qsqsq")
+
   const handleNext = async () => {
-
-
     if (!validateForm()) {
       setErrorScreen(true);
       return;
-
-
     } else {
-
       setErrorScreen(false);
       setTriggerNext(false);
-      if (selecteScreen == "start-screen") {
+      if (selecteScreen === "start-screen") {
         setSelectScreen("pairs");
-      } else if (selecteScreen == "pairs") {
+      } else if (selecteScreen === "pairs") {
         console.log("jsajasdjhjdh");
         setSelectScreen("results");
       }
@@ -181,12 +173,12 @@ function MemoryModal({
     console.log("Proceed to next step");
   };
   const handleChangeheadertext = (e) => {
-    const newvalue = e
+    const newvalue = e;
     setMemoryData((prev) => ({
       ...prev,
-      coverHeader: newvalue
-    }))
-
+      coverHeader: newvalue,
+    }));
+    setAnyChanges(true);
   };
   const handleDeleteImageResultForm = () => {
     setfinalResult((prev) => ({ ...prev, imageSrc: null }));
@@ -201,31 +193,29 @@ function MemoryModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  playground: {
-                    ...block.struct.playground,
-                    coverButtonText: e,
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    playground: {
+                      ...block.struct.playground,
+                      coverButtonText: e,
+                    },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
       },
     };
+    setAnyChanges(true);
     dispatch(updateTemplateAction(updatedData));
   };
-  console.log(formData?.struct?.
-    pairs
-    , "chekcformDataokornot")
 
   useEffect(() => {
-    setMemoryData(formData?.struct?.playground)
-    setPairs(formData?.struct?.pairs)
-    setfinalResult(formData?.struct?.finalScreen)
-  }, [formData])
+    setMemoryData(formData?.struct?.playground);
+    setPairs(formData?.struct?.pairs);
+    setfinalResult(formData?.struct?.finalScreen);
+  }, [formData]);
   useEffect(() => {
     if (selectedImage) {
       if (selectedImageType === "start") {
@@ -236,7 +226,12 @@ function MemoryModal({
         const questionId = selectedImageType.split("pairs-")[1];
         setPairs((prev) => {
           const updatedPairList = prev.pairList.map((pair) =>
-            pair.id === questionId ? { ...pair, firstImage: { ...pair.firstImage, src: selectedImage } } : pair
+            pair.id === questionId
+              ? {
+                  ...pair,
+                  firstImage: { ...pair.firstImage, src: selectedImage },
+                }
+              : pair
           );
           return {
             ...prev,
@@ -281,13 +276,13 @@ function MemoryModal({
   //     }));
   //   }
   // }, [selectedImage]);
-  console.log(finalResult, "memoryData")
+  console.log(finalResult, "memoryData");
   const handleSaveMemory = () => {
     if (!validateForm()) {
-      setErrorScreen(true)
+      setErrorScreen(true);
       return;
     } else {
-      console.log(pairs, "cjhsdjcbkjsdjksdsds")
+      console.log(pairs, "cjhsdjcbkjsdjksdsds");
       const updatedData = {
         ...templateDetails,
         project_structure: {
@@ -302,12 +297,11 @@ function MemoryModal({
                     ...block.struct,
                     playground: {
                       ...memoryData,
-                      cardBackImage: StartImage.imageSrc
-
+                      cardBackImage: StartImage.imageSrc,
                     },
                     pairs: {
                       ...block.struct.pairs,
-                      pairList: pairs.pairList
+                      pairList: pairs.pairList,
                     },
                     finalScreen: finalResult,
                   },
@@ -319,15 +313,14 @@ function MemoryModal({
         },
       };
 
-      console.log(updatedData, "checkokoritijknjnupdatedData")
+      console.log(updatedData, "checkokoritijknjnupdatedData");
       dispatch(updateTemplateAction(updatedData));
-      setIsOpenFormModal(false)
-
+      setIsOpenFormModal(false);
     }
 
     console.log("Memory Data saved to Redux successfully 🚀");
   };
-  console.log(pairs, "pairspairspairs")
+  console.log(pairs, "pairspairspairs");
   return (
     <>
       <div className="form-option-wrap">
@@ -341,12 +334,9 @@ function MemoryModal({
                   setErrorScreen(true);
                   return;
                 } else {
-                  setSelectScreen("start-screen")
+                  setSelectScreen("start-screen");
                 }
-              }
-
-
-              }
+              }}
             >
               <i class="fa-solid fa-desktop"></i>
               <p>Playground</p>
@@ -359,11 +349,9 @@ function MemoryModal({
                   setErrorScreen(true);
                   return;
                 } else {
-                  setSelectScreen("pairs")
+                  setSelectScreen("pairs");
                 }
-
-              }
-              }
+              }}
             >
               <i class="fa-solid fa-desktop"></i>
               <p>Pairs</p>
@@ -376,14 +364,9 @@ function MemoryModal({
                   setErrorScreen(true);
                   return;
                 } else {
-                  setSelectScreen("final-screen")
+                  setSelectScreen("final-screen");
                 }
-              }
-              }
-
-
-
-
+              }}
             >
               <i class="fa-solid fa-circle-question"></i>
               <p>Final screen</p>
@@ -402,7 +385,6 @@ function MemoryModal({
                       <div className="row g-3 mb-3">
                         <div className="col-md-6">
                           <div className="">
-
                             <Select
                               className="theme-select"
                               classNamePrefix="react-select"
@@ -421,13 +403,9 @@ function MemoryModal({
                               value={
                                 memoryData?.cardLayout
                                   ? {
-                                    label:
-                                      memoryData?.cardLayout
-                                        ?.label,
-                                    value:
-                                      memoryData?.cardLayout
-                                        ?.value,
-                                  }
+                                      label: memoryData?.cardLayout?.label,
+                                      value: memoryData?.cardLayout?.value,
+                                    }
                                   : null
                               }
                               options={questsLength}
@@ -448,9 +426,7 @@ function MemoryModal({
                                 <div className="d-flex gap-2">
                                   {StartImage?.imageSrc && (
                                     <img
-                                      src={
-                                        StartImage?.imageSrc
-                                      }
+                                      src={StartImage?.imageSrc}
                                       alt="illustrationImage"
                                       className="image_illustrate"
                                       style={{
@@ -470,13 +446,10 @@ function MemoryModal({
                                       handleChangeLogo(
                                         "playing-card-back",
                                         formData?.id
-                                      )
-                                    }
-                                    }
+                                      );
+                                    }}
                                   >
-                                    {StartImage?.imageSrc
-                                      ? "Change"
-                                      : "Upload"}
+                                    {StartImage?.imageSrc ? "Change" : "Upload"}
                                   </button>
                                 </div>
                               </div>
@@ -485,25 +458,27 @@ function MemoryModal({
                         </div>
 
                         <div>
-                          <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">Card proportions</label>
+                          <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                            Card proportions
+                          </label>
                           <div className="d-flex align-items-start">
                             <button
                               className={`btn btn-propertion ${memoryData?.cardProportions === "1/1" ? "selctedProp" : ""}`}
-                              style={{ aspectRatio: '1/1', height: 'unset' }}
+                              style={{ aspectRatio: "1/1", height: "unset" }}
                               onClick={() => handlehangepropertions("1/1")}
                             >
                               1:1
                             </button>
                             <button
                               className={`btn btn-propertion ${memoryData?.cardProportions === "5/4" ? "selctedProp" : ""}`}
-                              style={{ aspectRatio: '5/4', height: 'unset' }}
+                              style={{ aspectRatio: "5/4", height: "unset" }}
                               onClick={() => handlehangepropertions("5/4")}
                             >
                               5:4
                             </button>
                             <button
                               className={`btn btn-propertion ${memoryData?.cardProportions === "4/5" ? "selctedProp" : ""}`}
-                              style={{ aspectRatio: '4/5', height: 'unset' }}
+                              style={{ aspectRatio: "4/5", height: "unset" }}
                               onClick={() => handlehangepropertions("4/5")}
                             >
                               4:5
@@ -518,9 +493,7 @@ function MemoryModal({
                           className="form-check-input theme-control m-0"
                           role="button"
                           onChange={(e) => handleIsShowCover(e.target.checked)}
-                          checked={
-                            memoryData?.isShowCover
-                          }
+                          checked={memoryData?.isShowCover}
                         />
                         <span className="d-flex align-items-center gap-2">
                           Show cover
@@ -537,9 +510,7 @@ function MemoryModal({
                               class="form-control theme-control"
                               id="questName"
                               // maxlength="60"
-                              value={
-                                memoryData?.coverHeader
-                              }
+                              value={memoryData?.coverHeader}
                               onChange={(e) =>
                                 handleChangeheadertext(e.target.value)
                               }
@@ -555,9 +526,7 @@ function MemoryModal({
                               class="form-control theme-control"
                               id="questName"
                               maxlength="60"
-                              value={
-                                memoryData?.coverButtonText
-                              }
+                              value={memoryData?.coverButtonText}
                               onChange={(e) =>
                                 handleChangeheaderButtonText(e.target.value)
                               }
@@ -575,7 +544,12 @@ function MemoryModal({
             <div className="form-right scrollable-div">
               <h5>Approximate preview</h5>
               <div className={`formPreview cover_modal rankPreview`}>
-                <PreviewMemory data={formData} approxvalue={false} memoryData={memoryData} startImage={StartImage?.imageSrc} />
+                <PreviewMemory
+                  data={formData}
+                  approxvalue={false}
+                  memoryData={memoryData}
+                  startImage={StartImage?.imageSrc}
+                />
               </div>
             </div>
           </>
@@ -605,13 +579,19 @@ function MemoryModal({
             formData={formData}
             questions={formData?.struct?.questions}
             handleChangeImage={handleChangeLogo}
+            setAnyChanges={setAnyChanges}
           />
         )}
       </div>
       <ul className="Footer_footer__bMDNk">
         {selecteScreen !== "final-screen" && (
           <li className="Footer_footerItem__yaFNE">
-            <button className="button button-primary outline px-3" onClick={handleNext}>Next</button>
+            <button
+              className="button button-primary outline px-3"
+              onClick={handleNext}
+            >
+              Next
+            </button>
           </li>
         )}
         <li className="Footer_footerItem__yaFNE">
@@ -659,8 +639,55 @@ function MemoryModal({
           </div>
         </div>
       )}
+      {showQuit && (
+        <div className="StopPanel_modalStop__Msu+K">
+          <div className="StopPanel_modalOverlay__1dGP2"></div>
+          <div className="StopPanel_modalContent__8Epq4">
+            <div className="StopPanel_note__c+Qou">
+              <div className="StopPanel_imageBox__2Udoo">
+                <img
+                  className="StopPanel_image__2gtri"
+                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
+                  alt=""
+                />
+              </div>
+              <div className="StopPanel_textBox__stxYL">
+                <h4 className="StopPanel_textTitle__T8v5c">
+                  Are you sure that you want to quit?
+                </h4>
+                <p className="StopPanel_textContent__2I+u6">
+                  The changes you made will not be saved
+                </p>
+              </div>
+            </div>
+            <ul className="Footer_footer__bMDNk">
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  className="button button-primary outline px-3"
+                  onClick={() => {
+                    setShowQuit(false);
+                  }}
+                >
+                  Back
+                </button>
+              </li>
+              <li className="Footer_footerItem__yaFNE">
+                <button
+                  onClick={() => {
+                    setIsOpenFormModal(false);
+                    setShowQuit(false);
+                    setAnyChanges(false);
+                  }}
+                  className="button button-primary px-3 text-decoration-none"
+                >
+                  Quit
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
     </>
-
   );
 }
 
