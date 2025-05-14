@@ -149,8 +149,43 @@ function ButtonSettings({ selectedBlockSettings, pageData }) {
             onChange={(e) => handleChangeLink(e.target.value)}
           />
         </div>
-
         <div className="mb-4">
+          <label
+            className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
+            role="button"
+          >
+            Border radius
+          </label>
+          <input
+            className="colorInput form-control theme-control"
+            type="number"
+            defaultValue={brad}
+            max={100}
+            min={0}
+            onInput={(e) => {
+              let value = e.target.value;
+
+              // Remove non-digit characters
+              value = value.replace(/\D/g, '');
+
+              // Trim to 3 digits
+              if (value.length > 3) {
+                value = value.slice(0, 3);
+              }
+
+              // Clamp to max 100 if needed
+              if (parseInt(value) > 100) {
+                value = '100';
+              }
+
+              e.target.value = value;
+            }}
+            onChange={(e) => handleChangeBorderRadius(e.target.value)}
+          />
+
+        </div>
+
+        {/* <div className="mb-4">
           <label
             className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer"
             role="button">Border radius</label>
@@ -158,9 +193,10 @@ function ButtonSettings({ selectedBlockSettings, pageData }) {
             type="number"
             defaultValue={brad}
             max={100}
+            maxLength={3}
             min={0}
             onChange={(e) => handleChangeBorderRadius(e.target.value)} />
-        </div>
+        </div> */}
 
         <div className="mb-4">
           <label

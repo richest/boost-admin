@@ -225,7 +225,7 @@ function ProjectSettings({
           ></i> */}
         </label>
         <input
-          type="text"
+          type="number"
           onInput={(e) => {
             if (e.target.value < 350) {
               setMaxWidthValue(350);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -22,6 +22,7 @@ function MyLibrary({
   setSelectedImage,
   handleSelectMedia,
 }) {
+
   return (
     <>
       <Grid container spacing={2} alignItems="center" className="modal-grid-wrap">
@@ -59,9 +60,10 @@ function MyLibrary({
               {isLoading ? (
                 <Skeleton
                   variant="circular"
+                  className="mx-auto"
                   animation="wave"
-                  width={210}
-                  height={118}
+                  width={139}
+                  height={139}
                 />
               ) : (
                 <>

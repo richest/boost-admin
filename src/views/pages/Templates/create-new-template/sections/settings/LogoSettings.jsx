@@ -249,15 +249,22 @@ function LogoSettings({ selectedBlockSettings, pageData, handleChangeMedia }) {
                     <label className="label form-label font-sm fw-medium d-flex align-items-center gap-2">Scale (%)</label>
                     <div className="content select">
                       <div className="control-box">
-                          <input
-                            className="text form-control theme-control"
-                            type="number"
-                            onChange={(e) => handleWidthInput(e.target.value)}
-                            defaultValue={blockValues?.width}
-                            min="0"
-                            maxLength="100"
-                            max={100}
-                          />
+                        <input
+                          className="text form-control theme-control"
+                          type="number"
+                          onChange={(e) => handleWidthInput(e.target.value)}
+                          defaultValue={blockValues?.width}
+                          min="0"
+                          maxLength="100"
+                          max={100}
+                          onInput={(e) => {
+                            // Ensure the value stays within the valid range
+                            let value = parseInt(e.target.value, 10);
+                            if (value < 0) value = 0;
+                            if (value > 100) value = 100;
+                            e.target.value = value;  // Update the value in the input field
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -275,9 +282,17 @@ function LogoSettings({ selectedBlockSettings, pageData, handleChangeMedia }) {
                             onChange={(e) =>
                               handlePadding(e.target.value, "top")
                             }
+                            // Embed Code
                             defaultValue={blockValues?.top}
                             min="0"
                             max="100"
+                            onInput={(e) => {
+                              // Ensure the value stays within the valid range
+                              let value = parseInt(e.target.value, 10);
+                              if (value < 0) value = 0;
+                              if (value > 100) value = 100;
+                              e.target.value = value;  // Update the value in the input field
+                            }}
                           />
                           <input
                             className="text form-control theme-control"

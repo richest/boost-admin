@@ -103,16 +103,19 @@ function ImageSettings({ selectedBlockSettings, pageData, handleChangeMedia }) {
   useEffect(() => {
     if (pageData) {
       const block = pageData.blocks.find((block) => block.id === id);
-      console.log(block, "checkzBLock");
-      setBlockValues(block);
+      setBlockValues(block); // Update blockValues
     }
-
-    setDefaultSelectedValue({
-      label: blockValues?.imageSize?.label,
-      value: blockValues?.imageSize?.value,
-    });
   }, [pageData, templateDetails]);
 
+  useEffect(() => {
+    // Once blockValues is updated, set the default value for Select
+    if (blockValues?.imageSize) {
+      setDefaultSelectedValue({
+        label: blockValues.imageSize.label,
+        value: blockValues.imageSize.value,
+      });
+    }
+  }, [blockValues]); // This will run after blockValues is updated
   return (
     <div className="panel-wrap">
       <div className="setting-block border-bottom">
@@ -142,7 +145,7 @@ function ImageSettings({ selectedBlockSettings, pageData, handleChangeMedia }) {
                     <div className="content select">
                       <Select
                         options={options}
-                        defaultValue={defaultSelectedValue}
+                        value={defaultSelectedValue}
                         onChange={(select) => handleSelectChange(select, id)}
                       />
                     </div>

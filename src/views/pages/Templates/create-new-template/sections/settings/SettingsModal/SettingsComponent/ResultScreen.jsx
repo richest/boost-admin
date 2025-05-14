@@ -16,7 +16,9 @@ const validationSchema = yup.object().shape({
 });
 
 function ResultScreen({
-  quizdataQuestion = () => {},
+  handleMoveUp,
+  handleMoveDown,
+  quizdataQuestion = () => { },
   setIsOpenFormModal,
   personalityquizquestion,
   finalResult,
@@ -24,15 +26,15 @@ function ResultScreen({
   setParentErros,
   setfinalResult,
   selecteScreen,
-  setTriggerNext = () => {},
+  setTriggerNext = () => { },
   parenterror,
   finalImage,
   questions,
   handleSaveQuestion,
   handleDeleteImageMatchUp,
-  setSelectedImageType = () => {},
+  setSelectedImageType = () => { },
   formRef,
-  setErrorScreen = () => {},
+  setErrorScreen = () => { },
   formData,
   handleChangeImage,
   onRegisterSlideImageCallback,
@@ -92,12 +94,12 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    results: block.struct.results?.filter((e) => e.id !== id),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  results: block.struct.results?.filter((e) => e.id !== id),
+                },
+              }
               : block
           ),
         })),
@@ -128,38 +130,6 @@ function ResultScreen({
     setfinalResult(updatedResults);
     setAnyChanges(true);
 
-    //   ...prevErrors,
-    //   [id]: value === "" ? "Header is required." : null,
-    // }));
-    // const updatedData = {
-    //   ...updatedtemplate,
-    //   project_structure: {
-    //     ...updatedtemplate.project_structure,
-    //     pages: updatedtemplate.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               results: block.struct.results?.map((result) =>
-    //                 result.id === id
-    //                   ? {
-    //                     ...result,
-    //                     header: e,
-    //                   }
-    //                   : result
-    //               ),
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // setupdatedTemplate(updatedData);
-    // dispatch(updateTemplateAction(updatedData));
   };
   const handleChangeHeaderResult = (e, id) => {
     console.log(e, "dasddaadda");
@@ -173,19 +143,19 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    results: block.struct.results?.map((result) =>
-                      result.id === id
-                        ? {
-                            ...result,
-                            header: e,
-                          }
-                        : result
-                    ),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  results: block.struct.results?.map((result) =>
+                    result.id === id
+                      ? {
+                        ...result,
+                        header: e,
+                      }
+                      : result
+                  ),
+                },
+              }
               : block
           ),
         })),
@@ -208,19 +178,19 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    results: block.struct.results?.map((result) =>
-                      result.id === id
-                        ? {
-                            ...result,
-                            description: e,
-                          }
-                        : result
-                    ),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  results: block.struct.results?.map((result) =>
+                    result.id === id
+                      ? {
+                        ...result,
+                        description: e,
+                      }
+                      : result
+                  ),
+                },
+              }
               : block
           ),
         })),
@@ -247,19 +217,19 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    results: block.struct.results?.map((result) =>
-                      result.id === id
-                        ? {
-                            ...result,
-                            imageDisclaimer: e,
-                          }
-                        : result
-                    ),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  results: block.struct.results?.map((result) =>
+                    result.id === id
+                      ? {
+                        ...result,
+                        imageDisclaimer: e,
+                      }
+                      : result
+                  ),
+                },
+              }
               : block
           ),
         })),
@@ -279,19 +249,19 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    results: block.struct.results?.map((result) =>
-                      result.id === id
-                        ? {
-                            ...result,
-                            buttonText: e,
-                          }
-                        : result
-                    ),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  results: block.struct.results?.map((result) =>
+                    result.id === id
+                      ? {
+                        ...result,
+                        buttonText: e,
+                      }
+                      : result
+                  ),
+                },
+              }
               : block
           ),
         })),
@@ -317,19 +287,19 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    results: block.struct.results?.map((result) =>
-                      result.id === id
-                        ? {
-                            ...result,
-                            buttonLink: e,
-                          }
-                        : result
-                    ),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  results: block.struct.results?.map((result) =>
+                    result.id === id
+                      ? {
+                        ...result,
+                        buttonLink: e,
+                      }
+                      : result
+                  ),
+                },
+              }
               : block
           ),
         })),
@@ -349,39 +319,55 @@ function ResultScreen({
       imageSrc: "",
     }));
   };
+  // const handleDeleteImage = (id) => {
+  //   console.log(id, "ididid")
+  //   return
+  //   setfinalResult((prev) => ({
+  //     ...prev.filter((id)=>id===id),
+  //     image: "",
+  //   }));
+  //   // const updatedData = {
+  //   //   ...updatedtemplate,
+  //   //   project_structure: {
+  //   //     ...updatedtemplate.project_structure,
+  //   //     pages: updatedtemplate.project_structure.pages.map((page) => ({
+  //   //       ...page,
+  //   //       blocks: page.blocks.map((block) =>
+  //   //         block.id === formData?.id
+  //   //           ? {
+  //   //             ...block,
+  //   //             struct: {
+  //   //               ...block.struct,
+  //   //               results: block.struct.results?.map((result) =>
+  //   //                 result.id === id
+  //   //                   ? {
+  //   //                     ...result,
+  //   //                     image: "",
+  //   //                   }
+  //   //                   : result
+  //   //               ),
+  //   //             },
+  //   //           }
+  //   //           : block
+  //   //       ),
+  //   //     })),
+  //   //   },
+  //   // };
+  //   // setupdatedTemplate(updatedData);
+  //   setAnyChanges(true);
+  //   // dispatch(updateTemplateAction(updatedData));
+  // };
   const handleDeleteImage = (id) => {
-    const updatedData = {
-      ...updatedtemplate,
-      project_structure: {
-        ...updatedtemplate.project_structure,
-        pages: updatedtemplate.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === formData?.id
-              ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    results: block.struct.results?.map((result) =>
-                      result.id === id
-                        ? {
-                            ...result,
-                            image: "",
-                          }
-                        : result
-                    ),
-                  },
-                }
-              : block
-          ),
-        })),
-      },
-    };
-    setupdatedTemplate(updatedData);
+    setfinalResult((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, image: "" } : item
+      )
+    );
     setAnyChanges(true);
-    // dispatch(updateTemplateAction(updatedData));
   };
-
+  
+  console.log(finalResult, "dlkdo")
+  console.log(finalResult)
   const handleResultHeader = (e) => {
     const updatedData = {
       ...updatedtemplate,
@@ -392,15 +378,15 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    finalScreen: {
-                      ...block.struct.finalScreen,
-                      header: e,
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  finalScreen: {
+                    ...block.struct.finalScreen,
+                    header: e,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -479,15 +465,15 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    finalScreen: {
-                      ...block.struct.finalScreen,
-                      description: e,
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  finalScreen: {
+                    ...block.struct.finalScreen,
+                    description: e,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -698,15 +684,15 @@ function ResultScreen({
           blocks: page.blocks.map((block) =>
             block.id === cardId
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    final: {
-                      ...block.struct.final,
-                      imageSrc: "",
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  final: {
+                    ...block.struct.final,
+                    imageSrc: "",
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -753,251 +739,104 @@ function ResultScreen({
   //   }));
   // };
 
-  useEffect(() => {
-    if (formRef?.current) {
-      formRef.current = {
-        submitFormQuizResult: handleSubmit((data) => {
-          console.log(updatedtemplate, "123123123123");
-          // return
-          dispatch(updateTemplateAction(updatedtemplate));
-          setIsOpenFormModal(false);
-        }),
+  // useEffect(() => {
+  //   if (formRef?.current) {
+  //     formRef.current = {
+  //       submitFormQuizResult: handleSubmit((data) => {
+  //         console.log(updatedtemplate, "123123123123");
+  //         // return
+  //         dispatch(updateTemplateAction(updatedtemplate));
+  //         setIsOpenFormModal(false);
+  //       }),
 
-        hasErrors: () => Object.keys(errors).length > 0, // Checks for errors
-      };
-    }
-  }, [formRef, handleSubmit, errors, updatedtemplate]);
+  //       hasErrors: () => Object.keys(errors).length > 0, // Checks for errors
+  //     };
+  //   }
+  // }, [formRef, handleSubmit, errors, updatedtemplate]);
 
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      setErrorScreen(true);
-      setTriggerNext(true);
-    } else {
-      setErrorScreen(false);
-      setTriggerNext(false);
-    }
-  }, [errors]);
-  useEffect(() => {
-    methods.reset(updatedtemplate);
-  }, [updatedtemplate, methods]);
+  // useEffect(() => {
+  //   if (Object.keys(errors).length > 0) {
+  //     setErrorScreen(true);
+  //     setTriggerNext(true);
+  //   } else {
+  //     setErrorScreen(false);
+  //     setTriggerNext(false);
+  //   }
+  // }, [errors]);
+  // useEffect(() => {
+  //   methods.reset(updatedtemplate);
+  // }, [updatedtemplate, methods]);
 
-  useEffect(() => {
-    methods.trigger("results");
-  }, [methods]);
-  useEffect(() => {
-    methods.reset(updatedtemplate); // Ensure it respects empty values
-  }, [updatedtemplate]);
+  // useEffect(() => {
+  //   methods.trigger("results");
+  // }, [methods]);
+  // useEffect(() => {
+  //   methods.reset(updatedtemplate); // Ensure it respects empty values
+  // }, [updatedtemplate]);
 
-  console.log(finalResult, "checkformdatatatata");
+  console.log(formData.block, "checkformdatatatata");
+  // const handleMoveUp = (id) => {
+  //   setfinalResult((prevResults) => {
+  //     const index = prevResults.findIndex((item) => item.id === id);
+  //     if (index <= 0) return prevResults;
+
+  //     const updatedResults = [...prevResults];
+  //     [updatedResults[index - 1], updatedResults[index]] = [
+  //       updatedResults[index],
+  //       updatedResults[index - 1],
+  //     ];
+
+  //     return updatedResults;
+  //   });
+  // };
+
+  // const handleMoveDown = (id) => {
+  //   setfinalResult((prevResults) => {
+  //     const index = prevResults.findIndex((item) => item.id === id);
+  //     if (index === -1 || index >= prevResults.length - 1) return prevResults;
+
+  //     const updatedResults = [...prevResults];
+  //     [updatedResults[index + 1], updatedResults[index]] = [
+  //       updatedResults[index],
+  //       updatedResults[index + 1],
+  //     ];
+
+  //     return updatedResults;
+  //   });
+  // };
+
+
   return (
     <>
       {formData.block === "quiz" && (
-        // <div class="d-flex w-100 gap-3 gap-md-0">
-        //   <div class="border-end scrollable-div result-list">
-        //     <div className="sidebarquestions">
-        //       {formData?.struct?.results?.map((result, index) => (
-        //         <div className="questionSidebarList align-items-center">
-        //           <div className="questionImageLabel">
-        //             <img
-        //               src={
-        //                 result.image ||
-        //                 "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-        //               }
-        //               alt="question-image"
-        //               className=""
-        //             />
-        //           </div>
-        //           <p className="mb-0">Result {index + 1}</p>
-        //         </div>
-        //       ))}
-        //     </div>
-        //   </div>
-        //   <div className="w-100 scrollable-div">
-        //     <FormProvider {...methods}>
-        //       <form>
-        //         {formData?.struct?.results?.map((result, index) => {
-        //           const totalQuestions = formData?.struct?.questions?.length;
-
-        //           const resultRange =
-        //             index < totalQuestions + 1 ? index : totalQuestions;
-
-        //           return (
-        //             <div key={result.id} className="resultsscreen p-4">
-        //               <div className="d-flex justify-content-between">
-        //                 <h5 className="fw-bold">
-        //                   Result {index + 1}
-        //                   {/* Adjusting result range dynamically based on the number of questions */}
-        //                   <span className="text-muted">
-        //                     ({resultRange} correct answer
-        //                     {resultRange > 1 ? "s" : ""})
-        //                   </span>
-        //                 </h5>
-
-        //                 <div className="questionTitle d-flex align-items-center gap-2">
-        //                   <button type="button" className="button sm button-secondary px-3 border-0 font-sm">
-        //                     <i className="fa-solid fa-clone"></i>
-        //                   </button>
-        //                   {formData?.struct?.results?.length > 1 && (
-        //                     <button
-        //                       type="button"
-        //                       className="button sm button-secondary bg-danger text-white px-3 border-0 font-sm"
-        //                       onClick={() => handleDeleteResultvalue(result.id)}
-        //                     >
-        //                       <i className="fa-solid fa-trash"></i>
-        //                     </button>
-        //                   )}
-        //                 </div>
-        //               </div>
-
-        //               <div className="mb-3">
-        //                 <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
-        //                   Header<span style={{ color: "red" }}>*</span>
-        //                 </label>
-        //                 <input
-        //                   type="text"
-        //                   {...register(`results[${index}].header`, {
-        //                     required: "Header is required",
-        //                     validate: (value) =>
-        //                       value.trim() !== "" || "Header cannot be empty",
-        //                   })}
-        //                   className="form-control theme-control"
-        //                   defaultValue={result.header}
-        //                   onChange={(e) =>
-        //                     handleChangeHeaderResult(e.target.value, result.id)
-        //                   }
-        //                 />
-        //                 {errors.results?.[index]?.header && (
-        //                   <p className="text-danger font-sm mt-1">
-        //                     {errors.results[index].header.message}
-        //                   </p>
-        //                 )}
-        //               </div>
-
-        //               <div className="mb-3">
-        //                 <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-        //                   Description
-        //                 </label>
-        //                 <textarea
-        //                   className="form-control theme-control"
-        //                   rows="3"
-        //                   defaultValue={result.description}
-        //                   onChange={(e) =>
-        //                     handleChangeDescriptionResult(
-        //                       e.target.value,
-        //                       result.id
-        //                     )
-        //                   }
-        //                 ></textarea>
-        //               </div>
-
-        //               <div className="mb-3">
-        //                 <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-        //                   Result image
-        //                 </label>
-        //                 <div className="d-flex align-items-center">
-        //                   <div className="questionImageLabel">
-        //                     <img
-        //                       src={
-        //                         result.image ||
-        //                         "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-        //                       }
-        //                       alt="question-image"
-        //                       className=""
-        //                     />
-        //                   </div>
-        //                   <button
-        //                     className="button button-primary font-sm border-0 me-2"
-        //                     onClick={() =>
-        //                       handleChangeImage(
-        //                         "result-image",
-        //                         formData?.id,
-        //                         result.id
-        //                       )
-        //                     }
-        //                   >
-        //                     Upload
-        //                   </button>
-        //                   <button
-        //                     className="button button-secondary border-0 px-3"
-        //                     onClick={() => handleDeleteImage(result.id)}
-        //                   >
-        //                     <i className="fa-solid fa-trash"></i>
-        //                   </button>
-        //                 </div>
-        //               </div>
-
-        //               <div className="mb-3">
-        //                 <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-        //                   Image disclaimer (optional)
-        //                 </label>
-        //                 <input
-        //                   type="text"
-        //                   className="form-control theme-control"
-        //                   defaultValue={result.imageDisclaimer}
-        //                   onChange={(e) =>
-        //                     handleChangeImageDisclaimer(
-        //                       e.target.value,
-        //                       result.id
-        //                     )
-        //                   }
-        //                 />
-        //               </div>
-
-        //               <div className="row g-3">
-        //                 <div className="col-md-6">
-        //                   <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-        //                     Button text
-        //                   </label>
-        //                   <input
-        //                     type="text"
-        //                     className="form-control theme-control"
-        //                     defaultValue={result.buttonText}
-        //                     onChange={(e) =>
-        //                       handleChangeButtontext(e.target.value, result.id)
-        //                     }
-        //                   />
-        //                 </div>
-        //                 <div className="col-md-6">
-        //                   <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-        //                     Link
-        //                   </label>
-        //                   <input
-        //                     type="text"
-        //                     className="form-control theme-control"
-        //                     placeholder="Internal page"
-        //                     defaultValue={result.buttonLink}
-        //                     onChange={(e) =>
-        //                       handleChangeButtonLink(e.target.value, result.id)
-        //                     }
-        //                   />
-        //                 </div>
-        //               </div>
-        //             </div>
-        //           );
-        //         })}
-        //       </form>
-        //     </FormProvider>
-        //   </div>
-        // </div>
-        <div class="d-flex w-100 gap-3 gap-md-0">
-          <div class="border-end scrollable-div result-list">
+        <div className="d-flex w-100 gap-3 gap-md-0">
+          <div className="border-end scrollable-div result-list">
             <div className="sidebarquestions">
-              {finalResult?.length &&
-                finalResult?.map((result, index) => (
-                  <div className="questionSidebarList align-items-center">
-                    <div className="questionImageLabel">
-                      <img
-                        src={
-                          result.image ||
-                          "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
-                        }
-                        alt="questionimage"
-                        className=""
-                      />
+              {finalResult?.length > 0 &&
+                finalResult.map((result, index) => {
+                  const totalQuestions = personalityquizquestion?.length;
+                  const resultRange = index < totalQuestions + 1 ? index : totalQuestions;
+                  const isFirst = index === 0;
+                  const isLast = index === finalResult.length - 1;
+
+                  return (
+                    <div key={result.id} className="questionSidebarList align-items-center">
+                      <div className="questionImageLabel">
+                        <img
+                          src={
+                            result.image ||
+                            "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png"
+                          }
+                          alt="questionimage"
+                          className=""
+                        />
+                      </div>
+                      <p className="mb-0">Result {index + 1}</p>
+
                     </div>
-                    <p className="mb-0">Result {index + 1}</p>
-                  </div>
-                ))}
+                  );
+                })}
+
               {quizdataQuestion?.length &&
                 finalResult?.length < quizdataQuestion.length + 1 && (
                   <div className="button_addNewquestion pb-3">
@@ -1011,23 +850,22 @@ function ResultScreen({
                 )}
             </div>
           </div>
-          <div className="w-100 scrollable-div">
-            {finalResult?.length &&
-              finalResult?.map((result, index) => {
-                const totalQuestions = personalityquizquestion?.length;
 
-                const resultRange =
-                  index < totalQuestions + 1 ? index : totalQuestions;
+          <div className="w-100 scrollable-div">
+            {finalResult?.length > 0 &&
+              finalResult.map((result, index) => {
+                const totalQuestions = personalityquizquestion?.length;
+                const resultRange = index < totalQuestions + 1 ? index : totalQuestions;
+                const isFirst = index === 0;
+                const isLast = index === finalResult.length - 1;
 
                 return (
                   <div key={result.id} className="resultsscreen p-4">
                     <div className="d-flex justify-content-between">
                       <h5 className="fw-bold">
                         Result {index + 1}
-                        {/* Adjusting result range dynamically based on the number of questions */}
                         <span className="text-muted">
-                          ({resultRange} correct answer
-                          {resultRange > 1 ? "s" : ""})
+                          ({resultRange} correct answer{resultRange > 1 ? "s" : ""})
                         </span>
                       </h5>
 
@@ -1041,6 +879,7 @@ function ResultScreen({
                               <i className="fa-solid fa-clone"></i>
                             </button>
                           )}
+
                         {finalResult?.length > 2 && (
                           <button
                             type="button"
@@ -1052,8 +891,32 @@ function ResultScreen({
                             <i className="fa-solid fa-trash"></i>
                           </button>
                         )}
+
+                        <ul className="d-flex gap-1">
+                          {!isFirst && (
+                            <li
+                              className="Inline_control__list"
+                              title="Move up"
+                              role="button"
+                              onClick={() => handleMoveUp(result.id)}
+                            >
+                              <i className="fa-solid fa-arrow-up"></i>
+                            </li>
+                          )}
+                          {!isLast && (
+                            <li
+                              className="Inline_control__list"
+                              title="Move down"
+                              role="button"
+                              onClick={() => handleMoveDown(result.id)}
+                            >
+                              <i className="fa-solid fa-arrow-down"></i>
+                            </li>
+                          )}
+                        </ul>
                       </div>
                     </div>
+
                     <div className="mb-3">
                       <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
                         Header<span style={{ color: "red" }}>*</span>
@@ -1074,12 +937,11 @@ function ResultScreen({
                           )
                         }
                       />
-                      {/* {parenterror.results?.[index]?.header && (
-                      <p className="text-danger font-sm mt-1">
-                        {parenterror.results[index].header}
-                      </p>
-                    )} */}
-                      {/* {console.log(parenterror.results, "pioioi")} */}
+                      {parenterror.results?.[index]?.header && (
+                        <p className="text-danger font-sm mt-1">
+                          {parenterror.results[index].header}
+                        </p>
+                      )}
                     </div>
 
                     <div className="mb-3">
@@ -1114,24 +976,20 @@ function ResultScreen({
                             className=""
                           />
                         </div>
-                        {console.log(result.id, "result.id")}
+
                         <button
                           className="button button-primary font-sm border-0 me-2"
                           onClick={() => {
                             setSelectedImageType({
                               type: "questionImagequiz",
-                              resultId: result.id,
+                              questionId: result.id,
                             });
-                            handleChangeImage(
-                              "result-image",
-                              formData?.id,
-                              result.id
-                            );
-                            // setSelectedImageType({ type: "finalPersonality", resultId: result.id });
+                            handleChangeImage("result-image", formData?.id, result.id);
                           }}
                         >
                           Upload
                         </button>
+
                         <button
                           className="button button-secondary border-0 px-3"
                           onClick={() => handleDeleteImage(result.id)}
@@ -1190,6 +1048,18 @@ function ResultScreen({
           </div>
         </div>
       )}
+
+
+
+
+
+
+
+
+
+
+
+
       {formData.block === "personality-quiz" && (
         <div class="d-flex w-100 gap-3 gap-md-0">
           <div class="border-end scrollable-div result-list">
@@ -1406,9 +1276,8 @@ function ResultScreen({
               </label>
               <input
                 type="text"
-                className={`form-control theme-control ${
-                  parenterror.finalResultHeader ? "is-invalid" : ""
-                }`}
+                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
+                  }`}
                 id="headerInput"
                 placeholder="Congrats message"
                 value={finalResult?.header}
@@ -1508,9 +1377,8 @@ function ResultScreen({
               {console.log(finalResult?.headerText, "finalResult?.headerText")}
               <input
                 type="text"
-                className={`form-control theme-control ${
-                  parenterror.finalResultHeader ? "is-invalid" : ""
-                }`}
+                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
+                  }`}
                 id="headerInput"
                 placeholder="Congrats message"
                 value={finalResult?.headerText}
@@ -1610,9 +1478,8 @@ function ResultScreen({
                 // }
                 // defaultValue={formData?.struct?.finalScreen?.header}
                 onChange={(e) => handleResultHeaderFormPuzzle(e.target.value)}
-                className={`form-control theme-control ${
-                  parenterror.finalResultHeader ? "is-invalid" : ""
-                }`}
+                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
+                  }`}
                 placeholder="Congrats message"
               />
 
@@ -1714,9 +1581,8 @@ function ResultScreen({
                 // }
                 // defaultValue={formData?.struct?.finalScreen?.header}
                 onChange={(e) => handleResultHeaderFormPuzzle(e.target.value)}
-                className={`form-control theme-control ${
-                  parenterror.finalResultHeader ? "is-invalid" : ""
-                }`}
+                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
+                  }`}
                 placeholder="Congrats message"
               />
 
@@ -1818,9 +1684,8 @@ function ResultScreen({
                 // }
                 // defaultValue={formData?.struct?.finalScreen?.header}
                 onChange={(e) => handleResultHeaderFormPuzzle(e.target.value)}
-                className={`form-control theme-control ${
-                  parenterror.finalResultHeader ? "is-invalid" : ""
-                }`}
+                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
+                  }`}
                 placeholder="Congrats message"
               />
 
@@ -2031,9 +1896,8 @@ function ResultScreen({
                 // }
                 // defaultValue={formData?.struct?.finalScreen?.header}
                 onChange={(e) => handleResultHeaderFormPuzzle(e.target.value)}
-                className={`form-control theme-control ${
-                  parenterror.finalResultHeader ? "is-invalid" : ""
-                }`}
+                className={`form-control theme-control ${parenterror.finalResultHeader ? "is-invalid" : ""
+                  }`}
                 placeholder="Congrats message"
               />
 

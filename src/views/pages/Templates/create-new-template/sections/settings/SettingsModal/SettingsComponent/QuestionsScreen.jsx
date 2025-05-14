@@ -8,6 +8,7 @@ import { useFormContext } from "react-hook-form";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
 function QuestionsScreen({
+  errors,
   isEditMediaTypeDetails,
   setSelectedImageType,
   updateParentState,
@@ -66,7 +67,7 @@ function QuestionsScreen({
       answers: [
         {
           id: generateShortId(),
-          text: "text",
+          text: "",
           image:
             "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png",
           isCorrect: true,
@@ -76,7 +77,7 @@ function QuestionsScreen({
         },
         {
           id: generateShortId(),
-          text: "text",
+          text: "",
           image:
             "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png",
           isCorrect: false,
@@ -150,6 +151,7 @@ function QuestionsScreen({
   const cloneBlock = (idToClone) => {
     setQuizDataQuestion((prevQuestions) => {
       const questionToClone = prevQuestions.find((q) => q.id === idToClone);
+      console.log(questionToClone, "3098r038")
       if (!questionToClone) return prevQuestions;
 
       const clonedQuestion = {
@@ -219,7 +221,7 @@ function QuestionsScreen({
     const updatedQuestions = quizdataQuestion.map((question) =>
       question.id === id ? { ...question, isText: type === "text" } : question
     );
-    quizdataQuestion(updatedQuestions);
+    setQuizDataQuestion(updatedQuestions);
     setAnyChanges(true);
   };
 
@@ -233,19 +235,19 @@ function QuestionsScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    questions: block.struct.questions?.map((question) =>
-                      question.id === id
-                        ? {
-                            ...question,
-                            imageDescription: e,
-                          }
-                        : question
-                    ),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  questions: block.struct.questions?.map((question) =>
+                    question.id === id
+                      ? {
+                        ...question,
+                        imageDescription: e,
+                      }
+                      : question
+                  ),
+                },
+              }
               : block
           ),
         })),
@@ -254,65 +256,59 @@ function QuestionsScreen({
     setupdatedTemplate(updatedData);
     setAnyChanges(true);
   };
-
-  const handleCheckCorrectAnswer = (e, id, answerId) => {
-    const updatedQuestions = quizdataQuestion.map((question) =>
-      question.id === id
-        ? {
+  const handleCheckCorrectAnswer = (isChecked, questionId, answerId) => {
+    const updatedQuestions = quizdataQuestion.map((question) => {
+      if (question.id !== questionId) return question;
+  
+      const totalAnswers = question.answers.length;
+      const correctAnswers = question.answers.filter((a) => a.isCorrect);
+      const correctCount = correctAnswers.length;
+  
+      // If user is checking a new one and it's beyond the allowed limit
+      if (isChecked) {
+        if (correctCount >= totalAnswers - 1) {
+          // Remove the first checked answer (oldest)
+          const firstCheckedId = correctAnswers[0]?.id;
+  
+          return {
+            ...question,
+            answers: question.answers.map((answer) => {
+              if (answer.id === answerId) {
+                return { ...answer, isCorrect: true }; // New one is now checked
+              }
+              if (answer.id === firstCheckedId) {
+                return { ...answer, isCorrect: false }; // Uncheck the oldest
+              }
+              return answer;
+            }),
+          };
+        } else {
+          // Still under the limit, just add it
+          return {
             ...question,
             answers: question.answers.map((answer) =>
-              answer.id === answerId ? { ...answer, isCorrect: e } : answer
+              answer.id === answerId
+                ? { ...answer, isCorrect: true }
+                : answer
             ),
-          }
-        : question
-    );
-
-    setQuizDataQuestion(updatedQuestions);
-
-    // Optional: also update full template
-    const updatedData = {
-      ...updatedtemplate,
-      project_structure: {
-        ...updatedtemplate.project_structure,
-        pages: updatedtemplate.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === formData?.id
-              ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    questions: updatedQuestions, // re-use the updated questions
-                  },
-                }
-              : block
+          };
+        }
+      } else {
+        // User is unchecking
+        return {
+          ...question,
+          answers: question.answers.map((answer) =>
+            answer.id === answerId
+              ? { ...answer, isCorrect: false }
+              : answer
           ),
-        })),
-      },
-    };
-
-    setupdatedTemplate(updatedData);
-    setAnyChanges(true);
-  };
-
-  const handleDeleteAnswer = (questionId, answerId) => {
-    console.log("Deleting answer:", answerId);
-
-    const updatedLocalQuestions = quizdataQuestion.map((question) =>
-      question.id === questionId
-        ? {
-            ...question,
-            answers: question.answers.filter(
-              (answer) => answer.id !== answerId
-            ), // Remove the selected answer
-          }
-        : question
-    );
-
-    setQuizDataQuestion(updatedLocalQuestions);
-    setAnyChanges(true);
-
-    // Also update the `updatedtemplate`
+        };
+      }
+    });
+  
+    // Update both quiz data and full template
+    setQuizDataQuestion(updatedQuestions);
+  
     // const updatedData = {
     //   ...updatedtemplate,
     //   project_structure: {
@@ -322,104 +318,93 @@ function QuestionsScreen({
     //       blocks: page.blocks.map((block) =>
     //         block.id === formData?.id
     //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               questions: updatedLocalQuestions, // Sync back
-    //             },
-    //           }
+    //               ...block,
+    //               struct: {
+    //                 ...block.struct,
+    //                 questions: updatedQuestions,
+    //               },
+    //             }
     //           : block
     //       ),
     //     })),
     //   },
     // };
-
+  
     // setupdatedTemplate(updatedData);
+    setAnyChanges(true);
+  };
+  
+  // const handleCheckCorrectAnswer = (e, id, answerId) => {
+  //   const updatedQuestions = quizdataQuestion.map((question) =>
+  //     question.id === id
+  //       ? {
+  //         ...question,
+  //         answers: question.answers.map((answer) =>
+  //           answer.id === answerId ? { ...answer, isCorrect: e } : answer
+  //         ),
+  //       }
+  //       : question
+  //   );
+
+  //   setQuizDataQuestion(updatedQuestions);
+
+  //   // Optional: also update full template
+  //   const updatedData = {
+  //     ...updatedtemplate,
+  //     project_structure: {
+  //       ...updatedtemplate.project_structure,
+  //       pages: updatedtemplate.project_structure.pages.map((page) => ({
+  //         ...page,
+  //         blocks: page.blocks.map((block) =>
+  //           block.id === formData?.id
+  //             ? {
+  //               ...block,
+  //               struct: {
+  //                 ...block.struct,
+  //                 questions: updatedQuestions, // re-use the updated questions
+  //               },
+  //             }
+  //             : block
+  //         ),
+  //       })),
+  //     },
+  //   };
+
+  //   setupdatedTemplate(updatedData);
+  //   setAnyChanges(true);
+  // };
+
+  const handleDeleteAnswer = (questionId, answerId) => {
+    console.log("Deleting answer:", answerId);
+
+    const updatedLocalQuestions = quizdataQuestion.map((question) =>
+      question.id === questionId
+        ? {
+          ...question,
+          answers: question.answers.filter(
+            (answer) => answer.id !== answerId
+          ), // Remove the selected answer
+        }
+        : question
+    );
+
+    setQuizDataQuestion(updatedLocalQuestions);
+    setAnyChanges(true);
+
+
   };
 
-  // const handleDeleteAnswer = (id, answerId) => {
-  //   console.log(id, answerId, "ioioioioiooioi")
-  //   const updatedData = {
-  //     ...updatedtemplate,
-  //     project_structure: {
-  //       ...updatedtemplate.project_structure,
-  //       pages: updatedtemplate.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) =>
-  //           block.id === formData?.id
-  //             ? {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 questions: block.struct.questions?.map((question) =>
-  //                   question.id === id
-  //                     ? {
-  //                       ...question,
-  //                       answers: question.answers.filter(
-  //                         (e) => e.id !== answerId
-  //                       ),
-  //                     }
-  //                     : question
-  //                 ),
-  //               },
-  //             }
-  //             : block
-  //         ),
-  //       })),
-  //     },
-  //   };
 
-  //   setupdatedTemplate(updatedData)
-  // };
-  // const handleChangeTextAnswer = (e, id, answerId) => {
-  //   console.log(e, "wsdswdwdw");
-  //   const updatedData = {
-  //     ...updatedtemplate,
-  //     project_structure: {
-  //       ...updatedtemplate.project_structure,
-  //       pages: updatedtemplate.project_structure.pages.map((page) => ({
-  //         ...page,
-  //         blocks: page.blocks.map((block) =>
-  //           block.id === formData?.id
-  //             ? {
-  //               ...block,
-  //               struct: {
-  //                 ...block.struct,
-  //                 questions: block.struct.questions?.map((question) =>
-  //                   question.id === id
-  //                     ? {
-  //                       ...question,
-  //                       answers: question.answers.map((answer) =>
-  //                         answer.id === answerId
-  //                           ? {
-  //                             ...answer,
-  //                             text: e,
-  //                           }
-  //                           : answer
-  //                       ),
-  //                     }
-  //                     : question
-  //                 ),
-  //               },
-  //             }
-  //             : block
-  //         ),
-  //       })),
-  //     },
-  //   };
-  //   setupdatedTemplate(updatedData);
-  //   // dispatch(updateTemplateAction(updatedData));
-  // };
   const handleChangeTextAnswer = (value, questionId, answerId) => {
     console.log("valueQuestionIdAnswerId", value, questionId, answerId);
     const updated = quizdataQuestion.map((question) =>
       question.id === questionId
         ? {
-            ...question,
-            answers: question.answers.map((ans) =>
-              ans.id === answerId ? { ...ans, text: value } : ans
-            ),
-          }
+          ...question,
+          answers: question.answers.map((ans) =>
+            ans.id === answerId ? { ...ans, text: value } : ans
+          ),
+        }
         : question
     );
     setQuizDataQuestion(updated);
@@ -428,44 +413,19 @@ function QuestionsScreen({
 
   console.log("quizdataQuestionquizdataQuestion", quizdataQuestion);
 
-  const handleChangeDescriptionAnswer = (e, id, answerId) => {
-    const updatedData = {
-      ...updatedtemplate,
-      project_structure: {
-        ...updatedtemplate.project_structure,
-        pages: updatedtemplate.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === formData?.id
-              ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    questions: block.struct.questions?.map((question) =>
-                      question.id === id
-                        ? {
-                            ...question,
-                            answers: question.answers.map((answer) =>
-                              answer.id === answerId
-                                ? {
-                                    ...answer,
-                                    description: e,
-                                  }
-                                : answer
-                            ),
-                          }
-                        : question
-                    ),
-                  },
-                }
-              : block
+  const handleChangeDescriptionAnswer = (value, questionId, answerId) => {
+    const updated = quizdataQuestion.map((question) =>
+      question.id === questionId
+        ? {
+          ...question,
+          answers: question.answers.map((ans) =>
+            ans.id === answerId ? { ...ans, description: value } : ans
           ),
-        })),
-      },
-    };
+        }
+        : question
+    );
+    setQuizDataQuestion(updated);
 
-    setupdatedTemplate(updatedData);
-    setAnyChanges(true);
   };
   const handleAddAnswer = (id) => {
     console.log(id, "Adding new answer");
@@ -524,19 +484,19 @@ function QuestionsScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    questions: block.struct.questions?.map((question) =>
-                      question.id === id
-                        ? {
-                            ...question,
-                            image: "",
-                          }
-                        : question
-                    ),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  questions: block.struct.questions?.map((question) =>
+                    question.id === id
+                      ? {
+                        ...question,
+                        image: "",
+                      }
+                      : question
+                  ),
+                },
+              }
               : block
           ),
         })),
@@ -548,7 +508,7 @@ function QuestionsScreen({
       updatedData.project_structure.pages
         .find((page) => page.blocks.some((block) => block.id === formData?.id))
         ?.blocks.find((block) => block.id === formData?.id)?.struct.questions ||
-        []
+      []
     ); //
     setAnyChanges(true);
   };
@@ -616,7 +576,7 @@ function QuestionsScreen({
         </div>
         <div className="w-100 scrollable-div p-4">
           {/* dwdwd */}
-
+          {console.log(errors, "oadoasawd")}
           {quizdataQuestion?.map((question, index) => {
             console.log(question, "questionquestion");
             return (
@@ -662,12 +622,12 @@ function QuestionsScreen({
                         handleQuestionTextChange(e.target.value, question.id); // ✅ Update local state
                       }}
                     ></textarea>
-
-                    {/* {errors.questions?.[index]?.text && (
-                          <p style={{ color: "red" }} className="error">
-                            {errors.questions[index].text.message}
-                          </p>
-                        )} */}
+                    {console.log(errors?.questions?.[index]?.text, "wouweweyfw")}
+                    {errors?.questions?.[index]?.text && (
+                      <p style={{ color: "red" }} className="error">
+                        {errors?.questions[index].text}
+                      </p>
+                    )}
                   </div>
 
                   <div class="mb-3 d-flex align-items-start gap-3">
@@ -730,9 +690,8 @@ function QuestionsScreen({
                         <button
                           type="button"
                           htmlFor={`question${index}`}
-                          className={`button button-primary sm font-sm py-2 border-0 ${
-                            question.isText === true ? "selected" : "outline"
-                          }`}
+                          className={`button button-primary sm font-sm py-2 border-0 ${question.isText === true ? "selected" : "outline"
+                            }`}
                           onClick={() =>
                             handleChangeTextImage("text", question.id)
                           }
@@ -741,9 +700,8 @@ function QuestionsScreen({
                         </button>
                         <button
                           type="button"
-                          className={`button button-primary sm font-sm py-2 border-0 ${
-                            question.isText === false ? "selected" : "outline"
-                          }`}
+                          className={`button button-primary sm font-sm py-2 border-0 ${question.isText === false ? "selected" : "outline"
+                            }`}
                           onClick={() =>
                             handleChangeTextImage("images", question.id)
                           }
@@ -810,13 +768,15 @@ function QuestionsScreen({
                                 <button
                                   type="button"
                                   className="button button-primary font-sm border-0 me-2"
-                                  onClick={() =>
+                                  onClick={() => {
+                                    setSelectedImageType({ type: "answer-imageQuiz", questionId: question.id, answerId: answer?.id })
                                     handleChangeImage(
                                       "answer-image",
                                       formData?.id,
                                       question.id,
                                       answer.id
                                     )
+                                  }
                                   }
                                 >
                                   {answer.image ? "Change" : "Upload"}
@@ -834,7 +794,7 @@ function QuestionsScreen({
                               type="text"
                               className="form-control theme-control me-2"
                               placeholder="Enter answer..."
-                              defaultValue={answer?.text}
+                              value={answer?.text}
                               onChange={(e) =>
                                 handleChangeTextAnswer(
                                   e.target.value,
@@ -843,8 +803,17 @@ function QuestionsScreen({
                                 )
                               }
                             />
-                          </div>
+                            {/* answer, ansIndex */}
+                            {console.log(errors?.questions?.[index]?.answers?.[ansIndex]?.text, "fouwewe")}
+                            {errors?.questions?.[index]?.answers?.[ansIndex]?.text && (
+                              <p className="text-danger font-sm mt-1">
+                                {errors.questions[index].answers[ansIndex].text}
+                              </p>
+                            )}
 
+
+                          </div>
+                          {console.log(answer?.description, 'answer?.description')}
                           <div className="mb-3">
                             <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
                               Description
@@ -853,7 +822,7 @@ function QuestionsScreen({
                               className="form-control theme-control"
                               rows="2"
                               placeholder="Enter description"
-                              defaultValue={answer?.description}
+                              value={answer?.description}
                               onChange={(e) =>
                                 handleChangeDescriptionAnswer(
                                   e.target.value,
@@ -874,6 +843,15 @@ function QuestionsScreen({
                         onClick={() => handleAddAnswer(question.id)}
                       >
                         <i class="fa-solid fa-plus"></i> Add answer
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        className="btn button_boost"
+                        onClick={() => handleAddNewQuestion(question.id)}
+                      >
+                        <i class="fa-solid fa-plus"></i> Add question
                       </button>
                     </div>
                   </div>

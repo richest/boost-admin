@@ -42,8 +42,8 @@ function AudioSettings({ selectedBlockSettings, pageData, handleChangeMedia }) {
     };
     dispatch(updateTemplateAction(_data));
   };
-
-  const handleCheckBlur = (e) => {
+console.log(templateDetails,"dcndhdlkfhdhfdfdf")
+  const handleCheckAutoplay = (e) => {
     const _data = {
       ...templateDetails,
       project_structure: {
@@ -51,7 +51,22 @@ function AudioSettings({ selectedBlockSettings, pageData, handleChangeMedia }) {
         pages: templateDetails.project_structure.pages.map((page) => ({
           ...page,
           blocks: page.blocks.map((block) =>
-            block.id === id ? { ...block, blur: e.target.checked } : block
+            block.id === id ? { ...block, isAutoPlay: e.target.checked } : block
+          ),
+        })),
+      },
+    };
+    dispatch(updateTemplateAction(_data));
+  };
+  const handleCheckisLoop = (e) => {
+    const _data = {
+      ...templateDetails,
+      project_structure: {
+        ...templateDetails.project_structure,
+        pages: templateDetails.project_structure.pages.map((page) => ({
+          ...page,
+          blocks: page.blocks.map((block) =>
+            block.id === id ? { ...block, isLoop: e.target.checked } : block
           ),
         })),
       },
@@ -150,8 +165,8 @@ function AudioSettings({ selectedBlockSettings, pageData, handleChangeMedia }) {
                       <input
                         type="checkbox"
                         className="form-check-input theme-control shadow-none m-0"
-                        onChange={handleCheckBlur}
-                        checked={blockValues?.blur}
+                        onChange={handleCheckisLoop}
+                        checked={blockValues?.isLoop}
                       />
                       <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer mb-0">
                         Loop
@@ -165,8 +180,8 @@ function AudioSettings({ selectedBlockSettings, pageData, handleChangeMedia }) {
                       <input
                         type="checkbox"
                         className="form-check-input theme-control shadow-none m-0"
-                        onChange={handleCheckBlur}
-                        checked={blockValues?.blur}
+                        onChange={handleCheckAutoplay}
+                        checked={blockValues?.isAutoPlay}
                       />
                       <label className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer mb-0">
                         Auto play

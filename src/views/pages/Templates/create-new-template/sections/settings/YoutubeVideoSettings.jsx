@@ -18,7 +18,7 @@ function YoutubeVideoSettings({ selectedBlockSettings, pageData }) {
     timeout = setTimeout(() => {
       console.log(e, "check input after debounce");
       const _data = {
-        ...templateDetails, 
+        ...templateDetails,
         project_structure: {
           ...templateDetails.project_structure,
           pages: templateDetails.project_structure.pages.map((page) => ({
@@ -37,7 +37,8 @@ function YoutubeVideoSettings({ selectedBlockSettings, pageData }) {
   return (
     <div className="panel-wrap">
       <div className="setting-block border-bottom">
-        <h6 className="fw-semibold mb-4">video</h6>
+        <h6 className="fw-semibold mb-2">video</h6>
+        <p className="fw-semibold mb-4">Embed code</p>
         <div className="content textarea-youtubevideo">
           <textarea
             onChange={(e) => handleChangeTextarea(e.target.value)}

@@ -194,6 +194,7 @@ function PuzzleModal({
     }))
     console.log(value, "kjjiiji")
     validateForm();
+    setAnyChanges(true);
   };
   const handleChangeheaderButtonText = (e) => {
     const value = e;

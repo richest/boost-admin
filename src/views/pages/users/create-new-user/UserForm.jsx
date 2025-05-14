@@ -72,7 +72,7 @@ const validationSchema = yup.object().shape({
     .mixed()
     .test(
       "fileSize",
-      "Profile picture sizie can not be more than 5 MB",
+      "Profile picture size can not be more than 5 MB",
       (value) => {
         if (value.length === 0) return true;
         else return value.length && value[0].size <= 5242880;

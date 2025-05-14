@@ -199,7 +199,7 @@ const ProductList = () => {
     return (
         <>
             <AppHelmet title={DEFAULT_APP_TITLE.TEMPLATES} />
-            <PageContainer className="page-container users-page" heading="Products">
+            <PageContainer className="page-container users-page" heading="Template Products">
                 <Grid
                     container
                     justifyContent="space-between"
@@ -218,7 +218,16 @@ const ProductList = () => {
                                 >
                                     dashboard
                                 </Link>,
-                                "Products",
+                                <Link
+                                    style={{
+                                        color: "rgb(99, 115, 129)",
+                                        textDecoration: "none",
+                                    }}
+                                    to={ROUTE_SLUGS.TEMPLATE_LIST}
+                                >
+                                    Templates Products
+                                </Link>,
+                                "Template",
                             ]}
                         />
                     </Grid>

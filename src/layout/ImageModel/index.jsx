@@ -128,7 +128,7 @@ function ImageModal({
       if (status === 200) {
         setUnsplashImages(data?.data?.images);
       }
-    } catch (error) {}
+    } catch (error) { }
     setIsLoading(false);
   };
 
@@ -166,7 +166,7 @@ function ImageModal({
   };
 
   const handleClose = () => {
-    setOpen(false);
+    // setOpen(false);
     dispatch(drawerAction(""));
   };
 
@@ -282,6 +282,16 @@ function ImageModal({
   return (
     <div>
       <CustomModal open={open} handleClose={handleClose}>
+        <div className="modal-header-form">
+          <h3>Add image</h3>
+          <button
+            className="btn text-white"
+            style={{ fontSize: "30px" }}
+            onClick={() => setOpen(false)}
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
         <Grid container spacing={2} className="modal-grid">
           <Grid
             item

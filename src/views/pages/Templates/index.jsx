@@ -224,7 +224,7 @@ const Templates = () => {
   return (
     <>
       <AppHelmet title={DEFAULT_APP_TITLE.TEMPLATES} />
-      <PageContainer className="page-container users-page" heading="Templates">
+      <PageContainer className="page-container users-page" heading="Template Products">
         <Grid
           container
           justifyContent="space-between"
@@ -244,7 +244,7 @@ const Templates = () => {
                   dashboard
                 </Link>,
 
-                "Templates",
+                "Template Products",
               ]}
             />
           </Grid>

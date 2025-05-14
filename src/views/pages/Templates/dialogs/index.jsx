@@ -34,10 +34,10 @@ function ActionDialog(props) {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">Delete product</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">Delete Template Products</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete product?
+            Are you sure you want to delete Template product?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

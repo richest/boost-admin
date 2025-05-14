@@ -11,7 +11,7 @@ import { ApiErrorMessage } from "utils/helpers/function/apiErrorResonse";
 import { putRequest } from "app/httpClient/axiosClient";
 import { getTemplateDetails } from "../../TemplateRedux/SagaFunctions";
 
-function TeamplateHeader({ setShowTemplatePreview }) {
+function TeamplateHeader({ setShowTemplatePreview, handleEditTemplatedata }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const { name } = useParams();
   const [isEditing, setIsEditing] = useState(false);
@@ -94,6 +94,7 @@ function TeamplateHeader({ setShowTemplatePreview }) {
       published: status,
     };
     try {
+      handleEditTemplatedata()
       dispatch({ type: REQUEST_ACTION.PROCESSING });
       const {
         status,

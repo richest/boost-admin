@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
@@ -20,6 +20,7 @@ function PersonalityQuestionScreen({
   const [settingsData, setSettingsaData] = useState([
     formData?.struct?.questions.map((e) => e?.image),
   ]);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const dispatch = useDispatch();
   const handleAddNewQuestion = () => {
     const question = {
@@ -30,7 +31,7 @@ function PersonalityQuestionScreen({
       answers: [
         {
           id: generateShortId(),
-          text: "tess",
+          text: "",
           image:
             "https://res.cloudinary.com/dwl5gzbuz/image/upload/v1738148606/project-thumb_laxubz.png",
           isCorrect: true,
@@ -67,9 +68,9 @@ function PersonalityQuestionScreen({
       prev.map((q) =>
         q.id === id
           ? {
-              ...q,
-              text: e,
-            }
+            ...q,
+            text: e,
+          }
           : q
       )
     );
@@ -82,9 +83,9 @@ function PersonalityQuestionScreen({
       prev.map((q) =>
         q.id === id
           ? {
-              ...q,
-              isText,
-            }
+            ...q,
+            isText,
+          }
           : q
       )
     );
@@ -96,25 +97,25 @@ function PersonalityQuestionScreen({
       prev.map((q) =>
         q.id === id
           ? {
-              ...q,
-              imageDescription: e,
-            }
+            ...q,
+            imageDescription: e,
+          }
           : q
       )
     );
     setAnyChanges(true);
   };
 
-  const handleCheckCorrectAnswer = (e, id, answerId) => {};
+  const handleCheckCorrectAnswer = (e, id, answerId) => { };
 
   const handleDeleteAnswer = (id, answerId) => {
     setPersonalityQuizQuestion((prev) =>
       prev.map((question) =>
         question.id === id
           ? {
-              ...question,
-              answers: question.answers.filter((a) => a.id !== answerId),
-            }
+            ...question,
+            answers: question.answers.filter((a) => a.id !== answerId),
+          }
           : question
       )
     );
@@ -125,16 +126,16 @@ function PersonalityQuestionScreen({
       prev.map((question) =>
         question.id === id
           ? {
-              ...question,
-              answers: question.answers.map((answer) =>
-                answer.id === answerId
-                  ? {
-                      ...answer,
-                      text: e,
-                    }
-                  : answer
-              ),
-            }
+            ...question,
+            answers: question.answers.map((answer) =>
+              answer.id === answerId
+                ? {
+                  ...answer,
+                  text: e,
+                }
+                : answer
+            ),
+          }
           : question
       )
     );
@@ -151,26 +152,26 @@ function PersonalityQuestionScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    questions: block.struct.questions?.map((question) =>
-                      question.id === id
-                        ? {
-                            ...question,
-                            answers: question.answers.map((answer) =>
-                              answer.id === answerId
-                                ? {
-                                    ...answer,
-                                    description: e,
-                                  }
-                                : answer
-                            ),
-                          }
-                        : question
-                    ),
-                  },
-                }
+                ...block,
+                struct: {
+                  ...block.struct,
+                  questions: block.struct.questions?.map((question) =>
+                    question.id === id
+                      ? {
+                        ...question,
+                        answers: question.answers.map((answer) =>
+                          answer.id === answerId
+                            ? {
+                              ...answer,
+                              description: e,
+                            }
+                            : answer
+                        ),
+                      }
+                      : question
+                  ),
+                },
+              }
               : block
           ),
         })),
@@ -194,9 +195,9 @@ function PersonalityQuestionScreen({
       prev.map((question) =>
         question.id === id
           ? {
-              ...question,
-              answers: [...question.answers, answerObject],
-            }
+            ...question,
+            answers: [...question.answers, answerObject],
+          }
           : question
       )
     );
@@ -235,9 +236,9 @@ function PersonalityQuestionScreen({
       prev.map((question) =>
         question.id === id
           ? {
-              ...question,
-              image: "",
-            }
+            ...question,
+            image: "",
+          }
           : question
       )
     );
@@ -260,11 +261,53 @@ function PersonalityQuestionScreen({
     ]);
     setAnyChanges(true);
   };
+  const scrollableDivRef = useRef(null);
+  const handleSelectSector = (index) => {
+    setSelectedIndex(index);
+    console.log(index, "indexindex")
+    // Scroll to the corresponding section in the main content
+    const sectionElement = document.getElementById(`sector-${index}`);
+    if (sectionElement) {
+      console.log(sectionElement, "pIAPDIADI")
+      sectionElement.scrollIntoView({
+        behavior: 'smooth', // Smooth scrolling
+        block: 'start', // Align to the top of the viewport
+      });
+    }
+  };
+  const handleScroll = () => {
+    const sections = document.querySelectorAll('.questioncontent'); // All sections
+    let indexToHighlight = null;
+
+    sections.forEach((section, index) => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
+        indexToHighlight = index;
+      }
+    });
+
+    if (indexToHighlight !== null && indexToHighlight !== selectedIndex) {
+      setSelectedIndex(indexToHighlight); // Update the selected index on scroll
+    }
+  };
+  useEffect(() => {
+    const scrollableDiv = scrollableDivRef.current;
+
+    if (scrollableDiv) {
+      // Add event listener for scroll events
+      scrollableDiv.addEventListener('scroll', handleScroll);
+
+      // Clean up the event listener on component unmount
+      return () => {
+        scrollableDiv.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [selectedIndex]);
 
   return (
     <>
       <div class="d-flex w-100 gap-3 gap-md-0">
-        <div class="border-end scrollable-div">
+        <div class="border-end scrollable-divb result-list">
           {/* <div class="form-check form-switch toogle-questionsbank">
             <input
               class="form-check-input"
@@ -278,10 +321,21 @@ function PersonalityQuestionScreen({
               Use questions from question bank
             </label>
           </div> */}
+          {/* hereherehere */}
           <div className="sidebarquestions questioncol">
             {personalityquizquestion &&
               personalityquizquestion?.map((question, index) => (
-                <div className="questionSidebarList align-items-center">
+                <div
+                  onClick={() => handleSelectSector(index)}
+                  key={question?.id}
+                  id={`sidebar-sector-${index}`}
+
+
+                  // className="questionSidebarList align-items-center"
+
+                  className={`questioncontent questionSidebarList align-items-center mb-3 ${selectedIndex === index ? 'highlight' : ''}`}
+                  style={{ backgroundColor: selectedIndex === index ? '#f0f0f0' : 'transparent' }} // Highlight selected section
+                >
                   <div className="questionImageLabel">
                     <img
                       src={
@@ -305,11 +359,16 @@ function PersonalityQuestionScreen({
               </button>
             </div>
           </div>
+          {/* dkfhidhfdfhdfd */}
         </div>
-        <div className="w-100 scrollable-div p-4">
+        <div ref={scrollableDivRef} className="w-100 scrollable-div p-4">
           {personalityquizquestion &&
             personalityquizquestion?.map((question, index) => (
-              <div className="questioncontent">
+              <div key={question.id}
+                id={`sector-${index}`} className={`questioncontent mb-3 ${selectedIndex === index ? 'highlight' : ''}`}
+                style={{ backgroundColor: selectedIndex === index ? '#f0f0f0' : 'transparent' }} // Highlight selected section
+
+              >
                 <div className="titlequestions d-flex align-items-center justify-content-between">
                   <div className="questionTitle">
                     <h4>Question {index + 1}</h4>
@@ -507,13 +566,13 @@ function PersonalityQuestionScreen({
                                 )
                               }
                             />
+                          </div>
                             {errors?.questions?.[index]?.answers?.[index]
                               ?.text && (
-                              <p className="text-danger font-sm mt-1">
-                                {errors.questions[index].answers[index].text}
-                              </p>
-                            )}
-                          </div>
+                                <p className="text-danger font-sm mt-1">
+                                  {errors.questions[index].answers[index].text}
+                                </p>
+                              )}
                           {/* <div class="mb-3">
                             <label class="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
                               Description

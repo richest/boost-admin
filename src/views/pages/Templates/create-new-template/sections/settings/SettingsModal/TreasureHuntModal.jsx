@@ -502,7 +502,7 @@ function TreasureHuntModal({
                           }
                           placeholder="Select input type"
                         />
-                      </div>
+                      </div>  
                       <div className="mb-3">
                         <label htmlFor="" className="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">Card proportions</label>
                         <div className="d-flex align-items-start">

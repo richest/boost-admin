@@ -1084,42 +1084,45 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "answer-image") {
-      const updatedData = {
-        ...templateDetails,
-        project_structure: {
-          ...templateDetails.project_structure,
-          pages: templateDetails.project_structure.pages.map((page) => ({
-            ...page,
-            blocks: page.blocks.map((block) =>
-              block.id === isEditMediaDetails?.id
-                ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    questions: block.struct.questions?.map((question) =>
-                      question.id === isEditMediaDetails.isLogoCover
-                        ? {
-                          ...question,
-                          answers: question.answers.map((answer) =>
-                            answer.id === isEditMediaDetails.isInnerBlockId
-                              ? {
-                                ...answer,
-                                image: selectedImage,
-                              }
-                              : answer
-                          ),
-                        }
-                        : question
-                    ),
-                  },
-                }
-                : block
-            ),
-          })),
-        },
-      };
+      // const updatedData = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             struct: {
+      //               ...block.struct,
+      //               questions: block.struct.questions?.map((question) =>
+      //                 question.id === isEditMediaDetails.isLogoCover
+      //                   ? {
+      //                     ...question,
+      //                     answers: question.answers.map((answer) =>
+      //                       answer.id === isEditMediaDetails.isInnerBlockId
+      //                         ? {
+      //                           ...answer,
+      //                           image: selectedImage,
+      //                         }
+      //                         : answer
+      //                     ),
+      //                   }
+      //                   : question
+      //               ),
+      //             },
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
 
-      dispatch(updateTemplateAction(updatedData));
+      // dispatch(updateTemplateAction(updatedData));
+      setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
 
@@ -1333,7 +1336,7 @@ const TemplateForm = () => {
       // setOpen(false);
 
       setSelectedImage(image); // ⬅️ this is your temporary local state
-
+      console.log("qwoidopqwfuiopwquif")
       setIsEditMedia(false);  // close modal context
       setOpen(false);
     }
@@ -2523,7 +2526,7 @@ const TemplateForm = () => {
         spacing={2}
         my={2}
       >
-        <TeamplateHeader setShowTemplatePreview={setShowTemplatePreview} />
+        <TeamplateHeader handleEditTemplatedata={handleEditTemplate} setShowTemplatePreview={setShowTemplatePreview} />
         <Grid item md={12} className="ps-0">
           <Card
             className="profile-right-section"
@@ -2770,6 +2773,8 @@ const TemplateForm = () => {
           handleChangeLogo={handleChangeMedia}
         />
         <GameSettingsModal
+          // handleMoveUp={handleMoveUp}
+          // handleMoveDown={handleMoveDown}
           setSelectedImage={setSelectedImage}
           selectedImage={selectedImage}
           isEditMediaTypeDetails={isEditMediaDetails}

@@ -212,7 +212,6 @@ function CoverSettings({
     };
     dispatch(updateTemplateAction(_data));
   };
-
   useEffect(() => {
     if (pageData) {
       const block = pageData?.blocks?.find((block) => block.id === id);
@@ -220,7 +219,16 @@ function CoverSettings({
       setBlockValues(block);
     }
   }, [pageData, templateDetails]);
-
+  console.log(blockValues, "q908eq90e90qw")
+  useEffect(() => {
+    // Once blockValues is updated, set the default value for Select
+    if (blockValues?.imageProportions) {
+      setDefaultSelectedValue({
+        label: blockValues.imageProportions,
+        value: blockValues.imageProportions,
+      });
+    }
+  }, [blockValues]);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -248,7 +256,7 @@ function CoverSettings({
             className="theme-select"
             classNamePrefix="react-select"
             options={options}
-            // defaultValue={defaultSelectedValue}
+            value={defaultSelectedValue}
             onChange={(select) => handleSelectChange(select)}
           />
         </div>
@@ -284,6 +292,13 @@ function CoverSettings({
           defaultValue={blockValues?.darkenBackground}
           min="0"
           max="100"
+          onInput={(e) => {
+            // Ensure the value stays within the valid range
+            let value = parseInt(e.target.value, 10);
+            if (value < 0) value = 0;
+            if (value > 100) value = 100;
+            e.target.value = value;  // Update the value in the input field
+          }}
         />
       </div>
       <div className="setting-block border-bottom">
@@ -329,6 +344,13 @@ function CoverSettings({
                 defaultValue={blockValues?.logotypeScale}
                 min="0"
                 max="100"
+                onInput={(e) => {
+                  // Ensure the value stays within the valid range
+                  let value = parseInt(e.target.value, 10);
+                  if (value < 1) value = 1;
+                  if (value > 100) value = 100;
+                  e.target.value = value;  // Update the value in the input field
+                }}
               />
             </div>
             <div>
@@ -449,9 +471,16 @@ function CoverSettings({
               </label>
               <input
                 className="text theme-control form-control"
-                type="text"
+                type="number"
                 onChange={(e) => handleChangeBorderRadius(e.target.value)}
                 defaultValue={blockValues?.buttonBorderRadius}
+                onInput={(e) => {
+                  // Ensure the value stays within the valid range
+                  let value = parseInt(e.target.value, 10);
+                  if (value < 0) value = 0;
+                  if (value > 99) value = 99;
+                  e.target.value = value;  // Update the value in the input field
+                }}
               />
             </div>
             <div>

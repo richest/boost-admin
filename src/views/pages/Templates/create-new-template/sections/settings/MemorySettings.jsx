@@ -741,12 +741,9 @@ function MemorySettings({
           />
           Number card backs
         </label>
-      </div>
-
-      <div className="setting-block border-bottom">
         {blockValues?.struct?.numberedCardBacks && (
           <div className="control-box">
-            <div className="form-label font-sm fw-medium  cursor-pointer d-flex justify-content-start gap-3 mb-3">
+            <div className="form-label font-sm fw-medium  cursor-pointer d-flex justify-content-start gap-3 mt-3">
               <label
                 className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
                 role="button"
@@ -788,6 +785,9 @@ function MemorySettings({
             </div>
           </div>
         )}
+      </div>
+
+      <div className="setting-block border-bottom">
         <label
           className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
           role="button"

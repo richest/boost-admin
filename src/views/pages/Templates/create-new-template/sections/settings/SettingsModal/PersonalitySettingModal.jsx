@@ -80,18 +80,18 @@ function PersonalitySettingModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    leadFormStruct: {
-                      ...block.struct.leadFormStruct,
-                      form: {
-                        ...block.struct.leadFormStruct.form,
-                        addtionalText: e,
-                      },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  leadFormStruct: {
+                    ...block.struct.leadFormStruct,
+                    form: {
+                      ...block.struct.leadFormStruct.form,
+                      addtionalText: e,
                     },
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -223,18 +223,18 @@ function PersonalitySettingModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    cover: {
-                      ...personalityquiz,
-                      image: selectedImage || settingsData?.imageSrc,
-                    },
-
-                    questions: personalityquizquestion,
-                    results: finalResult,
+                ...block,
+                struct: {
+                  ...block.struct,
+                  cover: {
+                    ...personalityquiz,
+                    image: selectedImage || settingsData?.imageSrc,
                   },
-                }
+
+                  questions: personalityquizquestion,
+                  results: finalResult,
+                },
+              }
               : block
           ),
         })),

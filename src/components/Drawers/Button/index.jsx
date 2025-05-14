@@ -20,6 +20,7 @@ export default function DrawerButton({
   const [mainData, setMainData] = useState();
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   const [editorText, setEditorText] = useState(`${data?.text}`);
+  const MAX_WORDS = 50;
 
   const handleChange = (html) => {
     setEditorText(html);

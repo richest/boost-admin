@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import CheckIcon from "@mui/icons-material/Check";
+import { Search } from "@mui/icons-material";
 
 function UnsplashImages({
   isLoading,
@@ -28,13 +29,24 @@ function UnsplashImages({
           <Typography variant="h6">Unsplash</Typography>
         </Grid>
         <Grid item xs={12} md={12}>
-          <ZoomOutIcon />
-          <TextField
-            placeholder="Search"
-            variant="outlined"
-            fullWidth
-            onChange={(e) => handleSearch(e)}
-          />
+          <div className="position-relative">
+            <Search
+              sx={{
+                position: "absolute",
+                top: "50%",
+                zIndex: 2,
+                transform: "translateY(-50%)",
+                right: 15,
+              }}
+            />
+
+            <TextField
+              placeholder="Search"
+              variant="outlined"
+              fullWidth
+              onChange={(e) => handleSearch(e)}
+            />
+          </div>
         </Grid>
       </Grid>
 

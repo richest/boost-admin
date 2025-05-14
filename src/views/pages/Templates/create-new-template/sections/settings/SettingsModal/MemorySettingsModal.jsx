@@ -49,6 +49,7 @@ function MemoryModal({
     imageSrc: formData?.struct?.playground?.cardBackImage,
   });
   const [errors, setErrors] = useState({
+    coverHeader: false,
     header: false,
     buttonText: false,
     finalResultHeader: false,
@@ -144,15 +145,22 @@ function MemoryModal({
 
     return wordCount <= 20 && wordCount > 0;
   };
+  console.log(memoryData, "qe24214124124412")
   const validateForm = () => {
     const newErrors = {
+      coverHeader: !memoryData.coverHeader?.trim(),
+      headerWordCount: !isValidWordCount(memoryData.coverHeader),
+
+      buttonText: !memoryData.coverButtonText?.trim(),
+      buttonTextWordCount: !isValidWordCount(memoryData.coverButtonText),
+
       finalResultHeader: !finalResult.header?.trim(),
       finalResultHeaderWordCount: !isValidWordCount(finalResult.header),
     };
-    console.log(finalResult, "axaaxaaxaxaax33r3");
+    console.log(newErrors, "axaaxaaxaxaax33r3");
     setErrors(newErrors);
 
-    return !newErrors.finalResultHeader && !newErrors?.buttonTextWordCount;
+    return !newErrors.finalResultHeader && !newErrors?.buttonTextWordCount&& !newErrors.coverHeader&&!newErrors.headerWordCount&& !newErrors.buttonText;
   };
 
   const handleNext = async () => {
@@ -173,42 +181,68 @@ function MemoryModal({
     console.log("Proceed to next step");
   };
   const handleChangeheadertext = (e) => {
-    const newvalue = e;
+    console.log(e, "ikasasa")
+    const value = e
+    setErrors((prev) => {
+      const updated = { ...prev, coverHeader: false };
+      console.log("Updated Errors in handler:", updated);
+      return updated;
+    });
     setMemoryData((prev) => ({
       ...prev,
-      coverHeader: newvalue,
-    }));
+      coverHeader: value
+    }))
+    console.log(value, "kjjiiji")
+    validateForm();
     setAnyChanges(true);
   };
   const handleDeleteImageResultForm = () => {
     setfinalResult((prev) => ({ ...prev, imageSrc: null }));
   };
   const handleChangeheaderButtonText = (e) => {
-    const updatedData = {
-      ...templateDetails,
-      project_structure: {
-        ...templateDetails.project_structure,
-        pages: templateDetails.project_structure.pages.map((page) => ({
-          ...page,
-          blocks: page.blocks.map((block) =>
-            block.id === formData?.id
-              ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    playground: {
-                      ...block.struct.playground,
-                      coverButtonText: e,
-                    },
-                  },
-                }
-              : block
-          ),
-        })),
-      },
-    };
+    const value = e;
+
+
+    setMemoryData((prev) => ({
+      ...prev,
+      coverButtonText: value,
+    }));
+
+
+    setErrors((prev) => ({
+      ...prev,
+      buttonText: false,
+      buttonTextWordCount: false,
+    }));
+
+
+    validateForm();
     setAnyChanges(true);
-    dispatch(updateTemplateAction(updatedData));
+    // const updatedData = {
+    //   ...templateDetails,
+    //   project_structure: {
+    //     ...templateDetails.project_structure,
+    //     pages: templateDetails.project_structure.pages.map((page) => ({
+    //       ...page,
+    //       blocks: page.blocks.map((block) =>
+    //         block.id === formData?.id
+    //           ? {
+    //             ...block,
+    //             struct: {
+    //               ...block.struct,
+    //               playground: {
+    //                 ...block.struct.playground,
+    //                 coverButtonText: e,
+    //               },
+    //             },
+    //           }
+    //           : block
+    //       ),
+    //     })),
+    //   },
+    // };
+    // setAnyChanges(true);
+    // dispatch(updateTemplateAction(updatedData));
   };
 
   useEffect(() => {
@@ -228,9 +262,9 @@ function MemoryModal({
           const updatedPairList = prev.pairList.map((pair) =>
             pair.id === questionId
               ? {
-                  ...pair,
-                  firstImage: { ...pair.firstImage, src: selectedImage },
-                }
+                ...pair,
+                firstImage: { ...pair.firstImage, src: selectedImage },
+              }
               : pair
           );
           return {
@@ -279,6 +313,7 @@ function MemoryModal({
   console.log(finalResult, "memoryData");
   const handleSaveMemory = () => {
     if (!validateForm()) {
+
       setErrorScreen(true);
       return;
     } else {
@@ -385,6 +420,9 @@ function MemoryModal({
                       <div className="row g-3 mb-3">
                         <div className="col-md-6">
                           <div className="">
+                            <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                              Layout
+                            </label>
                             <Select
                               className="theme-select"
                               classNamePrefix="react-select"
@@ -403,9 +441,9 @@ function MemoryModal({
                               value={
                                 memoryData?.cardLayout
                                   ? {
-                                      label: memoryData?.cardLayout?.label,
-                                      value: memoryData?.cardLayout?.value,
-                                    }
+                                    label: memoryData?.cardLayout?.label,
+                                    value: memoryData?.cardLayout?.value,
+                                  }
                                   : null
                               }
                               options={questsLength}
@@ -464,8 +502,10 @@ function MemoryModal({
                           <div className="d-flex align-items-start">
                             <button
                               className={`btn btn-propertion ${memoryData?.cardProportions === "1/1" ? "selctedProp" : ""}`}
-                              style={{ aspectRatio: "1/1", height: "unset" }}
+                              // style={{ aspectRatio: "1/1", height: "unset" }}
                               onClick={() => handlehangepropertions("1/1")}
+                              style={{ height: 'unset', aspectRatio: '1/1' }}
+
                             >
                               1:1
                             </button>
@@ -503,11 +543,11 @@ function MemoryModal({
                         <div className="mt-3">
                           <div className="mb-3">
                             <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                              Header
+                              Header <span style={{ color: "red" }}>*</span>
                             </label>
                             <input
                               type="text"
-                              class="form-control theme-control"
+                              className={`form-control theme-control ${errors.coverHeader || errors.headerWordCount ? 'is-invalid' : ''}`}
                               id="questName"
                               // maxlength="60"
                               value={memoryData?.coverHeader}
@@ -516,14 +556,21 @@ function MemoryModal({
                               }
                               required
                             />
+                            {errors.coverHeader && (
+                              <div className="invalid-feedback">Header is required.</div>
+                            )}
+                            {console.log(errors.coverHeader, "q3434343")}
+                            {errors.headerWordCount && (
+                              <div className="invalid-feedback">Must be No more than 20 characters .</div>
+                            )}
                           </div>
                           <div className="">
                             <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                              Button text
+                              Button text <span style={{ color: "red" }}>*</span>
                             </label>
                             <input
                               type="text"
-                              class="form-control theme-control"
+                              className={`form-control theme-control ${errors.buttonText || errors.buttonTextWordCount ? 'is-invalid' : ''}`}
                               id="questName"
                               maxlength="60"
                               value={memoryData?.coverButtonText}
@@ -532,6 +579,8 @@ function MemoryModal({
                               }
                               required
                             />
+                            {errors.buttonText && <div className="invalid-feedback">Button text is required.</div>}
+                            {errors.buttonTextWordCount && <div className="invalid-feedback">Must be No more than 20 characters .</div>}
                           </div>
                         </div>
                       )}
@@ -603,6 +652,7 @@ function MemoryModal({
           </button>
         </li>
       </ul>
+      {console.log(errors, "wldjwoqjdi")}
       {(errorScreen || triggerNext) && (
         <div className="StopPanel_modalStop__Msu+K">
           <div className="StopPanel_modalOverlay__1dGP2"></div>
