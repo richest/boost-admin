@@ -8,9 +8,16 @@
 }
 
 .highlighted {
-  border: 22px solid gold;
+  /* border: 22px solid gold; */
   transition: border 0.5s ease-in-out;
+  animation: blink 0.5s alternate infinite linear;
 }
+
+
+
+
+
+
 
 /* second div  */
 /* .wheelSpin-block {

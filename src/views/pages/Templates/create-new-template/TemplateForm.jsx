@@ -116,6 +116,7 @@ const TemplateForm = () => {
     url: "",
     name: "",
   });
+  console.log(selectedAudioFile, "selectedAudioFile")
   const [selectedImage, setSelectedImage] = useState("");
   const [IsOpenPasswordModal, setOpenpasswordModal] = useState(false);
   const [IsOpenTimeupdModal, setOpenTimeUpModal] = useState(false);
@@ -689,11 +690,6 @@ const TemplateForm = () => {
   };
 
 
-
-
-
-
-
   const cloneblock = (id) => {
     const page = templateDetails?.project_structure?.pages?.find(
       (page) => page.name === selectedPage
@@ -721,7 +717,11 @@ const TemplateForm = () => {
     };
     dispatch(updateTemplateAction(_data));
   };
+  // first-audio
+  // second-audio
   const handleChangeMediaAudio = (selected, id) => {
+    console.log(selected, "idweidh", id)
+    console.log("hihiheiqhweiq")
     setOpenAudioModal(true);
     setIsEditMedia(true);
     setIsEditMediaTypeDetails({
@@ -731,7 +731,8 @@ const TemplateForm = () => {
     });
   };
 
-  const handleAddItem = (image) => {
+  const handleAddItem = (image, audio) => {
+    console.log(audio, image, "audioaudio", isEditMedia && isEditMediaDetails?.type)
     const page = templateDetails?.project_structure?.pages.find(
       (page) => page.name === selectedPage
     );
@@ -822,10 +823,41 @@ const TemplateForm = () => {
       };
       dispatch(updateTemplateAction(_data));
       setOpenAudioModal(false);
-      // setSelectedImage("");
+      // setSelectedImage("");    
+    }
+    { console.log(isEditMedia, isEditMediaDetails?.type, "jsoajsosas") }
+    if (isEditMedia && isEditMediaDetails?.type === "audio") {
+
+      // const _data = {
+      //   ...templateDetails,
+      //   project_structure: {
+      //     ...templateDetails.project_structure,
+      //     pages: templateDetails.project_structure.pages.map((page) => ({
+      //       ...page,
+      //       blocks: page.blocks.map((block) =>
+      //         block.id === isEditMediaDetails?.id
+      //           ? {
+      //             ...block,
+      //             url: selectedAudioFile?.url,
+      //             name: selectedAudioFile?.name,
+      //           }
+      //           : block
+      //       ),
+      //     })),
+      //   },
+      // };
+
+      console.log(_data, "check_datayueuhuhk");
+      // dispatch(updateTemplateAction(_data));
+      setOpenAudioModal(false);
     }
 
-    if (isEditMedia && isEditMediaDetails?.type === "audio") {
+    if (isEditMedia && isEditMediaDetails?.type === "first-audio") {
+
+      // setOpenAudioModal(false);
+    }
+    if (isEditMedia && isEditMediaDetails?.type === "second-audio") {
+      console.log("ihwqdhwquuqw")
       const _data = {
         ...templateDetails,
         project_structure: {
@@ -848,7 +880,6 @@ const TemplateForm = () => {
       // dispatch(updateTemplateAction(_data));
       setOpenAudioModal(false);
     }
-
     if (isEditMedia && isEditMediaDetails?.type === "cover") {
       const _data = {
         ...templateDetails,
@@ -995,30 +1026,7 @@ const TemplateForm = () => {
     }
     console.log(selectedImage, "selectedImage")
     if (isEditMedia && isEditMediaDetails?.type === "match-up-image") {
-      // const _data = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               finalScreen: {
-      //                 ...block.struct.finalScreen,
-      //                 imageSrc: selectedImage,
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
-      // dispatch(updateTemplateAction(_data));
+
       setSelectedImage(image); // ⬅️this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1053,30 +1061,7 @@ const TemplateForm = () => {
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "quiz-cover") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === formData?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               cover: {
-      //                 ...block.struct.cover,
-      //                 image: selectedImage,
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
-      // dispatch(updateTemplateAction(updatedData));
+
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1084,42 +1069,7 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "answer-image") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               questions: block.struct.questions?.map((question) =>
-      //                 question.id === isEditMediaDetails.isLogoCover
-      //                   ? {
-      //                     ...question,
-      //                     answers: question.answers.map((answer) =>
-      //                       answer.id === isEditMediaDetails.isInnerBlockId
-      //                         ? {
-      //                           ...answer,
-      //                           image: selectedImage,
-      //                         }
-      //                         : answer
-      //                     ),
-      //                   }
-      //                   : question
-      //               ),
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
 
-      // dispatch(updateTemplateAction(updatedData));
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1127,38 +1077,7 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "question-image") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               questions: block.struct.questions?.map((question) =>
-      //                 question.id === isEditMediaDetails?.isLogoCover
-      //                   ? {
-      //                     ...question,
-      //                     image: selectedImage,
-      //                   }
-      //                   : question
-      //               ),
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
 
-      // dispatch(updateTemplateAction(updatedData));
-      // setSelectedImage(image); // ⬅️ this is your temporary local state
-
-      // setIsEditMedia(false)
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1304,36 +1223,6 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "result-image") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               results: block.struct.results?.map((result) =>
-      //                 result.id === isEditMediaDetails?.isLogoCover
-      //                   ? {
-      //                     ...result,
-      //                     image: selectedImage,
-      //                   }
-      //                   : result
-      //               ),
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
-
-      // dispatch(updateTemplateAction(updatedData));
-      // setOpen(false);
 
       setSelectedImage(image); // ⬅️ this is your temporary local state
       console.log("qwoidopqwfuiopwquif")
@@ -1368,37 +1257,7 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "quest-header") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) => {
-      //         if (block.id === isEditMediaDetails.id) {
-      //           return {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               tiles: {
-      //                 ...block.struct.tiles,
-      //                 tileList: block.struct.tiles?.tileList?.map((tile) =>
-      //                   tile.id === isEditMediaDetails.isLogoCover
-      //                     ? {
-      //                       ...tile,
-      //                       headerImgSrc: selectedImage,
-      //                     }
-      //                     : tile
-      //                 ),
-      //               },
-      //             },
-      //           };
-      //         }
-      //         return block;
-      //       }),
-      //     })),
-      //   },
-      // };
+
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1434,38 +1293,7 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "quest-overlay") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) => {
-      //         if (block.id === isEditMediaDetails.id) {
-      //           return {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               tiles: {
-      //                 ...block.struct.tiles,
-      //                 tileList: block.struct.tiles?.tileList?.map((tile) =>
-      //                   tile.id === isEditMediaDetails.isLogoCover
-      //                     ? {
-      //                       ...tile,
-      //                       overlaySrc: selectedImage,
-      //                     }
-      //                     : tile
-      //                 ),
-      //               },
-      //             },
-      //           };
-      //         }
-      //         return block;
-      //       }),
-      //     })),
-      //   },
-      // };
-      // dispatch(updateTemplateAction(updatedData));
+
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1509,32 +1337,7 @@ const TemplateForm = () => {
 
       setIsEditMedia(false);  // close modal context
       setOpen(false);
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               finalScreen: {
-      //                 ...block.struct.finalScreen,
-      //                 imageSrc: selectedImage,
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
-      // dispatch(updateTemplateAction(updatedData));
 
-      // setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "result-image-form") {
       const updatedData = {
@@ -1638,30 +1441,7 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "puzzle-image") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               playground: {
-      //                 ...block.struct.playground,
-      //                 image: selectedImage,
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
-      // dispatch(updateTemplateAction(updatedData));
+
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1721,30 +1501,7 @@ const TemplateForm = () => {
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "puzzle-result-image") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               finalScreen: {
-      //                 ...block.struct.finalScreen,
-      //                 imageSrc: selectedImage,
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
-      // dispatch(updateTemplateAction(updatedData));
+
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1752,30 +1509,6 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "sliding-puzzle-image") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               playground: {
-      //                 ...block.struct.playground,
-      //                 imageUrl: selectedImage,
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
-      // dispatch(updateTemplateAction(updatedData));
 
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
@@ -1783,30 +1516,7 @@ const TemplateForm = () => {
       setOpen(false);
     }
     if (isEditMedia && isEditMediaDetails?.type === "playing-card-back") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               playground: {
-      //                 ...block.struct.playground,
-      //                 cardBackImage: selectedImage,
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
-      // dispatch(updateTemplateAction(updatedData));
+
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
@@ -1814,43 +1524,7 @@ const TemplateForm = () => {
     }
     console.log(selectedImage, "sqqqsq0808")
     if (isEditMedia && isEditMediaDetails?.type === "first-image") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               pairs: {
-      //                 ...block.struct.pairs,
-      //                 pairList: block.struct.pairs.pairList?.map(
-      //                   (question) =>
-      //                     question.id === isEditMediaDetails?.isLogoCover
-      //                       ? {
-      //                         ...question,
-      //                         firstImage: {
-      //                           ...question.firstImage,
-      //                           src: selectedImage,
-      //                           cardType: "image",
-      //                         },
-      //                       }
-      //                       : question
-      //                 ),
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
 
-      // dispatch(updateTemplateAction(updatedData));
       setOpen(false);
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
@@ -1859,49 +1533,29 @@ const TemplateForm = () => {
     }
 
     if (isEditMedia && isEditMediaDetails?.type === "second-image") {
-      // const updatedData = {
-      //   ...templateDetails,
-      //   project_structure: {
-      //     ...templateDetails.project_structure,
-      //     pages: templateDetails.project_structure.pages.map((page) => ({
-      //       ...page,
-      //       blocks: page.blocks.map((block) =>
-      //         block.id === isEditMediaDetails?.id
-      //           ? {
-      //             ...block,
-      //             struct: {
-      //               ...block.struct,
-      //               pairs: {
-      //                 ...block.struct.pairs,
-      //                 pairList: block.struct.pairs.pairList?.map(
-      //                   (question) =>
-      //                     question.id === isEditMediaDetails?.isLogoCover
-      //                       ? {
-      //                         ...question,
-      //                         secondImage: {
-      //                           ...question.secondImage,
-      //                           src: selectedImage,
-      //                           cardType: "image",
-      //                         },
-      //                       }
-      //                       : question
-      //                 ),
-      //               },
-      //             },
-      //           }
-      //           : block
-      //       ),
-      //     })),
-      //   },
-      // };
 
-      // dispatch(updateTemplateAction(updatedData));
-      // setOpen(false);
       setSelectedImage(image); // ⬅️ this is your temporary local state
 
       setIsEditMedia(false);  // close modal context
       setOpen(false);
 
+    }
+    if (isEditMedia && isEditMediaDetails?.type === "firstAudio") {
+
+      // setOpen(false);
+      // setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      // setIsEditMedia(false);  // close modal context
+      setOpenAudioModal(false)
+    }
+    if (isEditMedia && isEditMediaDetails?.type === "secondAudio") {
+
+      // setOpen(false);
+      
+      // setSelectedImage(image); // ⬅️ this is your temporary local state
+
+      // setIsEditMedia(false);  // close modal context
+      setOpenAudioModal(false)
     }
 
     const imageBlock = {
@@ -2773,8 +2427,11 @@ const TemplateForm = () => {
           handleChangeLogo={handleChangeMedia}
         />
         <GameSettingsModal
+          selectedAudioFile={selectedAudioFile}
+          handleChangeMedia={handleChangeMedia}
           // handleMoveUp={handleMoveUp}
           // handleMoveDown={handleMoveDown}
+          handleChangeMediaAudio={handleChangeMediaAudio}
           setSelectedImage={setSelectedImage}
           selectedImage={selectedImage}
           isEditMediaTypeDetails={isEditMediaDetails}

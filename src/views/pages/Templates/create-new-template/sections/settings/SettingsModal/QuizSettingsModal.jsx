@@ -1340,7 +1340,7 @@ function QuizSettingsModal({
 
                         <div className="w-100">
                           <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                            Button texazxaxat<span style={{ color: "red" }}>*</span>
+                            Button <span style={{ color: "red" }}>*</span>
                           </label>
                           <input
                             className="form-control theme-control"

@@ -856,7 +856,7 @@ import { FaStar } from "react-icons/fa";
 import LeadForm from "../Form";
 
 function PreviewMemory({ data, approxvalue, memoryData, startImage }) {
-  console.log(startImage, "startImagestartImage")
+  console.log(memoryData, "startImagestartImage", data?.struct?.playground?.cardBackImage)
   const bestResults = [
     {
       name: "John Brown",
@@ -888,13 +888,14 @@ function PreviewMemory({ data, approxvalue, memoryData, startImage }) {
   const pairs = mainData?.struct?.pairs;
   const finalScreen = mainData?.struct?.finalScreen;
   const isMemoryDataValid = memoryData && Object.keys(memoryData).length > 0;
-
+  console.log(isMemoryDataValid, "isMemoryDataValid")
+  // hereherehereherehere
   const playground = isMemoryDataValid
     ? memoryData
     : mainData?.struct?.playground;
   // const playground = memoryData;
   // memoryData
-  console.log(mainData?.struct?.playground, memoryData, "wdhiwhdihw")
+  console.log(playground, "wdhiwhdihw")
   const starsTimeArray = mainData?.struct?.starsTimeList
     ?.split(",")
     .map((item) => item.trim());
@@ -1233,13 +1234,14 @@ function PreviewMemory({ data, approxvalue, memoryData, startImage }) {
                               aspectRatio: data?.struct?.playground?.cardProportions ?? '1/1'
                             }}
                           >
+                            {console.log(memoryData, "memoryDatamemoryData")}
                             <div
                               onClick={() => handleFlip(i)}
                               className="find-one-pair-game-outerImg"
                             >
                               <img
-                                src={startImage}
-                                alt="card back"
+                                src={memoryData?.cardBackImage || data?.struct?.playground?.cardBackImage}
+                              // alt="card back"
                               />
                               {approxvalue !== false && (
                                 <>

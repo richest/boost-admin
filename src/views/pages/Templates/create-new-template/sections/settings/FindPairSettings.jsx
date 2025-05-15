@@ -38,9 +38,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, colorTheme: e },
-                }
+                ...block,
+                struct: { ...block.struct, colorTheme: e },
+              }
               : block
           ),
         })),
@@ -60,9 +60,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, colorTheme: color },
-                }
+                ...block,
+                struct: { ...block.struct, colorTheme: color },
+              }
               : block
           ),
         })),
@@ -82,9 +82,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, isHideRestartButton: e },
-                }
+                ...block,
+                struct: { ...block.struct, isHideRestartButton: e },
+              }
               : block
           ),
         })),
@@ -103,9 +103,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, numberedCardBacks: e },
-                }
+                ...block,
+                struct: { ...block.struct, numberedCardBacks: e },
+              }
               : block
           ),
         })),
@@ -125,9 +125,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, showToMemorize: e },
-                }
+                ...block,
+                struct: { ...block.struct, showToMemorize: e },
+              }
               : block
           ),
         })),
@@ -147,9 +147,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, showToMemorizeTime: e },
-                }
+                ...block,
+                struct: { ...block.struct, showToMemorizeTime: e },
+              }
               : block
           ),
         })),
@@ -169,9 +169,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, timeoutClosingCards: e },
-                }
+                ...block,
+                struct: { ...block.struct, timeoutClosingCards: e },
+              }
               : block
           ),
         })),
@@ -191,9 +191,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, numberOfAttempts: e },
-                }
+                ...block,
+                struct: { ...block.struct, numberOfAttempts: e },
+              }
               : block
           ),
         })),
@@ -212,9 +212,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, legalStatement: e },
-                }
+                ...block,
+                struct: { ...block.struct, legalStatement: e },
+              }
               : block
           ),
         })),
@@ -234,9 +234,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: {...block.struct, isEnableRating: e },
-                }
+                ...block,
+                struct: { ...block.struct, isEnableRating: e },
+              }
               : block
           ),
         })),
@@ -256,9 +256,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, isHideLeaderboard: e },
-                }
+                ...block,
+                struct: { ...block.struct, isHideLeaderboard: e },
+              }
               : block
           ),
         })),
@@ -278,16 +278,16 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    timerType: {
-                      ...block.struct.timerType,
-                      value: "countdown",
-                      label: label,
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  timerType: {
+                    ...block.struct.timerType,
+                    value: "countdown",
+                    label: label,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -309,16 +309,16 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    timerType: {
-                      ...block.struct.timerType,
-                      value: "stopwatch",
-                      label: label,
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  timerType: {
+                    ...block.struct.timerType,
+                    value: "stopwatch",
+                    label: label,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -340,16 +340,16 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    numberedCardBacksType: {
-                      ...block.struct.numberedCardBacksType,
-                      value: e,
-                      label: label,
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  numberedCardBacksType: {
+                    ...block.struct.numberedCardBacksType,
+                    value: e,
+                    label: label,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -371,16 +371,16 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    numberedCardBacksType: {
-                      ...block.struct.numberedCardBacksType,
-                      value: e,
-                      label: label,
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  numberedCardBacksType: {
+                    ...block.struct.numberedCardBacksType,
+                    value: e,
+                    label: label,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -400,9 +400,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, enableTimer: e },
-                }
+                ...block,
+                struct: { ...block.struct, enableTimer: e },
+              }
               : block
           ),
         })),
@@ -422,9 +422,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, isRedirectEnabled: e },
-                }
+                ...block,
+                struct: { ...block.struct, isRedirectEnabled: e },
+              }
               : block
           ),
         })),
@@ -444,9 +444,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, isShowLeadForm: e },
-                }
+                ...block,
+                struct: { ...block.struct, isShowLeadForm: e },
+              }
               : block
           ),
         })),
@@ -466,9 +466,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, callToActionEnabled: e },
-                }
+                ...block,
+                struct: { ...block.struct, callToActionEnabled: e },
+              }
               : block
           ),
         })),
@@ -488,9 +488,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, countdownTime: e },
-                }
+                ...block,
+                struct: { ...block.struct, countdownTime: e },
+              }
               : block
           ),
         })),
@@ -510,9 +510,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, redirectTargetLink: e },
-                }
+                ...block,
+                struct: { ...block.struct, redirectTargetLink: e },
+              }
               : block
           ),
         })),
@@ -532,9 +532,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, redirectTimeout: e },
-                }
+                ...block,
+                struct: { ...block.struct, redirectTimeout: e },
+              }
               : block
           ),
         })),
@@ -554,9 +554,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, callToActionText: e },
-                }
+                ...block,
+                struct: { ...block.struct, callToActionText: e },
+              }
               : block
           ),
         })),
@@ -576,9 +576,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, leadFormBackgroundColor: e },
-                }
+                ...block,
+                struct: { ...block.struct, leadFormBackgroundColor: e },
+              }
               : block
           ),
         })),
@@ -597,9 +597,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, leadFormBackgroundColor: color },
-                }
+                ...block,
+                struct: { ...block.struct, leadFormBackgroundColor: color },
+              }
               : block
           ),
         })),
@@ -618,9 +618,9 @@ function FindPairSettings({
           blocks: page.blocks.map((block) =>
             block.id === id
               ? {
-                  ...block,
-                  struct: { ...block.struct, callToActionLink: e },
-                }
+                ...block,
+                struct: { ...block.struct, callToActionLink: e },
+              }
               : block
           ),
         })),
@@ -727,49 +727,49 @@ function FindPairSettings({
           Number card backs
         </label>
         {blockValues?.struct?.numberedCardBacks && (
-        <div className="control-box">
-          <div className="form-label font-sm fw-medium  cursor-pointer d-flex justify-content-start gap-3 mt-3">
-            <label
-              className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
-              role="button"
-            >
-              <input
-                type="radio"
-                id="classicTimer"
-                name="good"
-                className=""
-                onChange={() =>
-                  handleSelectNumberOption("option_1", "Option 1")
-                }
-                checked={
-                  blockValues?.struct?.numberedCardBacksType?.value ===
-                  "option_1"
-                }
-              />
-              Option 1
-            </label>
-            <label
-              className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
-              role="button"
-            >
-              <input
-                type="radio"
-                id="countdownTimer"
-                name="good"
-                className=""
-                onChange={() =>
-                  handleSelectNumberOptionSecond("option_2", "Option 2")
-                }
-                checked={
-                  blockValues?.struct?.numberedCardBacksType?.value ===
-                  "option_2"
-                }
-              />
-              Option 2
-            </label>
+          <div className="control-box">
+            <div className="form-label font-sm fw-medium  cursor-pointer d-flex justify-content-start gap-3 mt-3">
+              <label
+                className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
+                role="button"
+              >
+                <input
+                  type="radio"
+                  id="classicTimer"
+                  name="good"
+                  className=""
+                  onChange={() =>
+                    handleSelectNumberOption("option_1", "Option 1")
+                  }
+                  checked={
+                    blockValues?.struct?.numberedCardBacksType?.value ===
+                    "option_1"
+                  }
+                />
+                Option 1
+              </label>
+              <label
+                className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer mb-0"
+                role="button"
+              >
+                <input
+                  type="radio"
+                  id="countdownTimer"
+                  name="good"
+                  className=""
+                  onChange={() =>
+                    handleSelectNumberOptionSecond("option_2", "Option 2")
+                  }
+                  checked={
+                    blockValues?.struct?.numberedCardBacksType?.value ===
+                    "option_2"
+                  }
+                />
+                Option 2
+              </label>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
 
       <div className="setting-block border-bottom">
@@ -821,7 +821,26 @@ function FindPairSettings({
               type="number"
               defaultValue={blockValues?.struct?.timeoutClosingCards}
               onChange={(e) => handleChangenoTimeOutClosing(e.target.value)}
-              min="0"
+              max={120}
+              min={1}
+              onInput={(e) => {
+                let value = e.target.value;
+
+                // Remove non-digit characters
+                value = value.replace(/\D/g, '');
+
+                // Trim to 3 digits
+                if (value.length > 3) {
+                  value = value.slice(0, 3);
+                }
+
+                // Clamp to max 100 if needed
+                if (parseInt(value) > 120) {
+                  value = '120';
+                }
+
+                e.target.value = value;
+              }}
             />
           </label>
         </div>
@@ -897,13 +916,13 @@ function FindPairSettings({
                 role="button"
               >Number of attempts
               </label>
-                <input
-                  className="colorInput form-control theme-control"
-                  type="number"
-                  defaultValue={blockValues?.struct?.numberOfAttempts}
-                  onChange={(e) => handleChangenoOfattempt(e.target.value)}
-                  min="0"
-                />
+              <input
+                className="colorInput form-control theme-control"
+                type="number"
+                defaultValue={blockValues?.struct?.numberOfAttempts}
+                onChange={(e) => handleChangenoOfattempt(e.target.value)}
+                min="0"
+              />
             </div>
             <div className="mb-3">
               <label
@@ -911,13 +930,13 @@ function FindPairSettings({
                 role="button"
               >Links to service policies (html)
               </label>
-                <input
-                  className="colorInput form-control theme-control"
-                  type="text"
-                  defaultValue={blockValues?.struct?.legalStatement}
-                  onChange={(e) => handleChangenoLeagalstatment(e.target.value)}
-                  min="0"
-                />
+              <input
+                className="colorInput form-control theme-control"
+                type="text"
+                defaultValue={blockValues?.struct?.legalStatement}
+                onChange={(e) => handleChangenoLeagalstatment(e.target.value)}
+                min="0"
+              />
             </div>
 
             <div className="mb-3">

@@ -9,8 +9,12 @@ import Pairs from "./SettingsComponent/Pairs";
 
 function MemoryModal({
   selecteScreen,
+
+  selectedAudioFile,
   setSelectScreen,
   formData,
+  handleChangeMedia,
+  handleChangeMediaAudio,
   handleChangeLogo,
   selectedImage,
   setIsOpenFormModal,
@@ -19,26 +23,21 @@ function MemoryModal({
   setShowQuit,
   setAnyChanges,
 }) {
-  console.log(selectedImage, "9889898989");
+  console.log(selectedAudioFile, "9889898989");
   console.log(formData, "checkfiormdqartasdvja");
   const questsLength = [
-    {
-      label: "2x2",
-      value: "2x2",
-    },
-    {
-      label: "4x4",
-      value: "4x4",
-    },
-    {
-      label: "4X2",
-      value: "4x2",
-    },
-    {
-      label: "6X4",
-      value: "6x4",
-    },
+    { label: "4x4", value: "4x4" },
+    { label: "4x2", value: "4x2" },
+    { label: "4x3", value: "4x3" },
+    { label: "5x2", value: "5x2" },
+    { label: "5x4", value: "5x4" },
+    { label: "6x4", value: "6x4" },
+    { label: "6x5", value: "6x5" },
+    { label: "6x6", value: "6x6" },
+    { label: "6x7", value: "6x7" },
+    { label: "6x8", value: "6x8" },
   ];
+
 
   const dispatch = useDispatch();
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
@@ -48,6 +47,7 @@ function MemoryModal({
   const [StartImage, setstartImage] = useState({
     imageSrc: formData?.struct?.playground?.cardBackImage,
   });
+  console.log(formData, "StartImageStartImage")
   const [errors, setErrors] = useState({
     coverHeader: false,
     header: false,
@@ -63,7 +63,7 @@ function MemoryModal({
   const handleSelectChange = (e) => {
     if (!e?.value || !e.value.includes("x")) return;
 
-    const [rows, cols] = e.value.toLowerCase().split("x").map(Number);
+    const [cols, rows] = e.value.toLowerCase().split("x").map(Number);
 
     if (isNaN(rows) || isNaN(cols)) return;
 
@@ -160,9 +160,9 @@ function MemoryModal({
     console.log(newErrors, "axaaxaaxaxaax33r3");
     setErrors(newErrors);
 
-    return !newErrors.finalResultHeader && !newErrors?.buttonTextWordCount&& !newErrors.coverHeader&&!newErrors.headerWordCount&& !newErrors.buttonText;
+    return !newErrors.finalResultHeader && !newErrors?.buttonTextWordCount && !newErrors.coverHeader && !newErrors.headerWordCount && !newErrors.buttonText;
   };
-
+  console.log(selecteScreen, "selecteScreenselecteScreen")
   const handleNext = async () => {
     if (!validateForm()) {
       setErrorScreen(true);
@@ -174,7 +174,7 @@ function MemoryModal({
         setSelectScreen("pairs");
       } else if (selecteScreen === "pairs") {
         console.log("jsajasdjhjdh");
-        setSelectScreen("results");
+        setSelectScreen("final-screen");
       }
     }
 
@@ -253,11 +253,13 @@ function MemoryModal({
   useEffect(() => {
     if (selectedImage) {
       if (selectedImageType === "start") {
-        setstartImage((prev) => ({ ...prev, imageSrc: selectedImage }));
+        console.log("REACCACCACA")
+        setMemoryData((prev) => ({ ...prev, cardBackImage: selectedImage }));
       } else if (selectedImageType === "final") {
         setfinalResult((prev) => ({ ...prev, imageSrc: selectedImage }));
       } else if (selectedImageType?.startsWith("pairs-")) {
         const questionId = selectedImageType.split("pairs-")[1];
+        console.log(questionId, "questionId")
         setPairs((prev) => {
           const updatedPairList = prev.pairList.map((pair) =>
             pair.id === questionId
@@ -277,40 +279,40 @@ function MemoryModal({
       // setSelectedImageType(null);
     }
   }, [selectedImage]);
+  console.log(selectedAudioFile, "selectedAudioFile", selectedImageType)
 
-  // useEffect(() => {
-  //   if (selectedImage) {
-  //     if (selectedImageType === "start") {
-  //       setstartImage((prev) => ({
-  //         ...prev,
-  //         imageSrc: selectedImage,
-  //       }));
-  //     } else if (selectedImageType === "final") {
-  //       setfinalResult((prev) => ({
-  //         ...prev,
-  //         imageSrc: selectedImage,
-  //       }));
-  //     }
+  useEffect(() => {
+    if (selectedAudioFile && selectedImageType?.startsWith("pairs-")) {
+      const parts = selectedImageType.split("-");
+      const questionId = parts[1]; // e.g., "umpj3u"
+      const audioType = parts[2]; // "firstAudio" or "secondAudio"
+      const fieldToUpdate = audioType === "firstAudio" ? "firstImage" : "secondImage";
 
-  //     // Reset after use (optional)
-  //     // setSelectedImage("");
-  //     setSelectedImageType(null);
-  //   }
-  // }, [selectedImage]);
+      setPairs((prev) => {
+        const updatedPairList = prev.pairList.map((pair) =>
+          pair.id === questionId
+            ? {
+              ...pair,
+              [fieldToUpdate]: {
+                src: selectedAudioFile.url,
+                cardType: "audio",
+              },
+            }
+            : pair
+        );
+        return {
+          ...prev,
+          pairList: updatedPairList,
+        };
+      });
 
-  // useEffect(() => {
-  //   if (selectedImage) {
-  //     // setOpen(true);
-  //     // setIsEditMedia(true);
-  //     console.log(selectedImage, "selectedImage090");
-  //     // When selectedImage changes, update the state to reflect the new image
-  //     setstartImage((prev) => ({
-  //       ...prev,
-  //       imageSrc: selectedImage, // Set the selected image
-  //     }));
-  //   }
-  // }, [selectedImage]);
-  console.log(finalResult, "memoryData");
+      // setSelectedAudioFIle(null); // reset after update
+      // setOpenAudioModal(false);   // optionally close modal
+      // setSelectedImageType(null); // clean up
+    }
+  }, [selectedAudioFile]);
+
+  console.log(pairs, "memory23434232Data");
   const handleSaveMemory = () => {
     if (!validateForm()) {
 
@@ -330,10 +332,11 @@ function MemoryModal({
                   ...block,
                   struct: {
                     ...block.struct,
-                    playground: {
-                      ...memoryData,
-                      cardBackImage: StartImage.imageSrc,
-                    },
+                    playground: memoryData,
+                    // playground: {
+                    //   ...playground,
+                    //   playground: memoryData,
+                    // },
                     pairs: {
                       ...block.struct.pairs,
                       pairList: pairs.pairList,
@@ -355,6 +358,7 @@ function MemoryModal({
 
     console.log("Memory Data saved to Redux successfully 🚀");
   };
+  console.log(selectedImageType, "selectedImageType")
   console.log(pairs, "pairspairspairs");
   return (
     <>
@@ -426,18 +430,7 @@ function MemoryModal({
                             <Select
                               className="theme-select"
                               classNamePrefix="react-select"
-                              // defaultValue={
-                              //   formData?.struct?.playground?.cardLayout
-                              //     ? {
-                              //       label:
-                              //         formData?.struct?.playground?.cardLayout
-                              //           ?.label,
-                              //       value:
-                              //         formData?.struct?.playground?.cardLayout
-                              //           ?.value,
-                              //     }
-                              //     : null
-                              // }
+
                               value={
                                 memoryData?.cardLayout
                                   ? {
@@ -594,6 +587,7 @@ function MemoryModal({
               <h5>Approximate preview</h5>
               <div className={`formPreview cover_modal rankPreview`}>
                 <PreviewMemory
+                  setSelectedImageType={setSelectedImageType}
                   data={formData}
                   approxvalue={false}
                   memoryData={memoryData}
@@ -606,6 +600,9 @@ function MemoryModal({
 
         {selecteScreen === "pairs" && (
           <Pairs
+            selectedAudioFile={selectedAudioFile}
+            handleChangeMedia={handleChangeMedia}
+            handleChangeMediaAudio={handleChangeMediaAudio}
             setSelectedImageType={setSelectedImageType}
             setPairs={setPairs}
             pairs={pairs}

@@ -811,7 +811,26 @@ function MemorySettings({
               type="number"
               defaultValue={blockValues?.struct?.showToMemorizeTime}
               onChange={(e) => handleChangenoSecondsmemorize(e.target.value)}
-              min="0"
+              max={120}
+              min={1}
+              onInput={(e) => {
+                let value = e.target.value;
+
+                // Remove non-digit characters
+                value = value.replace(/\D/g, '');
+
+                // Trim to 3 digits
+                if (value.length > 3) {
+                  value = value.slice(0, 3);
+                }
+
+                // Clamp to max 100 if needed
+                if (parseInt(value) > 120) {
+                  value = '120';
+                }
+
+                e.target.value = value;
+              }}
             />
           </div>
         )}
@@ -841,7 +860,27 @@ function MemorySettings({
           type="number"
           defaultValue={blockValues?.struct?.timeoutClosingCards}
           onChange={(e) => handleChangenoTimeOutClosing(e.target.value)}
-          min="0"
+
+          max={120}
+          min={1}
+          onInput={(e) => {
+            let value = e.target.value;
+
+            // Remove non-digit characters
+            value = value.replace(/\D/g, '');
+
+            // Trim to 3 digits
+            if (value.length > 3) {
+              value = value.slice(0, 3);
+            }
+
+            // Clamp to max 100 if needed
+            if (parseInt(value) > 120) {
+              value = '120';
+            }
+
+            e.target.value = value;
+          }}
         />
       </div>
 

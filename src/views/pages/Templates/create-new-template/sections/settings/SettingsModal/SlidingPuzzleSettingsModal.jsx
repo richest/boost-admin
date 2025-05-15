@@ -66,7 +66,7 @@ function SlidingPuzzleModal({
     headerWordCount: false,
     buttonTextWordCount: false,
   });
-  console.log(finalImage, "finalImage");
+  console.log(finalResult, "finalImage");
   const validateForm = () => {
     const newErrors = {
       header: !slidingpuzzle.coverHeader?.trim(),
@@ -131,20 +131,20 @@ function SlidingPuzzleModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    playground: {
-                      ...block.struct.playground,
-                      layout: {
-                        ...block.struct.playground.layout,
-                        label: e.label,
-                        value: e.value,
-                      },
-                      tilesCount: e.value,
+                ...block,
+                struct: {
+                  ...block.struct,
+                  playground: {
+                    ...block.struct.playground,
+                    layout: {
+                      ...block.struct.playground.layout,
+                      label: e.label,
+                      value: e.value,
                     },
+                    tilesCount: e.value,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -177,15 +177,15 @@ function SlidingPuzzleModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    playground: {
-                      ...block.struct.playground,
-                      gameType: e.value,
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  playground: {
+                    ...block.struct.playground,
+                    gameType: e.value,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -206,15 +206,15 @@ function SlidingPuzzleModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    playground: {
-                      ...block.struct.playground,
-                      isShowCover: e,
-                    },
+                ...block,
+                struct: {
+                  ...block.struct,
+                  playground: {
+                    ...block.struct.playground,
+                    isShowCover: e,
                   },
-                }
+                },
+              }
               : block
           ),
         })),
@@ -315,19 +315,19 @@ function SlidingPuzzleModal({
             blocks: page.blocks.map((block) =>
               block.id === formData?.id
                 ? {
-                    ...block,
-                    struct: {
-                      ...block.struct,
-                      playground: {
-                        ...block.struct.playground,
-                        ...slidingpuzzle,
-                      },
-                      final: {
-                        ...block.struct.final,
-                        ...finalResult,
-                      },
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    playground: {
+                      ...block.struct.playground,
+                      ...slidingpuzzle,
                     },
-                  }
+                    final: {
+                      ...block.struct.final,
+                      ...finalResult,
+                    },
+                  },
+                }
                 : block
             ),
           })),
@@ -344,6 +344,7 @@ function SlidingPuzzleModal({
     setfinalResult(formData?.struct?.final);
     setfinalImage(formData?.struct?.finalScreen);
   }, [formData]);
+  console.log(finalResult, "dojwoijdiwj")
   useEffect(() => {
     if (selectedImage) {
       console.log(selectedImageType, "selectedImageType");
@@ -355,15 +356,16 @@ function SlidingPuzzleModal({
         }));
         // setSelectedImageType(null);
       }
-    } else if (selectedImageType.type === "slidingpuzzleFinal") {
+    } else if (selectedImageType.type === "slidingpuzzleFinal" && selectedImage) {
       console.log("HEEREERERRE");
-      setfinalImage((prev) => ({
+      setfinalResult((prev) => ({
         ...prev,
-        imageSrc: selectedImage,
+        image: selectedImage,
       }));
       console.log(selectedImageType.type, "90weqr8r39");
     }
   }, [selectedImage, selectedImageType]);
+  console.log(selectedImage, "spdwped")
   console.log("jdowqdwqdqwd", finalResult);
   // useEffect(() => {
   //   if (!selectedImage || !selectedImageType) return;
@@ -443,11 +445,11 @@ function SlidingPuzzleModal({
                               defaultValue={
                                 formData?.struct?.playground?.layout
                                   ? {
-                                      label:
-                                        formData?.struct?.playground?.gameType?.toLowerCase(),
-                                      value:
-                                        formData?.struct?.playground?.gameType,
-                                    }
+                                    label:
+                                      formData?.struct?.playground?.gameType?.toLowerCase(),
+                                    value:
+                                      formData?.struct?.playground?.gameType,
+                                  }
                                   : null
                               }
                               options={options}
@@ -460,50 +462,50 @@ function SlidingPuzzleModal({
                         </div>
                         {formData?.struct?.playground?.gameType.toUpperCase() !==
                           "NUMBERS" && (
-                          <div className="col-md-6">
-                            <div>
-                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                                Image
-                              </label>
-                              <div className="d-flex align-items-start">
-                                <div className="mb-3">
-                                  <div className="d-flex gap-2">
-                                    {slidingpuzzle?.imageUrl && (
-                                      <img
-                                        src={slidingpuzzle?.imageUrl}
-                                        alt="illustrationImage"
-                                        className="image_illustrate"
-                                        style={{
-                                          height: 44,
-                                          width: 44,
-                                          borderRadius: 8,
-                                          objectFit: "cover",
-                                        }}
-                                      />
-                                    )}
+                            <div className="col-md-6">
+                              <div>
+                                <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                                  Image
+                                </label>
+                                <div className="d-flex align-items-start">
+                                  <div className="mb-3">
+                                    <div className="d-flex gap-2">
+                                      {slidingpuzzle?.imageUrl && (
+                                        <img
+                                          src={slidingpuzzle?.imageUrl}
+                                          alt="illustrationImage"
+                                          className="image_illustrate"
+                                          style={{
+                                            height: 44,
+                                            width: 44,
+                                            borderRadius: 8,
+                                            objectFit: "cover",
+                                          }}
+                                        />
+                                      )}
 
-                                    <button
-                                      className="button button-primary border-0"
-                                      onClick={() => {
-                                        setSelectedImageType({
-                                          type: "slidingpuzzlestart",
-                                        });
-                                        handleChangeLogo(
-                                          "sliding-puzzle-image",
-                                          formData?.id
-                                        );
-                                      }}
-                                    >
-                                      {slidingpuzzle?.imageUrl
-                                        ? "Change"
-                                        : "Upload"}
-                                    </button>
+                                      <button
+                                        className="button button-primary border-0"
+                                        onClick={() => {
+                                          setSelectedImageType({
+                                            type: "slidingpuzzlestart",
+                                          });
+                                          handleChangeLogo(
+                                            "sliding-puzzle-image",
+                                            formData?.id
+                                          );
+                                        }}
+                                      >
+                                        {slidingpuzzle?.imageUrl
+                                          ? "Change"
+                                          : "Upload"}
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )}
+                          )}
 
                         <div className="col-md-6">
                           <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
@@ -515,13 +517,13 @@ function SlidingPuzzleModal({
                             defaultValue={
                               formData?.struct?.playground?.layout
                                 ? {
-                                    label:
-                                      formData?.struct?.playground?.layout
-                                        ?.label,
-                                    value:
-                                      formData?.struct?.playground?.layout
-                                        ?.value,
-                                  }
+                                  label:
+                                    formData?.struct?.playground?.layout
+                                      ?.label,
+                                  value:
+                                    formData?.struct?.playground?.layout
+                                      ?.value,
+                                }
                                 : null
                             }
                             options={questsLength}

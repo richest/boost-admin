@@ -27,9 +27,12 @@ import PersonalitySettingModal from "./PersonalitySettingModal";
 
 function GameSettingsModal({
   IsOpenFormModal,
+  selectedAudioFile,
   setIsOpenFormModal,
   formData,
   selectedPage,
+  handleChangeMediaAudio,
+  handleChangeMedia,
   handleChangeLogo,
   isEditMediaTypeDetails,
   updateParentState,
@@ -39,6 +42,7 @@ function GameSettingsModal({
   setIsEditMedia,
   setSelectedImage,
 }) {
+  console.log(handleChangeMediaAudio, "qowdiodioiw")
   const [checkedFields, setCheckedFields] = useState([]);
   const [selectedType, setSelectedType] = useState("");
   const [selecteScreen, setSelectScreen] = useState("start-screen");
@@ -271,8 +275,12 @@ function GameSettingsModal({
                 setAnyChanges={setAnyChanges}
               />
             )}
+
             {formData?.block === "memory" && (
               <MemoryModal
+                selectedAudioFile={selectedAudioFile}
+                handleChangeMedia={handleChangeMedia}
+                handleChangeMediaAudio={handleChangeMediaAudio}
                 setSelectedImage={setSelectedImage}
                 selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
@@ -287,6 +295,9 @@ function GameSettingsModal({
             )}
             {formData?.block === "find-pair" && (
               <MemoryModal
+                selectedAudioFile={selectedAudioFile}
+                handleChangeMedia={handleChangeMedia}
+                handleChangeMediaAudio={handleChangeMediaAudio}
                 selectedImage={selectedImage}
                 setIsOpenFormModal={setIsOpenFormModal}
                 selecteScreen={selecteScreen}
