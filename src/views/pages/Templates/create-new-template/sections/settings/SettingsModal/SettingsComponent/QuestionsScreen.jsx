@@ -59,6 +59,7 @@ function QuestionsScreen({
   // chnage from here
   console.log(updatedtemplate, "dsdsdsdsdsdsdsd");
   const handleAddNewQuestion = () => {
+    setAnyChanges(true);
     const newQuestion = {
       id: generateShortId(),
       text: "",
@@ -151,7 +152,7 @@ function QuestionsScreen({
   const cloneBlock = (idToClone) => {
     setQuizDataQuestion((prevQuestions) => {
       const questionToClone = prevQuestions.find((q) => q.id === idToClone);
-      console.log(questionToClone, "3098r038")
+      console.log(questionToClone, "3098r038");
       if (!questionToClone) return prevQuestions;
 
       const clonedQuestion = {
@@ -235,19 +236,19 @@ function QuestionsScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  questions: block.struct.questions?.map((question) =>
-                    question.id === id
-                      ? {
-                        ...question,
-                        imageDescription: e,
-                      }
-                      : question
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    questions: block.struct.questions?.map((question) =>
+                      question.id === id
+                        ? {
+                            ...question,
+                            imageDescription: e,
+                          }
+                        : question
+                    ),
+                  },
+                }
               : block
           ),
         })),
@@ -257,19 +258,20 @@ function QuestionsScreen({
     setAnyChanges(true);
   };
   const handleCheckCorrectAnswer = (isChecked, questionId, answerId) => {
+    setAnyChanges(true);
     const updatedQuestions = quizdataQuestion.map((question) => {
       if (question.id !== questionId) return question;
-  
+
       const totalAnswers = question.answers.length;
       const correctAnswers = question.answers.filter((a) => a.isCorrect);
       const correctCount = correctAnswers.length;
-  
+
       // If user is checking a new one and it's beyond the allowed limit
       if (isChecked) {
         if (correctCount >= totalAnswers - 1) {
           // Remove the first checked answer (oldest)
           const firstCheckedId = correctAnswers[0]?.id;
-  
+
           return {
             ...question,
             answers: question.answers.map((answer) => {
@@ -287,9 +289,7 @@ function QuestionsScreen({
           return {
             ...question,
             answers: question.answers.map((answer) =>
-              answer.id === answerId
-                ? { ...answer, isCorrect: true }
-                : answer
+              answer.id === answerId ? { ...answer, isCorrect: true } : answer
             ),
           };
         }
@@ -298,17 +298,15 @@ function QuestionsScreen({
         return {
           ...question,
           answers: question.answers.map((answer) =>
-            answer.id === answerId
-              ? { ...answer, isCorrect: false }
-              : answer
+            answer.id === answerId ? { ...answer, isCorrect: false } : answer
           ),
         };
       }
     });
-  
+
     // Update both quiz data and full template
     setQuizDataQuestion(updatedQuestions);
-  
+
     // const updatedData = {
     //   ...updatedtemplate,
     //   project_structure: {
@@ -329,11 +327,11 @@ function QuestionsScreen({
     //     })),
     //   },
     // };
-  
+
     // setupdatedTemplate(updatedData);
     setAnyChanges(true);
   };
-  
+
   // const handleCheckCorrectAnswer = (e, id, answerId) => {
   //   const updatedQuestions = quizdataQuestion.map((question) =>
   //     question.id === id
@@ -380,31 +378,28 @@ function QuestionsScreen({
     const updatedLocalQuestions = quizdataQuestion.map((question) =>
       question.id === questionId
         ? {
-          ...question,
-          answers: question.answers.filter(
-            (answer) => answer.id !== answerId
-          ), // Remove the selected answer
-        }
+            ...question,
+            answers: question.answers.filter(
+              (answer) => answer.id !== answerId
+            ), // Remove the selected answer
+          }
         : question
     );
 
     setQuizDataQuestion(updatedLocalQuestions);
     setAnyChanges(true);
-
-
   };
-
 
   const handleChangeTextAnswer = (value, questionId, answerId) => {
     console.log("valueQuestionIdAnswerId", value, questionId, answerId);
     const updated = quizdataQuestion.map((question) =>
       question.id === questionId
         ? {
-          ...question,
-          answers: question.answers.map((ans) =>
-            ans.id === answerId ? { ...ans, text: value } : ans
-          ),
-        }
+            ...question,
+            answers: question.answers.map((ans) =>
+              ans.id === answerId ? { ...ans, text: value } : ans
+            ),
+          }
         : question
     );
     setQuizDataQuestion(updated);
@@ -417,18 +412,17 @@ function QuestionsScreen({
     const updated = quizdataQuestion.map((question) =>
       question.id === questionId
         ? {
-          ...question,
-          answers: question.answers.map((ans) =>
-            ans.id === answerId ? { ...ans, description: value } : ans
-          ),
-        }
+            ...question,
+            answers: question.answers.map((ans) =>
+              ans.id === answerId ? { ...ans, description: value } : ans
+            ),
+          }
         : question
     );
     setQuizDataQuestion(updated);
-
   };
   const handleAddAnswer = (id) => {
-    console.log(id, "Adding new answer");
+    setAnyChanges(true);
 
     const answerObject = {
       id: generateShortId(),
@@ -484,19 +478,19 @@ function QuestionsScreen({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  questions: block.struct.questions?.map((question) =>
-                    question.id === id
-                      ? {
-                        ...question,
-                        image: "",
-                      }
-                      : question
-                  ),
-                },
-              }
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    questions: block.struct.questions?.map((question) =>
+                      question.id === id
+                        ? {
+                            ...question,
+                            image: "",
+                          }
+                        : question
+                    ),
+                  },
+                }
               : block
           ),
         })),
@@ -508,7 +502,7 @@ function QuestionsScreen({
       updatedData.project_structure.pages
         .find((page) => page.blocks.some((block) => block.id === formData?.id))
         ?.blocks.find((block) => block.id === formData?.id)?.struct.questions ||
-      []
+        []
     ); //
     setAnyChanges(true);
   };
@@ -622,7 +616,10 @@ function QuestionsScreen({
                         handleQuestionTextChange(e.target.value, question.id); // ✅ Update local state
                       }}
                     ></textarea>
-                    {console.log(errors?.questions?.[index]?.text, "wouweweyfw")}
+                    {console.log(
+                      errors?.questions?.[index]?.text,
+                      "wouweweyfw"
+                    )}
                     {errors?.questions?.[index]?.text && (
                       <p style={{ color: "red" }} className="error">
                         {errors?.questions[index].text}
@@ -690,8 +687,9 @@ function QuestionsScreen({
                         <button
                           type="button"
                           htmlFor={`question${index}`}
-                          className={`button button-primary sm font-sm py-2 border-0 ${question.isText === true ? "selected" : "outline"
-                            }`}
+                          className={`button button-primary sm font-sm py-2 border-0 ${
+                            question.isText === true ? "selected" : "outline"
+                          }`}
                           onClick={() =>
                             handleChangeTextImage("text", question.id)
                           }
@@ -700,8 +698,9 @@ function QuestionsScreen({
                         </button>
                         <button
                           type="button"
-                          className={`button button-primary sm font-sm py-2 border-0 ${question.isText === false ? "selected" : "outline"
-                            }`}
+                          className={`button button-primary sm font-sm py-2 border-0 ${
+                            question.isText === false ? "selected" : "outline"
+                          }`}
                           onClick={() =>
                             handleChangeTextImage("images", question.id)
                           }
@@ -736,13 +735,13 @@ function QuestionsScreen({
                                   )
                                 }
                               />
-                              <label className="form-check-label ms-2">
+                              <label className="form-check-label mx-2">
                                 Correct answer
                               </label>
-                              {question.answers.length > 0 && (
+                              {question.answers.length > 2 && (
                                 <i
                                   typeof="button"
-                                  className="fa-solid fa-trash"
+                                  className="fa-solid fa-trash text-danger"
                                   role="button"
                                   onClick={() =>
                                     handleDeleteAnswer(question.id, answer.id)
@@ -769,15 +768,18 @@ function QuestionsScreen({
                                   type="button"
                                   className="button button-primary font-sm border-0 me-2"
                                   onClick={() => {
-                                    setSelectedImageType({ type: "answer-imageQuiz", questionId: question.id, answerId: answer?.id })
+                                    setSelectedImageType({
+                                      type: "answer-imageQuiz",
+                                      questionId: question.id,
+                                      answerId: answer?.id,
+                                    });
                                     handleChangeImage(
                                       "answer-image",
                                       formData?.id,
                                       question.id,
                                       answer.id
-                                    )
-                                  }
-                                  }
+                                    );
+                                  }}
                                 >
                                   {answer.image ? "Change" : "Upload"}
                                 </button>
@@ -804,16 +806,22 @@ function QuestionsScreen({
                               }
                             />
                             {/* answer, ansIndex */}
-                            {console.log(errors?.questions?.[index]?.answers?.[ansIndex]?.text, "fouwewe")}
-                            {errors?.questions?.[index]?.answers?.[ansIndex]?.text && (
+                            {console.log(
+                              errors?.questions?.[index]?.answers?.[ansIndex]
+                                ?.text,
+                              "fouwewe"
+                            )}
+                            {errors?.questions?.[index]?.answers?.[ansIndex]
+                              ?.text && (
                               <p className="text-danger font-sm mt-1">
                                 {errors.questions[index].answers[ansIndex].text}
                               </p>
                             )}
-
-
                           </div>
-                          {console.log(answer?.description, 'answer?.description')}
+                          {console.log(
+                            answer?.description,
+                            "answer?.description"
+                          )}
                           <div className="mb-3">
                             <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
                               Description

@@ -46,7 +46,7 @@ function GameSettingsModal({
   const [closeerror, setcloserror] = useState(false);
   const [showQuit, setShowQuit] = useState(false);
   const [anyChanges, setAnyChanges] = useState(false);
-  console.log(selectedImage, "closeerror");
+
   const style = {
     position: "absolute",
     top: "50%",

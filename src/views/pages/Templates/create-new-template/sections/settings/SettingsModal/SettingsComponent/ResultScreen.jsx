@@ -1049,17 +1049,6 @@ function ResultScreen({
         </div>
       )}
 
-
-
-
-
-
-
-
-
-
-
-
       {formData.block === "personality-quiz" && (
         <div class="d-flex w-100 gap-3 gap-md-0">
           <div class="border-end scrollable-div result-list">
@@ -1365,7 +1354,7 @@ function ResultScreen({
           </div>
         </>
       )}
-      {console.log(formData.block, "formData.block")}
+      
       {formData.block === "form" && (
         <>
           <div class="form-left scrollable-div">

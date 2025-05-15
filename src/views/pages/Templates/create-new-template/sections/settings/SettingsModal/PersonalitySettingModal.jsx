@@ -80,18 +80,18 @@ function PersonalitySettingModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  leadFormStruct: {
-                    ...block.struct.leadFormStruct,
-                    form: {
-                      ...block.struct.leadFormStruct.form,
-                      addtionalText: e,
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    leadFormStruct: {
+                      ...block.struct.leadFormStruct,
+                      form: {
+                        ...block.struct.leadFormStruct.form,
+                        addtionalText: e,
+                      },
                     },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -223,18 +223,18 @@ function PersonalitySettingModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  cover: {
-                    ...personalityquiz,
-                    image: selectedImage || settingsData?.imageSrc,
-                  },
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    cover: {
+                      ...personalityquiz,
+                      image: selectedImage || settingsData?.imageSrc,
+                    },
 
-                  questions: personalityquizquestion,
-                  results: finalResult,
-                },
-              }
+                    questions: personalityquizquestion,
+                    results: finalResult,
+                  },
+                }
               : block
           ),
         })),
@@ -433,6 +433,7 @@ function PersonalitySettingModal({
                             className="form-control theme-control"
                             value={personalityquiz.buttonText}
                             onChange={(e) => handleDButtonText(e.target.value)}
+                            maxLength={20}
                           />
                           {errors?.personalityquiz?.buttonText && (
                             <p className="text-danger font-sm mt-1">
@@ -495,7 +496,7 @@ function PersonalitySettingModal({
                           color: "#fff",
                         }}
                       >
-                        {personalityquiz.buttonText || "Start"}
+                        {personalityquiz.buttonText}
                       </button>
                     </div>
                   )}
