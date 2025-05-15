@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pairs, setPairs }) {
+function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, handleChangeLogo, handleChangeMediaAudio, handleChangeMedia, pairs, setPairs }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(formData, "questionsquestionsquestions");
   const [opentextModal, setIsOpenTextModal] = useState(false);
@@ -20,58 +20,12 @@ function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pa
       ...prev,
       isShowFeedback: newValue
     }))
-    // const updatedData = {
-    //   ...templateDetails,
-    //   project_structure: {
-    //     ...templateDetails.project_structure,
-    //     pages: templateDetails.project_structure.pages.map((page) => ({
-    //       ...page,
-    //       blocks: page.blocks.map((block) =>
-    //         block.id === formData?.id
-    //           ? {
-    //             ...block,
-    //             struct: {
-    //               ...block.struct,
-    //               pairs: {
-    //                 ...block.struct.pairs,
-    //                 isShowFeedback: e,
-    //               },
-    //             },
-    //           }
-    //           : block
-    //       ),
-    //     })),
-    //   },
-    // };
-    // dispatch(updateTemplateAction(updatedData));
+
   };
 
-  // const handlePairText = (tile, imageType) => {
-  //   console.log(tile, imageType, "ddeede")
-  //   // Check if imageType (firstImage or secondImage) exists in the tile
-  //   const selectedImage = tile[imageType];
 
-  //   if (selectedImage) {
-  //     // Set the textModalData with the corresponding image info
-  //     setTextModalData({
-  //       tileId: tile.id,
-  //       imageType: imageType, // 'firstImage' or 'secondImage'
-  //       text: selectedImage.text || '', // Set the text, defaulting to an empty string
-  //       bgColor: selectedImage.bgColor || 'rgb(255, 255, 255)', // Default to white if no bgColor is provided
-  //     });
-  //   } else {
-  //     // If image data is missing, fall back to defaults
-  //     setTextModalData({
-  //       tileId: tile.id,
-  //       imageType: imageType,
-  //       text: '',
-  //       bgColor: 'rgb(255, 255, 255)', // Default white
-  //     });
-  //   }
-
-  //   setIsOpenTextModal(true);  // Open the modal
-  // };
   const handlePairText = (type, question) => {
+    console.log(type, question, "78979797979")
     setTextModalData({
       tileId: question.id,
       imageType: type,
@@ -109,21 +63,7 @@ function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pa
     setTextModalData(updated);
   };
 
-  // const handlechangePairText = (e) => {
-  //   const updatedObject = {
-  //     ...textModalData,
-  //     text: e,
-  //   };
-  //   setTextModalData(updatedObject);
-  // };
-  // const handleSetColor = (color) => {
-  //   console.log(color, "checkcolor");
-  //   const updatedObject = {
-  //     ...textModalData,
-  //     bgColor: color,
-  //   };
-  //   setTextModalData(updatedObject);
-  // };
+
   console.log(textModalData, "textModalData")
   const handleSaveText = () => {
     setPairs((prev) => ({
@@ -155,10 +95,6 @@ function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pa
         tile.id === id ? { ...tile, description: value } : tile
       ),
     }));
-
-
-
-
   };
 
   const handlechangedescriptiont = (value, type) => {
@@ -202,7 +138,7 @@ function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pa
                 </div>
               </div>
             </div>
-            {console.log(pairs, "09089809")}
+            {console.log(pairs?.pairList, "09089809")}
             <div className="questionData">
               <div class="row g-4 mt-4">
                 {pairs?.pairList &&
@@ -223,17 +159,19 @@ function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pa
                             <div className="questionData">
                               <div class="d-flex gap-3">
                                 <div className="">
-                                  
+
 
                                   <div className="d-flex align-items-start gap-3">
                                     {["firstImage", "secondImage"].map((type) => (
                                       <div
+                                        key={type}
                                         className="questionImageLabel quest-cover"
                                         style={{ width: 90, height: 90, margin: 0 }}
                                       >
                                         {(() => {
                                           const data = question[type];
                                           const cardType = data?.cardType;
+                                          console.log(data, cardType, "cardData");
 
                                           if (cardType === "text") {
                                             return (
@@ -245,7 +183,6 @@ function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pa
                                                   borderRadius: "8px",
                                                 }}
                                               >
-                                                {console.log(data?.text, "data")}
                                                 <span className="font-sm">{data?.text}</span>
                                               </div>
                                             );
@@ -265,23 +202,39 @@ function Pairs({ setSelectedImageType, formData, questions, handleChangeLogo, pa
 
                                         {/* Icons */}
                                         <div className="icons_pairs d-flex align-items-center gap-1 mt-2">
-                                          <label onClick={() => handlePairText(type, question)} role="button">
+                                          <label
+                                            onClick={() => handlePairText(type, question)}
+                                            role="button"
+                                          >
                                             <i className="fa-solid fa-font" title="Add Text"></i>
                                           </label>
-                                          <label onClick={() => {
-                                            setSelectedImageType(`pairs-${question.id}`);
-                                            handleChangeLogo(`${type.replace("Image", "")}-image`, formData?.id, question.id)
-                                          }} role="button">
+                                          <label
+                                            onClick={() => {
+                                              setSelectedImageType(`pairs-${question.id}`); // Image change (not audio)
+                                              handleChangeLogo(`${type.replace("Image", "")}-image`, formData?.id, question.id);
+                                            }}
+                                            role="button"
+                                          >
                                             <i className="fa-solid fa-camera" title="Add Image"></i>
                                           </label>
-                                          <label onClick={() => handleChangeLogo(`${type.replace("Image", "")}-audio`, formData?.id, question.id)} role="button">
+
+                                          <label
+                                            onClick={() => {
+                                              const audioType = type === "firstImage" ? "firstAudio" : "secondAudio";
+                                              console.log(audioType, "ljdojdojo")
+                                              setSelectedImageType(`pairs-${question.id}-${audioType}`);
+                                              handleChangeMediaAudio(audioType, formData?.id, question.id);
+                                            }}
+                                            role="button"
+                                          >
                                             <i className="fa-solid fa-music" title="Add Audio"></i>
                                           </label>
+
                                         </div>
                                       </div>
-
                                     ))}
                                   </div>
+
 
                                 </div>
                                 {/* <div

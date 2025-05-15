@@ -365,7 +365,7 @@ function ResultScreen({
     );
     setAnyChanges(true);
   };
-  
+
   console.log(finalResult, "dlkdo")
   console.log(finalResult)
   const handleResultHeader = (e) => {
@@ -1595,6 +1595,7 @@ function ResultScreen({
                 }
               />
             </div>
+            {console.log(finalImage, "finalImage")}
             <div class="mb-3">
               <label class="form-label font-sm fw-medium d-flex align-items-center gap-1 cursor-pointer">
                 Image
