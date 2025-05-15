@@ -13,7 +13,9 @@ function TreasureHuntModal({
   formData,
   handleChangeLogo,
   setIsOpenFormModal,
-  selectedImage
+  selectedImage,
+  handleOpenModal,
+  setPairs
 }) {
   const questsLength = [
     {
@@ -155,7 +157,7 @@ function TreasureHuntModal({
       ...prev,
       cardProportions: e,
     }));
-    console.log(memoryData, "sqsqsqsq")
+    // console.log(memoryData, "sqsqsqsq")
     // update global template data
 
   };

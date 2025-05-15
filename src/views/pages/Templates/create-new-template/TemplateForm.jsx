@@ -847,7 +847,7 @@ const TemplateForm = () => {
       //   },
       // };
 
-      console.log(_data, "check_datayueuhuhk");
+      // console.log(_data, "check_datayueuhuhk");
       // dispatch(updateTemplateAction(_data));
       setOpenAudioModal(false);
     }
@@ -2427,6 +2427,7 @@ const TemplateForm = () => {
           handleChangeLogo={handleChangeMedia}
         />
         <GameSettingsModal
+        setSelectedAudioFIle={setSelectedAudioFIle}
           selectedAudioFile={selectedAudioFile}
           handleChangeMedia={handleChangeMedia}
           // handleMoveUp={handleMoveUp}

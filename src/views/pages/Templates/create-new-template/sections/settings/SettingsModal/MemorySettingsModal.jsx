@@ -9,7 +9,7 @@ import Pairs from "./SettingsComponent/Pairs";
 
 function MemoryModal({
   selecteScreen,
-
+  setSelectedAudioFIle,
   selectedAudioFile,
   setSelectScreen,
   formData,
@@ -306,9 +306,9 @@ function MemoryModal({
         };
       });
 
-      // setSelectedAudioFIle(null); // reset after update
+      setSelectedAudioFIle(null); // reset after update
       // setOpenAudioModal(false);   // optionally close modal
-      // setSelectedImageType(null); // clean up
+      setSelectedImageType(null); // clean up
     }
   }, [selectedAudioFile]);
 

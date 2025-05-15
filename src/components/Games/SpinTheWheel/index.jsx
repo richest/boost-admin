@@ -609,6 +609,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./wheel.css";
 import Confetti from "react-confetti";
 import confetti from "canvas-confetti";
+import { Link } from "react-router-dom";
 function SpintheWheel({
   data,
   isSelected,

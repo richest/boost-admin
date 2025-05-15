@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
+import ResultScreen from "./ResultScreen";
 
 function MatchUpPairs({ formData, setSelectedImageType, onRegisterSlideImageCallback, questions, pairData, setPairData, handleChangeLogo, selecteScreen }) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
@@ -380,12 +381,12 @@ function MatchUpPairs({ formData, setSelectedImageType, onRegisterSlideImageCall
       {console.log(textModalData, "textModalData")}
       <CustomModal open={opentextModal}>
         <div className="p-4">
-          <h4 className="mb-4">Texxzaxat on card</h4>
+          <h4 className="mb-4">Text on card</h4>
           <div className="content_textcard row g-4 mb-3">
             <div className="col-8">
               <div class="">
                 <label class="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
-                  Text on xaxacard
+                  Text on card
                 </label>
                 <textarea
                   class="form-control theme-control mb-3"

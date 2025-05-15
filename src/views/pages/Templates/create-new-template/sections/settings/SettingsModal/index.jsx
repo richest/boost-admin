@@ -27,6 +27,7 @@ import PersonalitySettingModal from "./PersonalitySettingModal";
 
 function GameSettingsModal({
   IsOpenFormModal,
+  setSelectedAudioFIle,
   selectedAudioFile,
   setIsOpenFormModal,
   formData,
@@ -42,7 +43,7 @@ function GameSettingsModal({
   setIsEditMedia,
   setSelectedImage,
 }) {
-  console.log(handleChangeMediaAudio, "qowdiodioiw")
+  console.log(handleChangeMediaAudio, "qowdiodioiw");
   const [checkedFields, setCheckedFields] = useState([]);
   const [selectedType, setSelectedType] = useState("");
   const [selecteScreen, setSelectScreen] = useState("start-screen");
@@ -248,6 +249,9 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
 
@@ -260,37 +264,40 @@ function GameSettingsModal({
                 setSelectScreen={setSelectScreen}
                 formData={formData}
                 handleChangeLogo={handleChangeLogo}
+                showQuit={showQuit}
+                setShowQuit={setShowQuit}
+                setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "sliding-puzzle" && (
               <SlidingPuzzleModal
-                selectedImage={selectedImage}
-                setIsOpenFormModal={setIsOpenFormModal}
-                selecteScreen={selecteScreen}
-                setSelectScreen={setSelectScreen}
-                formData={formData}
-                handleChangeLogo={handleChangeLogo}
-                showQuit={showQuit}
-                setShowQuit={setShowQuit}
-                setAnyChanges={setAnyChanges}
+              selectedImage={selectedImage}
+              setIsOpenFormModal={setIsOpenFormModal}
+              selecteScreen={selecteScreen}
+              setSelectScreen={setSelectScreen}
+              formData={formData}
+              handleChangeLogo={handleChangeLogo}
+              showQuit={showQuit}
+              setShowQuit={setShowQuit}
+              setAnyChanges={setAnyChanges}
               />
             )}
 
             {formData?.block === "memory" && (
               <MemoryModal
-                selectedAudioFile={selectedAudioFile}
-                handleChangeMedia={handleChangeMedia}
-                handleChangeMediaAudio={handleChangeMediaAudio}
-                setSelectedImage={setSelectedImage}
-                selectedImage={selectedImage}
-                setIsOpenFormModal={setIsOpenFormModal}
-                selecteScreen={selecteScreen}
-                setSelectScreen={setSelectScreen}
-                formData={formData}
-                handleChangeLogo={handleChangeLogo}
-                showQuit={showQuit}
-                setShowQuit={setShowQuit}
-                setAnyChanges={setAnyChanges}
+              selectedAudioFile={selectedAudioFile}
+              handleChangeMedia={handleChangeMedia}
+              handleChangeMediaAudio={handleChangeMediaAudio}
+              setSelectedImage={setSelectedImage}
+              selectedImage={selectedImage}
+              setIsOpenFormModal={setIsOpenFormModal}
+              selecteScreen={selecteScreen}
+              setSelectScreen={setSelectScreen}
+              formData={formData}
+              handleChangeLogo={handleChangeLogo}
+              showQuit={showQuit}
+              setShowQuit={setShowQuit}
+              setAnyChanges={setAnyChanges}
               />
             )}
             {formData?.block === "find-pair" && (

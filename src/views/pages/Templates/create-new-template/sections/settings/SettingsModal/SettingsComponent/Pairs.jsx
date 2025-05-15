@@ -4,28 +4,36 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateShortId } from "utils/helpers";
 import { updateTemplateAction } from "views/pages/Templates/TemplateRedux/actions/drawerAction";
 
-function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, handleChangeLogo, handleChangeMediaAudio, handleChangeMedia, pairs, setPairs }) {
+function Pairs({
+  setSelectedImageType,
+  selectedAudioFile,
+  formData,
+  questions,
+  handleChangeLogo,
+  handleChangeMediaAudio,
+  handleChangeMedia,
+  pairs,
+  setPairs,
+}) {
   const { templateDetails } = useSelector((state) => state.DrawerReducer);
   console.log(formData, "questionsquestionsquestions");
   const [opentextModal, setIsOpenTextModal] = useState(false);
   const [textModalData, setTextModalData] = useState({});
 
   console.log("textModalData", textModalData);
-  console.log(pairs, "pairspairs")
+  console.log(pairs, "pairspairs");
   const dispatch = useDispatch();
 
   const handleSHowDescription = (e) => {
-    const newValue = e
+    const newValue = e;
     setPairs((prev) => ({
       ...prev,
-      isShowFeedback: newValue
-    }))
-
+      isShowFeedback: newValue,
+    }));
   };
 
-
   const handlePairText = (type, question) => {
-    console.log(type, question, "78979797979")
+    console.log(type, question, "78979797979");
     setTextModalData({
       tileId: question.id,
       imageType: type,
@@ -36,7 +44,6 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
     });
     setIsOpenTextModal(true);
   };
-
 
   const handlechangePairText = (value, type) => {
     const updated = {
@@ -63,30 +70,27 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
     setTextModalData(updated);
   };
 
-
-  console.log(textModalData, "textModalData")
+  console.log(textModalData, "textModalData");
   const handleSaveText = () => {
     setPairs((prev) => ({
       ...prev,
       pairList: prev.pairList.map((tile) =>
         tile.id === textModalData.tileId
           ? {
-            ...tile,
-            [textModalData.imageType]: {
-              ...tile[textModalData.imageType],
-              text: textModalData?.[textModalData.imageType]?.text,
-              bgColor: textModalData.bgColor,
-              cardType: "text",
-            },
-          }
+              ...tile,
+              [textModalData.imageType]: {
+                ...tile[textModalData.imageType],
+                text: textModalData?.[textModalData.imageType]?.text,
+                bgColor: textModalData.bgColor,
+                cardType: "text",
+              },
+            }
           : tile
       ),
     }));
 
     setIsOpenTextModal(false);
   };
-
-
 
   const handleChangeSliderDescription = (value, id) => {
     setPairs((prev) => ({
@@ -107,11 +111,9 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
     }));
   };
 
-
-
   console.log("templateDetailstemplateDetails", templateDetails);
-  console.log(textModalData, "textModalData")
-  console.log(pairs, "ppspsqksqkspqkspqkspkq")
+  console.log(textModalData, "textModalData");
+  console.log(pairs?.pairList, "ppspsqksqkspqkspqkspkq");
   return (
     <>
       <div class="d-flex w-100 gap-3 gap-md-0">
@@ -144,11 +146,7 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
                 {pairs?.pairList &&
                   pairs.pairList?.map((question, index) => (
                     <div
-                      class={
-                        pairs?.isShowFeedback
-                          ? "col-md-12"
-                          : "col-md-3"
-                      }
+                      class={pairs?.isShowFeedback ? "col-md-12" : "col-md-3"}
                     >
                       <div className="d-flex gap-3">
                         <div className="pairs_list_items">
@@ -159,83 +157,137 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
                             <div className="questionData">
                               <div class="d-flex gap-3">
                                 <div className="">
-
-
                                   <div className="d-flex align-items-start gap-3">
-                                    {["firstImage", "secondImage"].map((type) => (
-                                      <div
-                                        key={type}
-                                        className="questionImageLabel quest-cover"
-                                        style={{ width: 90, height: 90, margin: 0 }}
-                                      >
-                                        {(() => {
-                                          const data = question[type];
-                                          const cardType = data?.cardType;
-                                          console.log(data, cardType, "cardData");
-
-                                          if (cardType === "text") {
-                                            return (
-                                              <div
-                                                className="d-flex align-items-center justify-content-center text-center p-2 h-100 w-100"
-                                                style={{
-                                                  backgroundColor: data?.bgColor || "#fff",
-                                                  color: data?.bgColor === "#fff" ? "#000" : "#fff",
-                                                  borderRadius: "8px",
-                                                }}
-                                              >
-                                                <span className="font-sm">{data?.text}</span>
-                                              </div>
+                                    {["firstImage", "secondImage"].map(
+                                      (type) => (
+                                        <div
+                                          key={type}
+                                          className="questionImageLabel quest-cover"
+                                          style={{
+                                            width: 90,
+                                            height: 90,
+                                            margin: 0,
+                                          }}
+                                        >
+                                          {(() => {
+                                            const data = question[type];
+                                            const cardType = data?.cardType;
+                                            console.log(
+                                              data,
+                                              cardType,
+                                              "cardData"
                                             );
-                                          } else if (cardType === "image") {
-                                            return <img src={data?.src} alt="Image" className="w-100" />;
-                                          } else if (cardType === "audio") {
-                                            return (
-                                              <audio controls className="w-100">
-                                                <source src={data?.src} type="audio/mpeg" />
-                                                Your browser does not support the audio element.
-                                              </audio>
-                                            );
-                                          } else {
-                                            return null;
-                                          }
-                                        })()}
 
-                                        {/* Icons */}
-                                        <div className="icons_pairs d-flex align-items-center gap-1 mt-2">
-                                          <label
-                                            onClick={() => handlePairText(type, question)}
-                                            role="button"
-                                          >
-                                            <i className="fa-solid fa-font" title="Add Text"></i>
-                                          </label>
-                                          <label
-                                            onClick={() => {
-                                              setSelectedImageType(`pairs-${question.id}`); // Image change (not audio)
-                                              handleChangeLogo(`${type.replace("Image", "")}-image`, formData?.id, question.id);
-                                            }}
-                                            role="button"
-                                          >
-                                            <i className="fa-solid fa-camera" title="Add Image"></i>
-                                          </label>
+                                            if (cardType === "text") {
+                                              return (
+                                                <div
+                                                  className="d-flex align-items-center justify-content-center text-center p-2 h-100 w-100"
+                                                  style={{
+                                                    backgroundColor:
+                                                      data?.bgColor || "#fff",
+                                                    color:
+                                                      data?.bgColor === "#fff"
+                                                        ? "#000"
+                                                        : "#fff",
+                                                    borderRadius: "8px",
+                                                  }}
+                                                >
+                                                  <span className="font-sm">
+                                                    {data?.text}
+                                                  </span>
+                                                </div>
+                                              );
+                                            } else if (cardType === "image") {
+                                              return (
+                                                <img
+                                                  src={data?.src}
+                                                  alt="Image"
+                                                  className="w-100"
+                                                />
+                                              );
+                                            } else if (cardType === "audio") {
+                                              return (
+                                                <audio
+                                                  controls
+                                                  className="w-100"
+                                                >
+                                                  <source
+                                                    src={data?.src}
+                                                    type="audio/mpeg"
+                                                  />
+                                                  Your browser does not support
+                                                  the audio element.
+                                                </audio>
+                                              );
+                                            } else {
+                                              return null;
+                                            }
+                                          })()}
 
-                                          <label
-                                            onClick={() => {
-                                              const audioType = type === "firstImage" ? "firstAudio" : "secondAudio";
-                                              console.log(audioType, "ljdojdojo")
-                                              setSelectedImageType(`pairs-${question.id}-${audioType}`);
-                                              handleChangeMediaAudio(audioType, formData?.id, question.id);
-                                            }}
-                                            role="button"
-                                          >
-                                            <i className="fa-solid fa-music" title="Add Audio"></i>
-                                          </label>
+                                          {/* Icons */}
+                                          <div className="icons_pairs d-flex align-items-center gap-1 mt-2">
+                                            <label
+                                              onClick={() =>
+                                                handlePairText(type, question)
+                                              }
+                                              role="button"
+                                            >
+                                              <i
+                                                className="fa-solid fa-font"
+                                                title="Add Text"
+                                              ></i>
+                                            </label>
+                                            <label
+                                              onClick={() => {
+                                                setSelectedImageType(
+                                                  `${type.replace("Image", "")}-image`,
+                                                  `pairs-${question.id}`
+                                                ); // Image change (not audio)
+                                                handleChangeLogo(
+                                                  `${type.replace("Image", "")}-image`,
+                                                  formData?.id,
+                                                  question.id
+                                                );
+                                              }}
+                                              role="button"
+                                            >
+                                              <i
+                                                className="fa-solid fa-camera"
+                                                title="Add Image"
+                                              ></i>
+                                            </label>
 
+                                            <label
+                                              onClick={() => {
+                                                const audioType =
+                                                  type === "firstImage"
+                                                    ? "firstAudio"
+                                                    : "secondAudio";
+                                                console.log(
+                                                  audioType,
+                                                  "ljdojdojo"
+                                                );
+                                                setSelectedImageType(
+                                                  `pairs-${question.id}-${audioType}`
+                                                );
+                                                handleChangeMediaAudio(
+                                                  audioType,
+                                                  formData?.id,
+                                                  question.id
+                                                );
+                                              }}
+                                              role="button"
+                                            >
+                                              <i
+                                                className="fa-solid fa-music"
+                                                title="Add Audio"
+                                              ></i>
+                                            </label>
+                                          </div>
                                         </div>
-                                      </div>
-                                    ))}
+                                      )
+                                    )}
                                   </div>
-
-
                                 </div>
                                 {/* <div
                                   className="questionImageLabel quest-cover"
@@ -307,7 +359,6 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
                                 )
                               }
                             />
-
                           </div>
                         )}
                       </div>
@@ -334,8 +385,12 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
                   rows="4"
                   placeholder="Enter your text"
                   value={textModalData?.[textModalData?.imageType]?.text}
-                  onChange={(e) => handlechangePairText(e.target.value, textModalData?.imageType)}
-
+                  onChange={(e) =>
+                    handlechangePairText(
+                      e.target.value,
+                      textModalData?.imageType
+                    )
+                  }
                 ></textarea>
                 <label class="form-label font-sm fw-medium d-flex align-items-center cursor-pointer">
                   Card color
@@ -501,8 +556,10 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
                 <div
                   className="viewdiv d-flex align-items-center justify-content-center h-100 rounded-3 text-center"
                   style={{
-                    backgroundColor: textModalData?.bgColor ? `${textModalData?.bgColor}` : '#f9f9f9',
-                    border: `1px solid ${textModalData?.bgColor ? textModalData?.bgColor : '#ccc'}`,
+                    backgroundColor: textModalData?.bgColor
+                      ? `${textModalData?.bgColor}`
+                      : "#f9f9f9",
+                    border: `1px solid ${textModalData?.bgColor ? textModalData?.bgColor : "#ccc"}`,
                     color: `${textModalData?.bgColor ? (textModalData?.bgColor === "#fff" ? "#000" : "#fff") : "#000"}`,
                   }}
                 >
@@ -521,7 +578,7 @@ function Pairs({ setSelectedImageType, selectedAudioFile, formData, questions, h
             <button
               onClick={() => handleSaveText(textModalData.id)}
               className="button button-primary border-0"
-            // disabled={textModalData?.text ? false : true}
+              // disabled={textModalData?.text ? false : true}
             >
               Save
             </button>

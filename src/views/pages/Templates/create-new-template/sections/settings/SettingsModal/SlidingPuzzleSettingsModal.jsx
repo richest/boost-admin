@@ -14,15 +14,11 @@ import PreviewPuzzle from "views/pages/Templates/Preview/PreviewBlocks/Puzzle";
 import PreviewSlidingPuzzle from "views/pages/Templates/Preview/PreviewBlocks/SlidingPuzzle";
 
 function SlidingPuzzleModal({
-  selectedImage,
   selecteScreen,
   setSelectScreen,
   formData,
   handleChangeLogo,
   setIsOpenFormModal,
-  showQuit,
-  setShowQuit,
-  setAnyChanges,
 }) {
   const questsLength = [
     {
@@ -53,12 +49,9 @@ function SlidingPuzzleModal({
   const [errorScreen, setErrorScreen] = useState(false);
   const [triggerNext, setTriggerNext] = useState(false);
   const [coverHeader, setCoverHeader] = useState("");
-  const [selectedImageType, setSelectedImageType] = useState({ type: "" });
   const [coverButtonText, setCoverButtonText] = useState("");
   const [slidingpuzzle, setSlidingPuzzleData] = useState({});
   const [finalResult, setfinalResult] = useState({});
-  const [finalImage, setfinalImage] = useState({});
-
   const [errors, setErrors] = useState({
     header: false,
     buttonText: false,
@@ -66,7 +59,6 @@ function SlidingPuzzleModal({
     headerWordCount: false,
     buttonTextWordCount: false,
   });
-  console.log(finalResult, "finalImage");
   const validateForm = () => {
     const newErrors = {
       header: !slidingpuzzle.coverHeader?.trim(),
@@ -98,14 +90,10 @@ function SlidingPuzzleModal({
     // Check if the length of the trimmed text (after spaces are removed) has at least 3 words
     const wordCount = trimmedText.length;
 
-    console.log(trimmedText, "trimmed text"); // Debug the trimmed text
-    console.log(wordCount, "word count"); // Log the word count to verify
-
     // Check if the word count is at least 3
     return wordCount <= 20;
   };
 
-  console.log(isValidWordCount, "ioioi");
 
   // const validateForm = () => {
 
@@ -114,14 +102,10 @@ function SlidingPuzzleModal({
   //     buttonText: !slidingpuzzle.coverButtonText?.trim(),
   //     finalResultHeader: !finalResult.header?.trim(),
   //   };
-  //   console.log(slidingpuzzle.coverHeader,"akjhaj")
   //   setErrors(newErrors);
   //   return !newErrors.header && !newErrors.buttonText && !newErrors.finalResultHeader
   // };
-  console.log(formData, "formDataformData");
   const handleSelectChange = (e) => {
-    console.log(formData?.struct, "checkcardgherere");
-    console.log(e, "checkvaluess");
     const updatedData = {
       ...templateDetails,
       project_structure: {
@@ -131,20 +115,20 @@ function SlidingPuzzleModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  playground: {
-                    ...block.struct.playground,
-                    layout: {
-                      ...block.struct.playground.layout,
-                      label: e.label,
-                      value: e.value,
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    playground: {
+                      ...block.struct.playground,
+                      layout: {
+                        ...block.struct.playground.layout,
+                        label: e.label,
+                        value: e.value,
+                      },
+                      tilesCount: e.value,
                     },
-                    tilesCount: e.value,
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -154,13 +138,7 @@ function SlidingPuzzleModal({
     dispatch(updateTemplateAction(updatedData));
   };
 
-  console.log(slidingpuzzle, "slidingpuzzleslidingpuzzle");
-  console.log(isValidWordCount("   Hello World   "), "Test 1"); // Should be true
-  console.log(isValidWordCount("Hello World"), "Test 2"); // Should be true
-  console.log(isValidWordCount("Hello"), "Test 3"); // Should be false (only one word)
-  console.log(isValidWordCount("    "), "Test 4"); // Should be false (empty or just spaces)
-  console.log(isValidWordCount("   wdwdw "), "Test 5"); // Should be true
-  console.log(isValidWordCount("sqqsq"), "Test 6"); // Should be true
+  
 
   // Helper function to check if text contains valid characters (no special characters, only letters and spaces)
   const isValidText = (text) => {
@@ -177,15 +155,15 @@ function SlidingPuzzleModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  playground: {
-                    ...block.struct.playground,
-                    gameType: e.value,
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    playground: {
+                      ...block.struct.playground,
+                      gameType: e.value,
+                    },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -194,7 +172,6 @@ function SlidingPuzzleModal({
 
     dispatch(updateTemplateAction(updatedData));
   };
-  console.log(slidingpuzzle, "4535345");
 
   const handleIsShowCover = (e) => {
     const updatedData = {
@@ -206,15 +183,15 @@ function SlidingPuzzleModal({
           blocks: page.blocks.map((block) =>
             block.id === formData?.id
               ? {
-                ...block,
-                struct: {
-                  ...block.struct,
-                  playground: {
-                    ...block.struct.playground,
-                    isShowCover: e,
+                  ...block,
+                  struct: {
+                    ...block.struct,
+                    playground: {
+                      ...block.struct.playground,
+                      isShowCover: e,
+                    },
                   },
-                },
-              }
+                }
               : block
           ),
         })),
@@ -224,11 +201,9 @@ function SlidingPuzzleModal({
   };
 
   const handleChangeheadertext = (e) => {
-    console.log(e, "ikasasa");
     const value = e;
     setErrors((prev) => {
       const updated = { ...prev, header: false };
-      console.log("Updated Errors in handler:", updated);
       return updated;
     });
     setSlidingPuzzleData((prev) => ({
@@ -237,7 +212,6 @@ function SlidingPuzzleModal({
     }));
     validateForm();
   };
-  console.log(errors, "sqqsq");
   const handleChangeheaderButtonText = (e) => {
     const value = e;
 
@@ -258,26 +232,8 @@ function SlidingPuzzleModal({
     validateForm();
   };
 
-  console.log(errors, "object");
-  console.log(formData?.struct?.playground, "checkformDataokornokt");
-  const handleNext = async () => {
-    if (!validateForm()) {
-      setErrorScreen(true);
-      return;
-    } else {
-      setErrorScreen(false);
-      setTriggerNext(false);
-      if (selecteScreen == "start-screen") {
-        setSelectScreen("final-screen");
-      }
-    }
-
-    console.log("Proceed to next step");
-  };
   const handleSaveSlidingPuzzle = () => {
-    console.log("object");
     if (!validateForm()) {
-      setErrorScreen(true);
       return;
     } else {
       //
@@ -315,121 +271,65 @@ function SlidingPuzzleModal({
             blocks: page.blocks.map((block) =>
               block.id === formData?.id
                 ? {
-                  ...block,
-                  struct: {
-                    ...block.struct,
-                    playground: {
-                      ...block.struct.playground,
-                      ...slidingpuzzle,
+                    ...block,
+                    struct: {
+                      ...block.struct,
+                      playground: {
+                        ...block.struct.playground,
+                        ...slidingpuzzle,
+                      },
+                      final: {
+                        ...block.struct.final,
+                        ...finalResult,
+                      },
                     },
-                    final: {
-                      ...block.struct.final,
-                      ...finalResult,
-                    },
-                  },
-                }
+                  }
                 : block
             ),
           })),
         },
       };
-      console.log(updatedData, "updatedData");
       dispatch(updateTemplateAction(updatedData));
       setIsOpenFormModal(false);
     }
   };
-  console.log(formData?.struct?.finalScreen, "qwopdiowqu");
   useEffect(() => {
     setSlidingPuzzleData(formData?.struct?.playground);
     setfinalResult(formData?.struct?.final);
-    setfinalImage(formData?.struct?.finalScreen);
   }, [formData]);
-  console.log(finalResult, "dojwoijdiwj")
-  useEffect(() => {
-    if (selectedImage) {
-      console.log(selectedImageType, "selectedImageType");
-      console.log(selectedImage, "selectedImage090");
-      if (selectedImageType?.type === "slidingpuzzlestart") {
-        setSlidingPuzzleData((prev) => ({
-          ...prev,
-          imageUrl: selectedImage,
-        }));
-        // setSelectedImageType(null);
-      }
-    } else if (selectedImageType.type === "slidingpuzzleFinal" && selectedImage) {
-      console.log("HEEREERERRE");
-      setfinalResult((prev) => ({
-        ...prev,
-        image: selectedImage,
-      }));
-      console.log(selectedImageType.type, "90weqr8r39");
-    }
-  }, [selectedImage, selectedImageType]);
-  console.log(selectedImage, "spdwped")
-  console.log("jdowqdwqdqwd", finalResult);
-  // useEffect(() => {
-  //   if (!selectedImage || !selectedImageType) return;
-
-  //   const { type, questionID } = selectedImageType;
-
-  //   if (type === "slidingpuzzlestart") {
-  //     setSlidingPuzzleData((prev) => ({
-  //       ...prev,
-  //       imageUrl: selectedImage
-  //     }))
-  //     setSelectedImageType(null);
-  //   }
-
-  // }, [selectedImage, selectedImageType]);
-  console.log(
-    slidingpuzzle?.imageUrl,
-    "slidingpuzzleslidingpuzzle",
-    selectedImage
-  );
   return (
     <>
       <div className="form-option-wrap">
         <div className="form-start">
           <div className="optionsEditScreen">
             <div
-              className={`options-settings ${selecteScreen === "start-screen" ? "activeTab" : ""}`}
+              className={`options-settings ${
+                selecteScreen === "start-screen" ? "activeTab" : ""
+              }`}
               role="button"
-              onClick={() => {
-                if (!validateForm()) {
-                  setErrorScreen(true);
-                  return;
-                } else {
-                  setSelectScreen("start-screen");
-                }
-              }}
+              onClick={() => setSelectScreen("start-screen")}
             >
-              <i class="fa-solid fa-desktop"></i>
+              <i className="fa-solid fa-desktop"></i>
               <p>Layout</p>
             </div>
             <div
-              className={`options-settings ${selecteScreen === "final-screen" ? "activeTab" : ""}`}
+              className={`options-settings ${
+                selecteScreen === "final-screen" ? "activeTab" : ""
+              }`}
               role="button"
-              onClick={() => {
-                if (!validateForm()) {
-                  setErrorScreen(true);
-                  return;
-                } else {
-                  setSelectScreen("final-screen");
-                }
-              }}
+              onClick={() => setSelectScreen("final-screen")}
             >
-              <i class="fa-solid fa-circle-question"></i>
+              <i className="fa-solid fa-circle-question"></i>
               <p>Final screen</p>
             </div>
           </div>
         </div>
 
-        {console.log(formData?.struct?.playground, "ioiioio")}
         {selecteScreen === "start-screen" && (
           <>
             <div className="form-left border-end">
               <div className="fields-output">
-                <label class="toggle-container mb-4">Playground</label>
+                <label className="toggle-container mb-4">Playground</label>
                 <div className={`formFieldsList`}>
                   <div className="additionalInfo">
                     <div className="fields_info">
@@ -445,11 +345,11 @@ function SlidingPuzzleModal({
                               defaultValue={
                                 formData?.struct?.playground?.layout
                                   ? {
-                                    label:
-                                      formData?.struct?.playground?.gameType?.toLowerCase(),
-                                    value:
-                                      formData?.struct?.playground?.gameType,
-                                  }
+                                      label:
+                                        formData?.struct?.playground?.gameType?.toLowerCase(),
+                                      value:
+                                        formData?.struct?.playground?.gameType,
+                                    }
                                   : null
                               }
                               options={options}
@@ -462,50 +362,47 @@ function SlidingPuzzleModal({
                         </div>
                         {formData?.struct?.playground?.gameType.toUpperCase() !==
                           "NUMBERS" && (
-                            <div className="col-md-6">
-                              <div>
-                                <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
-                                  Image
-                                </label>
-                                <div className="d-flex align-items-start">
-                                  <div className="mb-3">
-                                    <div className="d-flex gap-2">
-                                      {slidingpuzzle?.imageUrl && (
-                                        <img
-                                          src={slidingpuzzle?.imageUrl}
-                                          alt="illustrationImage"
-                                          className="image_illustrate"
-                                          style={{
-                                            height: 44,
-                                            width: 44,
-                                            borderRadius: 8,
-                                            objectFit: "cover",
-                                          }}
-                                        />
-                                      )}
-
-                                      <button
-                                        className="button button-primary border-0"
-                                        onClick={() => {
-                                          setSelectedImageType({
-                                            type: "slidingpuzzlestart",
-                                          });
-                                          handleChangeLogo(
-                                            "sliding-puzzle-image",
-                                            formData?.id
-                                          );
+                          <div className="col-md-6">
+                            <div>
+                              <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
+                                Image
+                              </label>
+                              <div className="d-flex align-items-start">
+                                <div className="mb-3">
+                                  <div className="d-flex gap-2">
+                                    {formData?.struct?.playground.image && (
+                                      <img
+                                        src={formData?.struct?.playground.image}
+                                        alt="illustrationImage"
+                                        className="image_illustrate"
+                                        style={{
+                                          height: 44,
+                                          width: 44,
+                                          borderRadius: 8,
+                                          objectFit: "cover",
                                         }}
-                                      >
-                                        {slidingpuzzle?.imageUrl
-                                          ? "Change"
-                                          : "Upload"}
-                                      </button>
-                                    </div>
+                                      />
+                                    )}
+
+                                    <button
+                                      className="button button-primary border-0"
+                                      onClick={() =>
+                                        handleChangeLogo(
+                                          "sliding-puzzle-image",
+                                          formData?.id
+                                        )
+                                      }
+                                    >
+                                      {formData?.struct?.playground.image
+                                        ? "Change"
+                                        : "Upload"}
+                                    </button>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          )}
+                          </div>
+                        )}
 
                         <div className="col-md-6">
                           <label className="form-label font-sm fw-medium d-flex align-items-center gap-2 cursor-pointer">
@@ -517,13 +414,13 @@ function SlidingPuzzleModal({
                             defaultValue={
                               formData?.struct?.playground?.layout
                                 ? {
-                                  label:
-                                    formData?.struct?.playground?.layout
-                                      ?.label,
-                                  value:
-                                    formData?.struct?.playground?.layout
-                                      ?.value,
-                                }
+                                    label:
+                                      formData?.struct?.playground?.layout
+                                        ?.label,
+                                    value:
+                                      formData?.struct?.playground?.layout
+                                        ?.value,
+                                  }
                                 : null
                             }
                             options={questsLength}
@@ -557,7 +454,11 @@ function SlidingPuzzleModal({
                             </label>
                             <input
                               type="text"
-                              className={`form-control theme-control ${errors.header || errors.headerWordCount ? "is-invalid" : ""}`}
+                              className={`form-control theme-control ${
+                                errors.header || errors.headerWordCount
+                                  ? "is-invalid"
+                                  : ""
+                              }`}
                               id="questName"
                               maxLength="60"
                               value={slidingpuzzle.coverHeader || ""}
@@ -571,7 +472,6 @@ function SlidingPuzzleModal({
                                 Header is required.
                               </div>
                             )}
-                            {console.log(errors.headerWordCount, "vvvvv")}
                             {errors.headerWordCount && (
                               <div className="invalid-feedback">
                                 Must be No more than 20 characters .
@@ -585,7 +485,11 @@ function SlidingPuzzleModal({
                             </label>
                             <input
                               type="text"
-                              className={`form-control theme-control ${errors.buttonText || errors.buttonTextWordCount ? "is-invalid" : ""}`}
+                              className={`form-control theme-control ${
+                                errors.buttonText || errors.buttonTextWordCount
+                                  ? "is-invalid"
+                                  : ""
+                              }`}
                               id="buttonTextInput"
                               maxLength="60"
                               value={slidingpuzzle.coverButtonText || ""}
@@ -623,37 +527,31 @@ function SlidingPuzzleModal({
             </div>
           </>
         )}
-        {console.log(formData?.struct?.final, "formDataformData")}
         {selecteScreen === "final-screen" && (
           <ResultScreen
-            finalImage={finalImage}
-            slidingpuzzle={slidingpuzzle}
-            setSelectedImageType={setSelectedImageType}
             finalResult={finalResult}
             setParentErros={setErrors}
             setfinalResult={setfinalResult}
             parenterror={errors}
+            slidingpuzzle={slidingpuzzle}
             setErrorScreen={setErrorScreen}
             setTriggerNext={setTriggerNext}
             formData={formData}
             questions={formData?.struct?.questions}
             handleChangeImage={handleChangeLogo}
-            setAnyChanges={setAnyChanges}
           />
         )}
       </div>
 
       <ul className="Footer_footer__bMDNk">
-        {selecteScreen !== "final-screen" && (
-          <li className="Footer_footerItem__yaFNE">
-            <button
-              className="button button-primary outline px-3"
-              onClick={handleNext}
-            >
-              Next
-            </button>
-          </li>
-        )}
+        <li className="Footer_footerItem__yaFNE">
+          <button
+            className="button button-primary outline px-3"
+            onClick={"handleNext"}
+          >
+            Next
+          </button>
+        </li>
 
         <li className="Footer_footerItem__yaFNE">
           <button
@@ -666,91 +564,40 @@ function SlidingPuzzleModal({
       </ul>
       {/* if error is true then have to shiw this  */}
 
-      {(errorScreen || triggerNext) && (
-        <div className="StopPanel_modalStop__Msu+K">
-          <div className="StopPanel_modalOverlay__1dGP2"></div>
-          <div className="StopPanel_modalContent__8Epq4">
-            <div className="StopPanel_note__c+Qou">
-              <div className="StopPanel_imageBox__2Udoo">
-                <img
-                  className="StopPanel_image__2gtri"
-                  src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
-                  alt=""
-                />
-              </div>
-              <div className="StopPanel_textBox__stxYL">
-                <h4 className="StopPanel_textTitle__T8v5c">
-                  Oh! Need more information
-                </h4>
-                <p className="StopPanel_textContent__2I+u6">
-                  Please fill all required fields on this tab for the quiz to
-                  work correctly.
-                </p>
-              </div>
-            </div>
-            <div className="StopPanel_buttons__cZz5n">
-              <button
-                onClick={() => {
-                  setErrorScreen(false);
-                  setTriggerNext(false);
-                }}
-                className="button button-primary px-3 text-decoration-none"
-              >
-                Back
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showQuit && (
-        <div className="StopPanel_modalStop__Msu+K">
-          <div className="StopPanel_modalOverlay__1dGP2"></div>
-          <div className="StopPanel_modalContent__8Epq4">
-            <div className="StopPanel_note__c+Qou">
-              <div className="StopPanel_imageBox__2Udoo">
-                <img
-                  className="StopPanel_image__2gtri"
-                  src="https://account.interacty.me/static/media/stop-hand.8bd0dd7cd03181cb09c03f17f69b5323.svg"
-                  alt=""
-                />
-              </div>
-              <div className="StopPanel_textBox__stxYL">
-                <h4 className="StopPanel_textTitle__T8v5c">
-                  Are you sure that you want to quit?
-                </h4>
-                <p className="StopPanel_textContent__2I+u6">
-                  The changes you made will not be saved
-                </p>
-              </div>
-            </div>
-            <ul className="Footer_footer__bMDNk">
-              <li className="Footer_footerItem__yaFNE">
-                <button
-                  className="button button-primary outline px-3"
-                  onClick={() => {
-                    setShowQuit(false);
-                  }}
-                >
-                  Back
-                </button>
-              </li>
-              <li className="Footer_footerItem__yaFNE">
-                <button
-                  onClick={() => {
-                    setIsOpenFormModal(false);
-                    setShowQuit(false);
-                    setAnyChanges(false);
-                  }}
-                  className="button button-primary px-3 text-decoration-none"
-                >
-                  Quit
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      )}
+      {/* <div className="StopPanel_modalStop__Msu+K">
+  <div className="StopPanel_modalOverlay__1dGP2"></div>
+  <div className="StopPanel_modalContent__8Epq4">
+    <div className="StopPanel_note__c+Qou">
+      <div className="StopPanel_imageBox__2Udoo">
+        <img
+          className="StopPanel_image__2gtri"
+          src="https://account.interacty.me/static/media/girl.af105485362519d96dd6e5f1bc6da415.svg"
+          alt=""
+        />
+      </div>
+      <div className="StopPanel_textBox__stxYL">
+        <h4 className="StopPanel_textTitle__T8v5c">
+          Oh! Need more information
+        </h4>
+        <p className="StopPanel_textContent__2I+u6">
+          Please fill all required fields on this tab for the quiz to
+          work correctly.
+        </p>
+      </div>
+    </div>
+    <div className="StopPanel_buttons__cZz5n">
+      <button
+        onClick={() => {
+          // setErrorScreen(false);
+          // setTriggerNext(false);
+        }}
+        className="button button-primary px-3 text-decoration-none"
+      >
+        Back
+      </button>
+    </div>
+  </div>
+</div> */}
     </>
   );
 }

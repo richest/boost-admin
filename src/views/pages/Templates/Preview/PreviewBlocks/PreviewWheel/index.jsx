@@ -534,6 +534,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./wheel.css";
 import Confetti from "react-confetti";
 import confetti from "canvas-confetti";
+import { Link } from "react-router-dom";
 
 
 
@@ -1058,7 +1059,7 @@ function PreviewSpintheWheel({
                   </div>
                 </div>
               )}
-              {showani && animation == "fireworks" && launchFireworkConfetti()}
+              {showani && animation === "fireworks" && launchFireworkConfetti()}
               {showani && animation === "stars" && launchFullScreenConfetti()}
               {showani && animation === "confetti" && (
                 <Confetti width={"500px"} height={"500px"} />

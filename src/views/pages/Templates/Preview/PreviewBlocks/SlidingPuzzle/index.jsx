@@ -903,7 +903,6 @@ function PreviewSlidingPuzzle({
                               <div className="common-cover">
                                 <h2 className="common-cover__title">
                                   {slidingpuzzle?.coverHeader || finalData?.coverHeader}
-                                  vcfvffv
                                 </h2>
                                 <button
                                   onClick={() =>
